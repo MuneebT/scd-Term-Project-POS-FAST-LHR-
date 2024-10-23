@@ -9,7 +9,7 @@ public class UpdateScreen extends JFrame {
     private JButton btnupdate;
     private ImageIcon img;
     private JLabel imagelabel;
-    private JLabel b_phone_no, b_name, b_address;
+    private JLabel b_phone_no, b_name, b_address,b_city,b_status;
     private JTextField tfphoneno, tfname, tfaddress;
 
     public UpdateScreen() {
@@ -59,6 +59,10 @@ public class UpdateScreen extends JFrame {
         tfaddress = new JTextField();
         tfaddress.setBounds(580, 240, 180, 30);
 
+        //city label
+
+
+
         // Update button
         btnupdate = new JButton("Update");
         btnupdate.setBackground(Color.CYAN);
@@ -90,9 +94,9 @@ public class UpdateScreen extends JFrame {
 
                 } else {
 
-                    tfphoneno.setText("");
-                    tfaddress.setText("");
-                    tfname.setText("");
+//                    tfphoneno.setText("");
+//                    tfaddress.setText("");
+//                    tfname.setText("");
                 }
             }
         });

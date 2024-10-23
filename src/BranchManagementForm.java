@@ -90,11 +90,11 @@ public class BranchManagementForm extends JFrame {
                 if ("Delete".equals(actionType)) {
                     JOptionPane.showMessageDialog(button, "Deleted row: " + label);
                     // Add deletion logic here (e.g., remove the row from the table model)
-                    ((DefaultTableModel) bmtable.getModel()).removeRow(bmtable.getSelectedRow());
+                  //  ((DefaultTableModel) bmtable.getModel()).removeRow(bmtable.getSelectedRow());
                 } else if ("Update".equals(actionType)) {
-                    JOptionPane.showMessageDialog(button, "Update action for row: " + label);
+                    //JOptionPane.showMessageDialog(button, "Update action for row: " + label);
                     // Add update logic here (e.g., open an update form or dialog)
-
+                     new UpdateScreen();
                 }
             }
             isPushed = false;
