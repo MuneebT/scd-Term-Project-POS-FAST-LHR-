@@ -35,6 +35,7 @@ private static Connection temp;
           ps.setString(5,"Iqbal Town");
           ps.setString(6,"03338189990");
           ps.setInt(7,1);
+          ps.executeQuery();
         }
         catch (Exception e){
             e.printStackTrace();

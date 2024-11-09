@@ -133,7 +133,7 @@ public class UpdateScreenView extends JFrame {
                     JOptionPane.showMessageDialog(UpdateScreenView.this, "Data Updated Succesfully");
 
                     dispose();
-
+                      new BranchManagementView();
                 } else {
 
 //                    tfphoneno.setText("");
