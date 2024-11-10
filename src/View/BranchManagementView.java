@@ -1,13 +1,18 @@
 package View;
 
+import Controller.BranchManagementController;
+import Model.BranchManagementModel;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 
 public class BranchManagementView extends JFrame  {
     public JTable bmtable;
     private DefaultTableModel dtm1;
+    private BranchManagementController bmc=new BranchManagementController();
     private JScrollPane bmScroll;
 
 
@@ -21,15 +26,10 @@ public BranchManagementView(){
     // Table column names
     String[] columnNames = { "Code", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
 
-    // Sample data for the table
-    Object[][] data = {
-            { "B001", "Branch 1", "Gujranwala", "Active", "123 Street", "123-456-7890", 50, "Delete", "Update" },
-            { "B002", "Branch 2", "Lahore", "Inactive", "456 Avenue", "098-765-4321", 40, "Delete", "Update" },
-            { "B003", "Branch 3", "karachi", "Active", "789 Boulevard", "111-222-3333", 60, "Delete", "Update" }
-    };
+    Object[][] data1= bmc.return_object_Array();
 
     // Create the table with data and column names
-    bmtable = new JTable(new DefaultTableModel(data, columnNames));
+    bmtable = new JTable(new DefaultTableModel(data1, columnNames));
 
     // Set custom renderer and editor for the last two columns (buttons)
     bmtable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
@@ -66,6 +66,7 @@ public BranchManagementView(){
         private String label;
         private boolean isPushed;
         private String actionType;
+        private int currentRow; // Store the current row
 
         public ButtonEditor(JCheckBox checkBox, String actionType) {
             super(checkBox);
@@ -84,31 +85,33 @@ public BranchManagementView(){
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             isPushed = true;
+            currentRow = row; // Capture the current row here
             return button;
         }
 
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                // Handle Delete or Update action based on the action type
+                // Use currentRow instead of bmtable.getSelectedRow()
                 if ("Delete".equals(actionType)) {
                     int response = JOptionPane.showConfirmDialog(null, "Do you want to delete this data?");
                     if (response == 0) {
-                        // Get the selected row index
-                        int rowToDelete = bmtable.getSelectedRow();
-                        if (rowToDelete != -1) {
-
-                            DefaultTableModel model = (DefaultTableModel) bmtable.getModel();
-                            model.removeRow(rowToDelete);
-                        }
+                        DefaultTableModel model = (DefaultTableModel) bmtable.getModel();
+                        int code = (int) model.getValueAt(currentRow, 0);
+                        System.out.println("Row to delete=" + currentRow);
+                        System.out.println("code=" + code);
+                        model.removeRow(currentRow);
+                        bmc.redirect_delect_request(code);
+                        JOptionPane.showMessageDialog(null, "Data Deleted from DB");
                     } else {
                         System.out.println("Data not deleted");
                     }
                 } else if ("Update".equals(actionType)) {
                     int response = JOptionPane.showConfirmDialog(null, "Do you want to update the data?");
                     if (response == 0) {
+                        dispose();
                         // Open Update Screen (or dialog)
-                        new UpdateScreenView(get_Branch_name(),get_branch_city(),get_branch_status(),get_branch_address(),get_branch_phoneno());
+                        new UpdateScreenView(get_branch_id(), get_Branch_name(), get_branch_city(), get_branch_status(), get_branch_address(), get_branch_phoneno(), get_branch_employee_count());
                     } else {
                         System.out.println("Data not updated");
                     }
@@ -117,18 +120,8 @@ public BranchManagementView(){
             isPushed = false;
             return label;
         }
-
-        @Override
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-
-//        @Override
-//        protected void fireEditingStopped() {
-//            super.fireEditingStopped();
-//        }
     }
+
 
     //getter to get selected row id
   public  int get_branch_id(){
@@ -165,5 +158,8 @@ public    String get_branch_address(){
      Object phoneno=bmtable.getValueAt(bmtable.getSelectedRow(),5);
      return phoneno.toString();
     }
-
+    public int get_branch_employee_count(){
+    Object employeecount=bmtable.getValueAt(bmtable.getSelectedRow(),6);
+    return employeecount.hashCode();
+    }
 }

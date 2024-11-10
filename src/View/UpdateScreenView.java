@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class UpdateScreenView extends JFrame {
     private UpdateScreenController usc1=new UpdateScreenController();
+    private BranchManagementController bmc=new BranchManagementController();
     private JButton btnupdate;
     private JScrollPane scrollPane;
     private String[] citynames;
@@ -22,14 +23,14 @@ public class UpdateScreenView extends JFrame {
     private JComboBox<String> cb_status;
     private JComboBox<String> cb_cityname;
 
-    public UpdateScreenView(String name,String city,String status,String address,String phoneno) {
+    public UpdateScreenView(int code,String name,String city,String status,String address,String phoneno,int employeecount) {
 
 
         setTitle("Update");
         setLayout(null); // Still using null layout for absolute positioning
         setBounds(100, 100, 800, 600);
         setResizable(false);
-        getContentPane().setBackground(Color.darkGray);
+        getContentPane().setBackground(Color.WHITE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Image icon
@@ -79,7 +80,7 @@ public class UpdateScreenView extends JFrame {
         b_status.setBounds(420,310,150,30);
 
         //status combp box
-        String []branchstatus={status,"Active","InActive"};
+        String []branchstatus={"Active","InActive"};
         cb_status=new JComboBox<>(branchstatus);
         //cb_status.setSelectedIndex(0);
         cb_status.setBounds(580,310,150,30);
@@ -129,7 +130,12 @@ public class UpdateScreenView extends JFrame {
 
                 if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()
                 && validate_is_cityname_combobox_empty()) {
-
+                    String branchname=tfname.getText();
+                    String cityname=(String)cb_cityname.getSelectedItem();
+                    String branchstatus=(String) cb_status.getSelectedItem();
+                    String branchaddress=tfaddress.getText();
+                    String branchphoneno=tfphoneno.getText();
+                          bmc.redirect_update_request(code,branchname,cityname,branchstatus,branchaddress,branchphoneno);
                     JOptionPane.showMessageDialog(UpdateScreenView.this, "Data Updated Succesfully");
 
                     dispose();
