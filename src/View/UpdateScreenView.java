@@ -1,7 +1,6 @@
 package View;
 
 import Controller.BranchManagementController;
-import Controller.UpdateScreenController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 public class UpdateScreenView extends JFrame {
-    private UpdateScreenController usc1=new UpdateScreenController();
     private BranchManagementController bmc=new BranchManagementController();
     private JButton btnupdate;
     private JScrollPane scrollPane;
@@ -93,7 +91,7 @@ public class UpdateScreenView extends JFrame {
         b_city.setBounds(420,380,150,30);
 
         // branch address combo box
-        LinkedList<String> list_citynames=usc1.return_list_of_city_names();
+        LinkedList<String> list_citynames=bmc.return_list_of_city_names();
         copy_data(list_citynames);
         cb_cityname=new JComboBox<>(citynames);
        // cb_cityname.setSelectedIndex(-1);

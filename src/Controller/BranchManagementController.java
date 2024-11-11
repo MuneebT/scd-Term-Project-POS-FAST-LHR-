@@ -3,6 +3,8 @@ package Controller;
 import Model.BranchManagementModel;
 import View.BranchManagementView;
 
+import java.util.LinkedList;
+
 public class BranchManagementController {
     private BranchManagementModel bmm=BranchManagementModel.getInstance();
 
@@ -16,5 +18,10 @@ public void redirect_update_request(int code,String name,String city,String stat
 public void redirect_delect_request(int code){
      bmm.delete_branch_data_from_db(code);
 }
+
+
+    public LinkedList<String> return_list_of_city_names(){
+        return bmm.read_city_name_from_file();
+    }
 
 }
