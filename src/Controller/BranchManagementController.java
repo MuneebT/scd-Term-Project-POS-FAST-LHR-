@@ -1,12 +1,13 @@
 package Controller;
 
+import Model.BranchDAO;
 import Model.BranchManagementModel;
 import View.BranchManagementView;
 
 import java.util.LinkedList;
 
 public class BranchManagementController {
-    private BranchManagementModel bmm=BranchManagementModel.getInstance();
+    private BranchDAO bmm=new BranchDAO();
 
  public   Object[][] return_object_Array(){
         return bmm.Insert_data_into_Array();

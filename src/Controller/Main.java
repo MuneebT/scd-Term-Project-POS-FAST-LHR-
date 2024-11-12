@@ -1,6 +1,5 @@
 package Controller;
 import Model.BranchManagementModel;
-import Model.UpdateScreenModel;
 import View.BranchManagementView;
 import View.CreateBranchView;
 import View.LoadingScreenView;

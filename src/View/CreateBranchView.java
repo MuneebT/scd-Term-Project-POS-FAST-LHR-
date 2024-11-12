@@ -1,6 +1,5 @@
 package View;
 
-import Controller.UpdateScreenController;
 import Controller.BranchManagementController;
 import Model.BranchDAO;
 
