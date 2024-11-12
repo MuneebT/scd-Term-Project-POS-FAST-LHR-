@@ -26,4 +26,3 @@ public class DBInitializer {
             conn.close();
         }
     }
-}

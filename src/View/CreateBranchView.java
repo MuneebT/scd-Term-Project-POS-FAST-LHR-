@@ -1,6 +1,7 @@
 package View;
 
 import Controller.UpdateScreenController;
+import Controller.BranchManagementController;
 import Model.BranchDAO;
 
 import javax.swing.*;
@@ -20,8 +21,8 @@ public class CreateBranchView extends JFrame {
     private JTextField tfphoneno, tfname, tfaddress;
     private JComboBox<String> cb_status;
     private JComboBox<String> cb_cityname;
-    private UpdateScreenController usc1=new UpdateScreenController();
 
+         private BranchManagementController bmc=new BranchManagementController();
     public CreateBranchView() {
 
 
@@ -88,10 +89,14 @@ public class CreateBranchView extends JFrame {
         b_city.setBounds(420,380,150,30);
 
         // branch address combo box
-        LinkedList<String> list_citynames=usc1.return_list_of_city_names();
+
+  
+      
+        LinkedList<String> list_citynames=bmc.return_list_of_city_names();
         copy_data(list_citynames);
         cb_cityname=new JComboBox<>(citynames);
-       // cb_cityname.setSelectedIndex(-1);
+        // cb_cityname.setSelectedIndex(-1);
+  
         scrollPane=new JScrollPane(cb_cityname);
         cb_cityname.setBounds(580,380,150,30);
 
@@ -122,8 +127,9 @@ public class CreateBranchView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()
-                && validate_is_cityname_combobox_empty()) {
+                if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()&& validate_is_cityname_combobox_empty())
+                {
+
 
 
                     BranchDAO branchDAO=new BranchDAO();
@@ -143,12 +149,14 @@ public class CreateBranchView extends JFrame {
     }
 
     //copying data from citynames list to array
-private void copy_data(LinkedList<String> data){
+    private void copy_data(LinkedList<String> data){
         citynames=new String[data.size()];
         for(int i=0;i<data.size();i++){
             citynames[i]=data.get(i);
         }
 }
+    
+
     private boolean validatePhoneNumber() {
         String phoneNo = tfphoneno.getText();
         boolean isValidLength = verify_Phone_No_length(phoneNo);
@@ -216,3 +224,4 @@ private void copy_data(LinkedList<String> data){
     }
 
 }
+
