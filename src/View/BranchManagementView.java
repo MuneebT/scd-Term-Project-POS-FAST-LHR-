@@ -24,7 +24,7 @@ public BranchManagementView(){
     setBounds(100, 100, 800, 600);
 
     // Table column names
-    String[] columnNames = { "Code", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
+    String[] columnNames = { "ID", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
 
     Object[][] data1= bmc.return_object_Array();
 

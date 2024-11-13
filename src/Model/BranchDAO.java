@@ -57,12 +57,12 @@ public class BranchDAO {
 
             // Set parameters for the prepared statement
             //ps.setInt(1, 124);
-            ps.setString(2, "Model Town");
-            ps.setString(3, "Gujranwala");
-            ps.setString(4, "InActive");
-            ps.setString(5, "Ferozpur road");
-            ps.setString(6, "03338164142");
-            ps.setInt(7, 1);
+            ps.setString(1, "Etihad Town Branch");
+            ps.setString(2, "Lahore");
+            ps.setString(3, "InActive");
+            ps.setString(4, "Shimla Town");
+            ps.setString(5, "03338222333");
+            ps.setInt(6, 1);
 
             // Use executeUpdate() for INSERT statements
             int rowsInserted = ps.executeUpdate();
@@ -400,6 +400,240 @@ public class BranchDAO {
         }
         return cityname;
     }
+
+///search specific branch code from db
+    public static LinkedList<Integer> read_branch_code_data_from_db(String BranchName,String BranchCity){
+        LinkedList<Integer> BranchCodes=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                int code=rs.getInt(1);
+                BranchCodes.add(code);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchCodes;
+    }
+
+    //search specific branch name
+    public static LinkedList<String> read_branch_Names_data_from_db(String BranchName,String BranchCity){
+        LinkedList<String> BranchNames=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                String name=rs.getString(2);
+                BranchNames.add(name);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close(); // Properly close the connection instead of setting it to null
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchNames;
+    }
+
+    //search specific city names from db
+    public static LinkedList<String> read_branch_City_data_from_db(String BranchName,String cityname){
+        LinkedList<String> BranchCity=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + cityname + "'";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                String city=rs.getString(3);
+                BranchCity.add(city);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close(); // Properly close the connection instead of setting it to null
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchCity;
+    }
+
+    //read specific branch status from db
+    public static LinkedList<String> read_branch_Status_data_from_db(String BranchName,String BranchCity){
+        LinkedList<String> BranchStatus=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                String status=rs.getString(4);
+                BranchStatus.add(status);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close(); // Properly close the connection instead of setting it to null
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchStatus;
+    }
+
+//read specific branch address from db
+    public static LinkedList<String> read_branch_Address_data_from_db(String BranchName,String BranchCity){
+        LinkedList<String> BranchAddress=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                String Address=rs.getString(5);
+                BranchAddress.add(Address);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close(); // Properly close the connection instead of setting it to null
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchAddress;
+    }
+
+//read specific branch phone no from db;
+    public static LinkedList<String> read_branch_Phoneno_data_from_db(String BranchName,String BranchCity){
+        LinkedList<String> BranchPhoneno=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                String Phoneno=rs.getString(6);
+                BranchPhoneno.add(Phoneno);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchPhoneno;
+    }
+
+    //read specific no of employees data from db
+    public static LinkedList<Integer> read_branch_noofemployees_data_from_db(String BranchName,String BranchCity){
+        LinkedList<Integer> BranchEmployeeCount=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+        try{
+
+            String sql = "SELECT branchID, branchName, branchCity, branchStatus, branchAddress, branchPhone, noOfEmployees "
+                    + "FROM branch WHERE branchName = '" + BranchName + "' OR branchCity = '" + BranchCity + "'";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                int noofemployees=rs.getInt(7);
+                BranchEmployeeCount.add(noofemployees);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (temp != null) {
+                    temp.close(); // Properly close the connection instead of setting it to null
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return BranchEmployeeCount;
+    }
+
+    public Object[][] Insert_data_into_Array(String b_name,String c_name){
+        LinkedList<Integer> BranchCodes=read_branch_code_data_from_db(b_name,c_name);
+        LinkedList<String> BranchNames=read_branch_Names_data_from_db(b_name,c_name);
+        LinkedList<String> BranchCity=read_branch_City_data_from_db(b_name,c_name);
+        LinkedList<String> BranchStatus=read_branch_Status_data_from_db(b_name,c_name);
+        LinkedList<String> BranchAddress=read_branch_Address_data_from_db(b_name,c_name);
+        LinkedList<String> BranchPhoneno=read_branch_Phoneno_data_from_db(b_name,c_name);
+        LinkedList<Integer> BranchEmployeeCount=read_branch_noofemployees_data_from_db(b_name,c_name);
+
+        Object[][] data=new Object[BranchCodes.size()][9];
+        for(int i=0;i<BranchCodes.size();i++){
+            for(int j=0;j<1;j++){
+                data[i][0]=BranchCodes.get(i);
+                data[i][1]=BranchNames.get(i);
+                data[i][2]=BranchCity.get(i);
+                data[i][3]=BranchStatus.get(i);
+                data[i][4]=BranchAddress.get(i);
+                data[i][5]=BranchPhoneno.get(i);
+                data[i][6]=BranchEmployeeCount.get(i);
+            }
+        }
+        return data;
+    }
+
 }
 
 

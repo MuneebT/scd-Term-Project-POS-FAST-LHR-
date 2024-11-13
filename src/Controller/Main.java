@@ -1,9 +1,7 @@
 package Controller;
+import Model.BranchDAO;
 import Model.BranchManagementModel;
-import View.BranchManagementView;
-import View.CreateBranchView;
-import View.LoadingScreenView;
-import View.UpdateScreenView;
+import View.*;
 
 
 import java.sql.SQLException;
@@ -16,12 +14,13 @@ public class Main {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        new CreateBranchView();
+        //new CreateBranchView();
 //new BranchManagementView();
       
 //new UpdateScreenView();
-//BranchManagementModel.insert_data_into_db();
+//BranchDAO.insert_data_into_db();
 //BranchManagementModel bmm=BranchManagementModel.getInstance();
 //bmm.update_Branch_data_into_db(124,"Dha lahore","Faisilabad","Active","Mall road muree","03338222333");
+new SearchScreenView();
     }
 }

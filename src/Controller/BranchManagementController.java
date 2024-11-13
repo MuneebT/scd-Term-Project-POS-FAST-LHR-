@@ -24,5 +24,10 @@ public void redirect_delect_request(int code){
     public LinkedList<String> return_list_of_city_names(){
         return bmm.read_city_name_from_file();
     }
+public LinkedList<String> return_list_of_branch_names(){return BranchDAO.read_branch_Names_data_from_db();}
+    public LinkedList<String> return_list_of_branchcity_names(){return BranchDAO.read_branch_City_data_from_db();}
 
+    public   Object[][] return_object_Array(String b_name,String c_name){
+        return bmm.Insert_data_into_Array(b_name,c_name);
+    }
 }
