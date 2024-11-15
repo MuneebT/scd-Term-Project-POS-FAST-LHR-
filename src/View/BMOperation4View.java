@@ -73,7 +73,7 @@ public class BMOperation4View extends JFrame {
         AddEmployeeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new loginView();
+                new BMOperation4aView();
                 dispose();
             }
         });
@@ -105,7 +105,7 @@ public class BMOperation4View extends JFrame {
 
         // Scale the icon to fit within the label size
         Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Adjust 40x40 to your preferred size
-        label.setIcon(new ImageIcon(scaledImage)); // Add the scaled icon to the label with the help of yself for the sake of commit
+        label.setIcon(new ImageIcon(scaledImage)); // Add the scaled icon to the label
 
         label.setHorizontalTextPosition(SwingConstants.RIGHT); // Position the text to the right of the icon
         label.setHorizontalAlignment(SwingConstants.LEFT); // Align the label content to the left
@@ -113,6 +113,6 @@ public class BMOperation4View extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BMOperation4View());
+        SwingUtilities.invokeLater(() -> new BMOperation4bView());
     }
 }

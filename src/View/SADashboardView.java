@@ -215,6 +215,15 @@ public class SADashboardView extends JFrame {
         titleLabel5.setBounds(750, 50, 300, 200); // Make this larger for emphasis on reports
 
 
+
+
+
+
+
+
+
+
+
         openFirstPageButton.setBackground(customColor);
         openFirstPageButton.setForeground(Color.WHITE);
         openFirstPageButton.setFont(new Font("Impact", Font.PLAIN, 16));

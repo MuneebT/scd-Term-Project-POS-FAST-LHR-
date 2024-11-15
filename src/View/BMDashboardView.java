@@ -165,7 +165,9 @@ public class BMDashboardView extends JFrame {
         titleLabel4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Managing");
+                //JOptionPane.showMessageDialog(null, "Managing");
+                dispose();
+                new BMOperation4bView();
             }
         });
 
@@ -183,6 +185,7 @@ public class BMDashboardView extends JFrame {
         titleLabel5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 JOptionPane.showMessageDialog(null, "Managing");
             }
         });

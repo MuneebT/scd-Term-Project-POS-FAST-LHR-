@@ -1,6 +1,6 @@
 package View;
 
-import Model.Database;
+import Controller.LoginController;
 import View.CustomerElements.RoundedButton;
 
 import javax.swing.*;
@@ -10,6 +10,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.sql.SQLException;
 
 class loginView extends JFrame {
+    LoginController loginController=new LoginController();
     public loginView() {
         // Setup frame
         setTitle("Login Page");
@@ -149,20 +150,47 @@ class loginView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String userName = customerIdField.getText();
                 String password = passwordField.getText();
-                String designation= (String) designationTypeComboBox.getSelectedItem();
+                String designation = (String) designationTypeComboBox.getSelectedItem();
+                if (designation == "Super Admin") {
 
-                try {
-                    if (Database.validateUser(userName,password,designation)) {
-                       //  new custDesktop();
-                         dispose();
-                         //   JOptionPane.showMessageDialog(null, "Matched");
-                     } else {
-                         errorLabel.setVisible(true); // Show error message
-                     }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                    try {
+                        if (loginController.redirect_validateUser(userName,password,designation)) {
+                            //  new custDesktop();
+
+                            dispose();
+                            //   JOptionPane.showMessageDialog(null, "Matched");
+                        } else {
+                            errorLabel.setVisible(true); // Show error message
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                else if(designation=="Branch Manager")
+                {
+                    try {
+                        if (loginController.redirect_validateUser(userName,password,designation)) {
+                            //  new custDesktop();
+                            new BMDashboardView();
+                            dispose();
+                            //   JOptionPane.showMessageDialog(null, "Matched");
+                        } else {
+                            errorLabel.setVisible(true); // Show error message
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+
+                } else if (designation=="Cashier") {
+
+                }
+                else if(designation=="Data Entry Operator")
+                {
+
                 }
             }
+
         });
 
         openFPage.setBackground(customColor);

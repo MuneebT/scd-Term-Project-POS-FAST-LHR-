@@ -2,10 +2,7 @@ package Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 
 import Connection.ConnectionConfigurator;
@@ -633,6 +630,9 @@ public class BranchDAO {
         }
         return data;
     }
+
+
+
 
 }
 
