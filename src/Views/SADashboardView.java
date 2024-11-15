@@ -1,7 +1,7 @@
-package View;
+package Views;
 
-import View.CustomerElements.RoundedButton;
-import View.CustomerElements.RoundedLabel;
+import Views.CustomerElements.RoundedButton;
+import Views.CustomerElements.RoundedLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +11,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 
-public class BMDashboardView extends JFrame {
-    public BMDashboardView() {
+public class SADashboardView extends JFrame {
+    public SADashboardView() {
         // Setup second frame
-        setTitle("Branch Manager Operations");
+        setTitle("Super Admin Operations");
         setBounds(20, 20, 1400, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -31,7 +31,7 @@ public class BMDashboardView extends JFrame {
         //  headerTitle.setForeground(Color.WHITE);
         //  headerPanel.add(headerTitle);
 
-        JLabel headerlabel0 = new JLabel("Branch Manager Operations");
+        JLabel headerlabel0 = new JLabel("Dashboard");
         JLabel headerlabel1=new JLabel("Search");
         JLabel headerlabel2=new JLabel("About Us");
         JLabel headerlabel3=new JLabel("Log out");
@@ -87,12 +87,12 @@ public class BMDashboardView extends JFrame {
         ImageIcon scaledOriginalIcon1 = new ImageIcon(scaledImage1);
 
         // Create rounded labels
-        RoundedLabel titleLabel1 = new RoundedLabel(scaledOriginalIcon1,"Click here to Generate Payroll", new Color(34, 34, 59), 50, 50);
-     //   titleLabel1.setBounds(70, 50, 250, 250);
+        RoundedLabel titleLabel1 = new RoundedLabel(scaledOriginalIcon1,"Click here to add Branch", new Color(34, 34, 59), 50, 50);
+        //   titleLabel1.setBounds(70, 50, 250, 250);
         titleLabel1.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel1.setForeground(customColor); // Set the font color
 
-        RoundedLabel titleLabel1_1 = new RoundedLabel("  Generate Payroll", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel1_1 = new RoundedLabel("  Create Branch", new Color(34, 34, 59), 50, 50);
         titleLabel1_1.setBounds(9,0,280,40);
         titleLabel1_1.setFont(new Font("Impact", Font.PLAIN, 18));
         titleLabel1_1.setForeground(customColor);
@@ -109,13 +109,13 @@ public class BMDashboardView extends JFrame {
         });
 
 
-        RoundedLabel titleLabel2 = new RoundedLabel(scaledOriginalIcon1,"Click here to Generate Invoice", new Color(34, 34, 59), 50, 50);
-       // titleLabel2.setBounds(650, 50, 250, 250);
+        RoundedLabel titleLabel2 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage Branch", new Color(34, 34, 59), 50, 50);
+        // titleLabel2.setBounds(650, 50, 250, 250);
         titleLabel2.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel2.setForeground(customColor);
 
 
-        RoundedLabel titleLabel2_1 = new RoundedLabel("  Generate Invoice", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel2_1 = new RoundedLabel("  Manage Branch", new Color(34, 34, 59), 50, 50);
         titleLabel2_1.setBounds(9,0,280,40);
         titleLabel2_1.setFont(new Font("Impact", Font.PLAIN, 18));
         titleLabel2_1.setForeground(customColor);
@@ -126,17 +126,17 @@ public class BMDashboardView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 dispose();
                 JOptionPane.showMessageDialog(null, "Managing");
-               // new EmployeeOperation3_2();
+                // new EmployeeOperation3_2();
             }
         });
 
 
 
-        RoundedLabel titleLabel3 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage Stock", new Color(34, 34, 59), 50, 50);
-      //  titleLabel3.setBounds(70, 330, 250, 250);
+        RoundedLabel titleLabel3 = new RoundedLabel(scaledOriginalIcon1,"Click here to add B.M", new Color(34, 34, 59), 50, 50);
+        //  titleLabel3.setBounds(70, 330, 250, 250);
         titleLabel3.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel3.setForeground(customColor); // Set the font color
-        RoundedLabel titleLabel3_1 = new RoundedLabel("  Manage Stock", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel3_1 = new RoundedLabel("  Add Branch Manager", new Color(34, 34, 59), 50, 50);
         titleLabel3_1.setBounds(9,0,280,40);
         titleLabel3_1.setFont(new Font("Impact", Font.PLAIN, 18));
         titleLabel3_1.setForeground(customColor);
@@ -147,16 +147,16 @@ public class BMDashboardView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 dispose();
                 JOptionPane.showMessageDialog(null, "Managing");
-              //  new ViewIndividualBill();
+                //  new ViewIndividualBill();
             }
         });
 
 
-        RoundedLabel titleLabel4 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage D.E.O/Cashier", new Color(34, 34, 59), 50, 50);
-      //  titleLabel4.setBounds(650, 330, 250, 250);
-        titleLabel4.setFont(new Font("Arial", Font.PLAIN, 16));
+        RoundedLabel titleLabel4 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage B.M", new Color(34, 34, 59), 50, 50);
+        //  titleLabel4.setBounds(650, 330, 250, 250);
+        titleLabel4.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel4.setForeground(customColor);
-        RoundedLabel titleLabel4_1 = new RoundedLabel("  ADD/Manage D.E.O/Cashier", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel4_1 = new RoundedLabel("  Manage Branch Manager", new Color(34, 34, 59), 50, 50);
         titleLabel4_1.setBounds(9,0,280,40);
         titleLabel4_1.setFont(new Font("Impact", Font.PLAIN, 18));
         titleLabel4_1.setForeground(customColor);
@@ -165,14 +165,13 @@ public class BMDashboardView extends JFrame {
         titleLabel4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //JOptionPane.showMessageDialog(null, "Managing");
-                dispose();
+                JOptionPane.showMessageDialog(null, "Managing");
             }
         });
 
 
         RoundedLabel titleLabel5 = new RoundedLabel(scaledOriginalIcon1,"Click here to see Reports", new Color(34, 34, 59), 50, 50);
-       // titleLabel5.setBounds(70, 580, 500, 250);
+        // titleLabel5.setBounds(70, 580, 500, 250);
         titleLabel5.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel5.setForeground(customColor);
         RoundedLabel titleLabel5_1 = new RoundedLabel("  Reports", new Color(34, 34, 59), 50, 50);
@@ -184,7 +183,6 @@ public class BMDashboardView extends JFrame {
         titleLabel5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 JOptionPane.showMessageDialog(null, "Managing");
             }
         });
@@ -197,7 +195,7 @@ public class BMDashboardView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-              //  new EmployeeDesktop();
+                //  new EmployeeDesktop();
             }
         });
 
@@ -281,7 +279,7 @@ public class BMDashboardView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new BMDashboardView();
+        new SADashboardView();
     }
 }
 
