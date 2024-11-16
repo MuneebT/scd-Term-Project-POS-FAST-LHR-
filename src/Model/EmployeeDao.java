@@ -10,7 +10,7 @@ import com.mysql.cj.protocol.Message;
 public class EmployeeDao {
     public EmployeeDao() {
     }
-    public void insertEmployee(String name, String empNo, String email, String branchCode, String salary, String designation) {
+    public void insertEmployee(String name, String empNo, String email,String password, String branchCode, String salary, String designation) {
 
         String insertSQL = "INSERT INTO employee (emp_no, name, email, branch_code, salary, designation) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -68,6 +68,44 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return employeeList;
+    }
+
+    public List<Employee> getAllBMs() throws SQLException {
+        List<Employee> employeeList = new ArrayList<>();
+        String query = "SELECT * FROM employee WHERE designation=?;";
+        Connection conn=null;
+
+        try {
+            conn = ConnectionConfigurator.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             stmt.setString(1,"Branch Manager");
+             ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Employee employee = new Employee(
+                        rs.getInt("id"),
+                        rs.getString("emp_no"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("branch_code"),
+                        rs.getBigDecimal("salary"),
+                        rs.getString("designation")
+                );
+                System.out.println(employee.name+"\n");
+                employeeList.add(employee);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(conn!=null)
+            {
+                conn.close();
+            }
+
         }
         return employeeList;
     }

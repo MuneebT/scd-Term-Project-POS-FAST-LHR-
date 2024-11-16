@@ -51,6 +51,7 @@ public class DBInitializer {
                 "    id INT PRIMARY KEY AUTO_INCREMENT,\n" +
                 "    emp_no INT UNIQUE ,\n" +
                 "    name VARCHAR(100) NOT NULL,\n" +
+                "password VARCHAR(100) NOT NULL, " +
                 "    email VARCHAR(100),\n" +
                 "    branch_code VARCHAR(50),\n" +
                 "    salary DECIMAL(10, 2),\n" +
