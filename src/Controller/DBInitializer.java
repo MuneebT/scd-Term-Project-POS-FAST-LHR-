@@ -8,6 +8,8 @@ import java.sql.SQLException;
 public class DBInitializer {
     DBInitializer() throws SQLException {
         makeSureBranchTableExists();
+        makeSureLoginTableExists();
+        makeSureEmployeeTableExists();
 
 
     }
@@ -24,5 +26,45 @@ public class DBInitializer {
         } finally {
             conn.close();
         }
+
     }
+    void makeSureLoginTableExists() throws SQLException {
+        Connection conn = ConnectionConfigurator.getConnection();
+        String query = "CREATE TABLE IF NOT EXISTS Login ( " +
+                "id INT PRIMARY KEY AUTO_INCREMENT, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "password VARCHAR(100) NOT NULL, " +
+                "designation VARCHAR(50) NOT NULL " +
+                ");";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conn.close();
+        }
+    }
+    void makeSureEmployeeTableExists() throws SQLException {
+        Connection conn = ConnectionConfigurator.getConnection();
+        String query = "CREATE TABLE IF NOT EXISTS Employee (\n" +
+                "    id INT PRIMARY KEY AUTO_INCREMENT,\n" +
+                "    emp_no INT UNIQUE ,\n" +
+                "    name VARCHAR(100) NOT NULL,\n" +
+                "    email VARCHAR(100),\n" +
+                "    branch_code VARCHAR(50),\n" +
+                "    salary DECIMAL(10, 2),\n" +
+                "    designation VARCHAR(50)\n" +
+                ");";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conn.close();
+        }
+
+    }
+
 }
