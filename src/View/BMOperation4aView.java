@@ -158,7 +158,7 @@ public class BMOperation4aView extends JFrame {
                 salary = field6.getText();
                 designation = (String) jobComboBox.getSelectedItem();
                 //---------------commented by abdullah so that i can run my program error free for now, you may add password field here
-                // employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation);
+                //employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation);
                 //---comment ends here-------------
                 dispose(); // Close current window
                 // new Main(); // Open the main page
