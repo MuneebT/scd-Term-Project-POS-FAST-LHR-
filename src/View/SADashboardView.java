@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
 
 public class SADashboardView extends JFrame {
     public SADashboardView() {
@@ -146,13 +147,14 @@ public class SADashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                //  new ViewIndividualBill();
+                AddBMView screen=new AddBMView();
+                screen.setVisible(true);
+
             }
         });
 
 
-        RoundedLabel titleLabel4 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage B.M", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel4 = new RoundedLabel(scaledOriginalIcon1,"Click here to Manage B.Ms", new Color(34, 34, 59), 50, 50);
         //  titleLabel4.setBounds(650, 330, 250, 250);
         titleLabel4.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel4.setForeground(customColor);
@@ -165,7 +167,15 @@ public class SADashboardView extends JFrame {
         titleLabel4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Managing");
+                dispose();
+
+                try {
+                    ManageBMsView screen =new ManageBMsView();
+                    screen.setVisible(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
 
