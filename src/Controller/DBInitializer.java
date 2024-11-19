@@ -49,7 +49,7 @@ public class DBInitializer {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Employee (\n" +
                 "    id INT PRIMARY KEY AUTO_INCREMENT,\n" +
-                "    emp_no INT UNIQUE ,\n" +
+                "    emp_no varchar(50) UNIQUE ,\n" +
                 "    name VARCHAR(100) NOT NULL,\n" +
                 "password VARCHAR(100) NOT NULL, " +
                 "    email VARCHAR(100),\n" +

@@ -12,7 +12,7 @@ public class EmployeeDao {
     }
     public void insertEmployee(String name, String empNo, String email,String password, String branchCode, String salary, String designation) {
 
-        String insertSQL = "INSERT INTO employee (emp_no, name, email, branch_code, salary, designation) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO employee (emp_no, name, email, branch_code, salary, designation, password) VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
@@ -24,7 +24,8 @@ public class EmployeeDao {
             pstmt.setString(3, email);            // email
             pstmt.setString(4, branchCode);       // branch_code
             pstmt.setBigDecimal(5, new java.math.BigDecimal(salary)); // salary
-            pstmt.setString(6, designation);      // designation
+            pstmt.setString(6, designation);// designation
+            pstmt.setString(7,password);
 
             // Execute the insert operation
             int rowsInserted = pstmt.executeUpdate();
