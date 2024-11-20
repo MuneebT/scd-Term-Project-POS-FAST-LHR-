@@ -10,17 +10,16 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 
-public class UpdateVendorView extends JFrame {
+public class AddVendorView extends JFrame {
 
-    private RoundedField vendorIDField, nameField, contactPersonField, phoneField, addressField, cityField,
+    private RoundedField  nameField, contactPersonField, phoneField, addressField, cityField,
             stateProvinceField, countryField, emailField;
     VendorManagementController vendorManagementController = new VendorManagementController();
 
-    public UpdateVendorView(int vendorID, String name, String contactPerson, String phone, String email,
-                            String address, String city, String stateProvince, String country) {
+    public AddVendorView() {
         // Frame setup
-        setTitle("Update Vendor - METRO POS");
-        setBounds(20, 20, 800, 1200); // Adjust height for additional fields
+        setTitle("Add Vendor ");
+        setBounds(20, 20, 800, 700); // Adjust height for additional fields
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -28,8 +27,8 @@ public class UpdateVendorView extends JFrame {
         mainPanel.setLayout(null);
 
         // Title label
-        JLabel titleLabel = new JLabel("Update Vendor");
-        titleLabel.setBounds(0, 30, 800, 40);
+        JLabel titleLabel = new JLabel("ADD Vendor");
+        titleLabel.setBounds(0, 10, 800, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
         Color customColor = new Color(121, 87, 87);
         titleLabel.setForeground(customColor);
@@ -37,9 +36,9 @@ public class UpdateVendorView extends JFrame {
 
         // Background image
         ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
-        Image scaledImage = bk.getImage().getScaledInstance(800, 1200, Image.SCALE_SMOOTH); // Adjust size for added fields
+        Image scaledImage = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH); // Adjust size for added fields
         JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage));
-        backgroundLabel.setBounds(0, 0, 800, 1200);
+        backgroundLabel.setBounds(0, 0, 800, 800);
 
         // Rounded panel setup
         JPanel formPanel = new JPanel() {
@@ -55,106 +54,88 @@ public class UpdateVendorView extends JFrame {
             }
         };
         formPanel.setLayout(null);
-        formPanel.setBounds(100, 100, 600, 1000); // Adjust for additional fields
+        formPanel.setBounds(100, 50, 600, 600); // Adjust for additional fields
         formPanel.setOpaque(false);
 
-        // Vendor ID label and field
-        RoundedLabel vendorIDLabel = new RoundedLabel("Vendor ID", Color.WHITE, 20, 20);
-        vendorIDLabel.setBounds(50, 100, 200, 40);
-        vendorIDLabel.setFont(new Font("Arial", Font.PLAIN, 24));
-        vendorIDLabel.setForeground(customColor);
-
-        vendorIDField = new RoundedField(20);
-        vendorIDField.setBounds(295, 100, 300, 40);
-        vendorIDField.setText(String.valueOf(vendorID));  // Set vendorID field with the provided value
-        vendorIDField.setEditable(false);
+        // Adjusted starting y-position for attributes
 
         // Vendor Name label and field
         RoundedLabel nameLabel = new RoundedLabel("Name", Color.WHITE, 20, 20);
-        nameLabel.setBounds(50, 150, 200, 40);
+        nameLabel.setBounds(50, 100, 200, 40); // Start a bit lower
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         nameLabel.setForeground(customColor);
 
         nameField = new RoundedField(20);
-        nameField.setBounds(295, 150, 300, 40);
-        nameField.setText(name);  // Set name field with the provided value
+        nameField.setBounds(295, 100, 300, 40);
 
         // Contact Person label and field
         RoundedLabel contactPersonLabel = new RoundedLabel("Contact Person", Color.WHITE, 20, 20);
-        contactPersonLabel.setBounds(50, 200, 200, 40);
+        contactPersonLabel.setBounds(50, 150, 200, 40); // Start a bit lower
         contactPersonLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         contactPersonLabel.setForeground(customColor);
 
         contactPersonField = new RoundedField(20);
-        contactPersonField.setBounds(295, 200, 300, 40);
-        contactPersonField.setText(contactPerson);  // Set contactPerson field with the provided value
+        contactPersonField.setBounds(295, 150, 300, 40);
 
         // Phone label and field
         RoundedLabel phoneLabel = new RoundedLabel("Phone", Color.WHITE, 20, 20);
-        phoneLabel.setBounds(50, 250, 200, 40);
+        phoneLabel.setBounds(50, 200, 200, 40); // Start a bit lower
         phoneLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         phoneLabel.setForeground(customColor);
 
         phoneField = new RoundedField(20);
-        phoneField.setBounds(295, 250, 300, 40);
-        phoneField.setText(phone);  // Set phone field with the provided value
+        phoneField.setBounds(295, 200, 300, 40);
 
         // Address label and field
         RoundedLabel addressLabel = new RoundedLabel("Address", Color.WHITE, 20, 20);
-        addressLabel.setBounds(50, 300, 200, 40);
+        addressLabel.setBounds(50, 250, 200, 40); // Start a bit lower
         addressLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         addressLabel.setForeground(customColor);
 
         addressField = new RoundedField(20);
-        addressField.setBounds(295, 300, 300, 40);
-        addressField.setText(address);  // Set address field with the provided value
+        addressField.setBounds(295, 250, 300, 40);
 
         // City label and field
         RoundedLabel cityLabel = new RoundedLabel("City", Color.WHITE, 20, 20);
-        cityLabel.setBounds(50, 350, 200, 40);
+        cityLabel.setBounds(50, 300, 200, 40); // Start a bit lower
         cityLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         cityLabel.setForeground(customColor);
 
         cityField = new RoundedField(20);
-        cityField.setBounds(295, 350, 300, 40);
-        cityField.setText(city);  // Set city field with the provided value
+        cityField.setBounds(295, 300, 300, 40);
 
         // State/Province label and field
         RoundedLabel stateProvinceLabel = new RoundedLabel("State/Province", Color.WHITE, 20, 20);
-        stateProvinceLabel.setBounds(50, 400, 200, 40);
+        stateProvinceLabel.setBounds(50, 350, 200, 40); // Start a bit lower
         stateProvinceLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         stateProvinceLabel.setForeground(customColor);
 
         stateProvinceField = new RoundedField(20);
-        stateProvinceField.setBounds(295, 400, 300, 40);
-        stateProvinceField.setText(stateProvince);  // Set state/province field with the provided value
+        stateProvinceField.setBounds(295, 350, 300, 40);
 
         // Country label and field
         RoundedLabel countryLabel = new RoundedLabel("Country", Color.WHITE, 20, 20);
-        countryLabel.setBounds(50, 450, 200, 40);
+        countryLabel.setBounds(50, 400, 200, 40); // Start a bit lower
         countryLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         countryLabel.setForeground(customColor);
 
         countryField = new RoundedField(20);
-        countryField.setBounds(295, 450, 300, 40);
-        countryField.setText(country);  // Set country field with the provided value
+        countryField.setBounds(295, 400, 300, 40);
 
         // Email label and field (new field)
         RoundedLabel emailLabel = new RoundedLabel("Email", Color.WHITE, 20, 20);
-        emailLabel.setBounds(50, 500, 200, 40);
+        emailLabel.setBounds(50, 450, 200, 40); // Start a bit lower
         emailLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         emailLabel.setForeground(customColor);
 
         emailField = new RoundedField(20);
-        emailField.setBounds(295, 500, 300, 40);
-        emailField.setText(email);  // Set email field with the provided value
+        emailField.setBounds(295, 450, 300, 40);
 
-        // Update button
-        RoundedButton updateButton = new RoundedButton("Update");
-        updateButton.setBounds(470, 550, 110, 35);
+        // Insert button
+        RoundedButton updateButton = new RoundedButton("Insert");
+        updateButton.setBounds(470, 500, 110, 35); // Adjust button placement
         updateButton.addActionListener(e -> {
             handleUpdate(
-                    vendorIDField.getText(),
                     nameField.getText(),
                     contactPersonField.getText(),
                     phoneField.getText(),
@@ -169,8 +150,6 @@ public class UpdateVendorView extends JFrame {
         updateButton.setForeground(Color.WHITE);
 
         // Add components to the form panel
-        formPanel.add(vendorIDLabel);
-        formPanel.add(vendorIDField);
         formPanel.add(nameLabel);
         formPanel.add(nameField);
         formPanel.add(contactPersonLabel);
@@ -198,10 +177,10 @@ public class UpdateVendorView extends JFrame {
         setVisible(true);
     }
 
-    public void handleUpdate(String vendorID, String name, String contactPerson, String phone, String email,
+    public void handleUpdate(String name, String contactPerson, String phone, String email,
                              String address, String city, String stateProvince, String country) {
         // Example: Show a message dialog for now (you can replace this with actual update logic)
-        if (vendorManagementController.redirect_Update_Vendors(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country)) {
+        if (vendorManagementController.redirect_insert_Vendors(name, contactPerson, phone, email, address, city, stateProvince, country)) {
             JOptionPane.showMessageDialog(this, "Vendor updated successfully!");
         } else {
             JOptionPane.showMessageDialog(this, "Vendor update failed.");
@@ -209,6 +188,6 @@ public class UpdateVendorView extends JFrame {
     }
 
     public static void main(String[] args) {
-      //  new UpdateVendorView();
+        new AddVendorView();
     }
 }

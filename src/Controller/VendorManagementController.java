@@ -18,4 +18,10 @@ public class VendorManagementController {
     {
         return vendorDAO.updateVendor(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
     }
+    public Boolean redirect_insert_Vendors( String name, String contactPerson, String phone, String email,
+                                           String address, String city, String stateProvince, String country)
+    {
+        return vendorDAO.insertVendor( name, contactPerson, phone, email, address, city, stateProvince, country);
+    }
+
 }

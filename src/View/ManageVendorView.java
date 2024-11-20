@@ -12,11 +12,36 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class ManageVendorView extends JFrame {
-    VendorManagementController vendorManagementController=new VendorManagementController();
+    VendorManagementController vendorManagementController = new VendorManagementController();
+
     public ManageVendorView() throws SQLException {
         setTitle("Manage Vendors");
         setBounds(100, 100, 1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Existing code for fetching data, table setup, etc.
+        // Create JPanel for the top section
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(Color.WHITE);
+
+        // Create the "Add Vendor" button
+        JButton addVendorButton = new JButton("+ Add Vendor");
+        addVendorButton.setFont(new Font("Arial", Font.BOLD, 14));
+        addVendorButton.setBackground(Color.GREEN);
+        addVendorButton.setForeground(Color.WHITE);
+
+        // Add ActionListener to the button
+        addVendorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open the Add Vendor View (you need to create this view)
+                new AddVendorView();
+            }
+        });
+
+        // Add the button to the top panel
+        topPanel.add(addVendorButton);
 
         // Column names for the table
         String[] columnNames = {"VendorID", "Name", "ContactPerson", "Phone", "Email", "Address", "City", "State_Province", "Country", "Update", "Delete"};
@@ -69,15 +94,17 @@ public class ManageVendorView extends JFrame {
 
         // Add table to JScrollPane
         JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+
+        // Add topPanel and table to the frame
+        add(topPanel, BorderLayout.NORTH);  // Adding the top panel with the button
+        add(scrollPane, BorderLayout.CENTER);  // Adding the table
 
         setVisible(true);
     }
 
-    // ButtonEditor class for handling button clicks
+    // ButtonEditor class for handling button clicks (no changes needed here)
     private static class ButtonEditor extends DefaultCellEditor {
-        VendorManagementController vendorManagementController=new VendorManagementController();
-     //   UpdateVendorView updateVendorView=new UpdateVendorView();
+        VendorManagementController vendorManagementController = new VendorManagementController();
         private final JButton button;
         private String actionType;
         private final DefaultTableModel tableModel;
@@ -137,8 +164,7 @@ public class ManageVendorView extends JFrame {
             System.out.println("Name: " + name + ", Contact Person: " + contactPerson + ", Phone: " + phone);
             System.out.println("Email: " + email + ", Address: " + address + ", City: " + city);
             System.out.println("State/Province: " + stateProvince + ", Country: " + country);
-           // updateVendorView.updateFields(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
-            UpdateVendorView updateVendorView1=new UpdateVendorView(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
+            UpdateVendorView updateVendorView1 = new UpdateVendorView(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
         }
 
         private void handleDelete(int vendorID, String name, String contactPerson, String phone, String email,
@@ -158,7 +184,7 @@ public class ManageVendorView extends JFrame {
                 System.out.println("State/Province: " + stateProvince + ", Country: " + country);
 
                 try {
-                    boolean isDeleted =vendorManagementController.redirect_Delete_Vendors(vendorID);
+                    boolean isDeleted = vendorManagementController.redirect_Delete_Vendors(vendorID);
                     if (isDeleted) {
                         JOptionPane.showMessageDialog(null,
                                 "Vendor with ID: " + vendorID + " has been successfully deleted.",
@@ -171,26 +197,15 @@ public class ManageVendorView extends JFrame {
                 } catch (SQLException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(null,
-                            "Error occurred while deleting Vendor with ID: " + vendorID + ".",
+                            "Error occurred while deleting Vendor.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                System.out.println("Delete action cancelled for VendorID: " + vendorID);
             }
         }
+
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            button.setText(actionType);
             return button;
-        }
-    }
-
-
-    public static void main(String[] args) {
-        try {
-            new ManageVendorView();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

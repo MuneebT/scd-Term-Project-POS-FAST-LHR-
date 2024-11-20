@@ -56,4 +56,32 @@ public class VendorDAO {
             return false;
         }
     }
+    public boolean insertVendor( String name, String contactPerson, String phone, String email,
+                                String address, String city, String stateProvince, String country) {
+        // Connection and statement initialization
+        String query = "INSERT INTO `vendor` ( `Name`, `ContactPerson`, `Phone`, `Email`, " +
+                "`Address`, `City`, `State_Province`, `Country`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = ConnectionConfigurator.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            // Set the parameters
+            //stmt.setString(1, vendorID);  // vendorID to insert as a new entry
+            stmt.setString(1, name);
+            stmt.setString(2, contactPerson);
+            stmt.setString(3, phone);
+            stmt.setString(4, email);
+            stmt.setString(5, address);
+            stmt.setString(6, city);
+            stmt.setString(7, stateProvince);
+            stmt.setString(8, country);
+
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;  // Return true if the insert was successful
+        } catch (SQLException e) {
+            e.printStackTrace();  // Handle exceptions as appropriate
+            return false;
+        }
+    }
+
 }
