@@ -10,6 +10,7 @@ public class DBInitializer {
         makeSureBranchTableExists();
         makeSureLoginTableExists();
         makeSureEmployeeTableExists();
+        makeSureVendorTableExists();
 
 
     }
@@ -66,6 +67,28 @@ public class DBInitializer {
             conn.close();
         }
 
+    }
+    void makeSureVendorTableExists() throws SQLException {
+        Connection conn = ConnectionConfigurator.getConnection();
+        String query = "CREATE TABLE IF NOT EXISTS Vendor (\n" +
+                "    VendorID INT PRIMARY KEY AUTO_INCREMENT,\n" +
+                "    Name VARCHAR(100) NOT NULL,\n" +
+                "    ContactPerson VARCHAR(100),\n" +
+                "    Phone VARCHAR(15),\n" +
+                "    Email VARCHAR(100),\n" +
+                "    Address VARCHAR(255),\n" +
+                "    City VARCHAR(50),\n" +
+                "    State_Province VARCHAR(50),\n" +
+                "    Country VARCHAR(50)\n" +
+                ");";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conn.close();
+        }
     }
 
 }

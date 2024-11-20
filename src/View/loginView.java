@@ -156,7 +156,7 @@ class loginView extends JFrame {
                     try {
                         if (loginController.redirect_validateUser(userName,password,designation)) {
                             //  new custDesktop();
-
+                            new SADashboardView();
                             dispose();
                             //   JOptionPane.showMessageDialog(null, "Matched");
                         } else {
@@ -183,10 +183,34 @@ class loginView extends JFrame {
 
 
                 } else if (designation=="Cashier") {
+                    try {
+                        if (loginController.redirect_validateUser(userName,password,designation)) {
+                            //  new custDesktop();
+                            new CashierDashboard();
+                            dispose();
+                            //   JOptionPane.showMessageDialog(null, "Matched");
+                        } else {
+                            errorLabel.setVisible(true); // Show error message
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                 }
                 else if(designation=="Data Entry Operator")
                 {
+                    try {
+                        if (loginController.redirect_validateUser(userName,password,designation)) {
+                            //  new custDesktop();
+                            new DEODashboardView();
+                            dispose();
+                            //   JOptionPane.showMessageDialog(null, "Matched");
+                        } else {
+                            errorLabel.setVisible(true); // Show error message
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                 }
             }
