@@ -13,7 +13,7 @@ public class LoginDAO {
 
     // Method to validate if the user exists in the logintable
     public boolean validateUser(String username, String password,String designation) throws SQLException {
-        String query = "SELECT * FROM Login WHERE name = ? AND password = ? AND designation= ?";
+        String query = "SELECT * FROM employee WHERE name = ? AND password = ? AND designation= ?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, username);

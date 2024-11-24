@@ -141,7 +141,10 @@ public class AddBMView extends JFrame {
             branchCode = branchCodeField.getText();
             salary = salaryField.getText();
 
-            employeeManagementController.redirect_employee_insertion(name, empNo, password, email, branchCode, salary,"Branch Manager");
+            employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,"Branch Manager",password);
+
+            //employeeManagementController.redirect_employee_insertion(name, empNo, password, email, branchCode, salary,"Branch Manager");
+
             dispose();
         });
         submitButton.setBackground(customColor);

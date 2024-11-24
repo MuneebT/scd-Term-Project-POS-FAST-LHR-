@@ -19,6 +19,7 @@ public class BMOperation4aView extends JFrame {
     public String email;
     public String branchCode;
     public String designation;
+    public String password;
     EmployeeManagementController employeeManagementController = new EmployeeManagementController();
 
     public BMOperation4aView() {
@@ -85,59 +86,64 @@ public class BMOperation4aView extends JFrame {
         RoundedField field1 = new RoundedField(20); // Rounded text field for "Name"
         field1.setBounds(295, 50, 300, 40);
 
+        // Add password label and field
+        RoundedLabel actionLabelPassword = new RoundedLabel("Password", Color.WHITE, 20, 20);
+        actionLabelPassword.setBounds(50, 100, 200, 40); // Positioned below "Name"
+        actionLabelPassword.setFont(new Font("Arial", Font.PLAIN, 24));
+        actionLabelPassword.setForeground(customColor);
+
+        RoundedField passwordField = new RoundedField(20); // Password field for "Password"
+        passwordField.setBounds(295, 100, 300, 40);
+
         RoundedLabel actionLabel2 = new RoundedLabel("#Emp No", Color.WHITE, 20, 20);
-        actionLabel2.setBounds(50, 100, 200, 40);
+        actionLabel2.setBounds(50, 150, 200, 40);
         actionLabel2.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabel2.setForeground(customColor);
 
         RoundedField field2 = new RoundedField(20); // Rounded text field for "Employee Number"
-        field2.setBounds(295, 100, 300, 40);
+        field2.setBounds(295, 150, 300, 40);
         field2.setEditable(false); // Make it read-only so users can't change it
         field2.setText(generateUUIDEmployeeNumber()); // Set initial employee number
 
         RoundedLabel actionLabel3 = new RoundedLabel("Email", Color.WHITE, 20, 20);
-        actionLabel3.setBounds(50, 150, 200, 40);
+        actionLabel3.setBounds(50, 200, 200, 40);
         actionLabel3.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabel3.setForeground(customColor);
 
         RoundedField field3 = new RoundedField(20); // Rounded text field for "Email"
-        field3.setBounds(295, 150, 300, 40);
+        field3.setBounds(295, 200, 300, 40);
 
-        // Adjusted positions for remaining fields after removing the password field
         RoundedLabel actionLabel5 = new RoundedLabel("Branch Code", Color.WHITE, 20, 20);
-        actionLabel5.setBounds(50, 200, 200, 40);
+        actionLabel5.setBounds(50, 250, 200, 40);
         actionLabel5.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabel5.setForeground(customColor);
 
         RoundedField field5 = new RoundedField(20); // Rounded text field for "Branch Code"
-        field5.setBounds(295, 200, 300, 40);
+        field5.setBounds(295, 250, 300, 40);
 
         RoundedLabel actionLabel6 = new RoundedLabel("Salary", Color.WHITE, 20, 20);
-        actionLabel6.setBounds(50, 250, 200, 40);
+        actionLabel6.setBounds(50, 300, 200, 40);
         actionLabel6.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabel6.setForeground(customColor);
 
         RoundedField field6 = new RoundedField(20); // Rounded text field for "Salary"
-        field6.setBounds(295, 250, 300, 40);
+        field6.setBounds(295, 300, 300, 40);
 
-        // Create Custom Rounded Dropdown (JComboBox)
         RoundedLabel actionLabel7 = new RoundedLabel("Designation", Color.WHITE, 20, 20);
-        actionLabel7.setBounds(50, 300, 200, 40); //200
+        actionLabel7.setBounds(50, 350, 200, 40);
         actionLabel7.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabel7.setForeground(customColor);
 
         String[] jobTitles = {"Data Entry Operator", "Cashier"};
         JComboBox<String> jobComboBox = new JComboBox<>(jobTitles);
-        jobComboBox.setBounds(295, 300, 300, 40); // Position it below the salary field
+        jobComboBox.setBounds(295, 350, 300, 40);
 
-        // Back button
         RoundedButton backButton = new RoundedButton("Back");
-        backButton.setBounds(50, 400, 110, 35); // Adjusted position
+        backButton.setBounds(50, 400, 110, 35);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close current window
-                // new Main(); // Open the main page
             }
         });
         backButton.setBackground(customColor);
@@ -145,23 +151,28 @@ public class BMOperation4aView extends JFrame {
         backButton.setFont(new Font("Impact", Font.PLAIN, 16));
         backButton.setToolTipText("Click here to return!");
 
-        // Submit button
         RoundedButton submit = new RoundedButton("Submit");
-        submit.setBounds(470, 400, 110, 35); // Adjusted position
+        submit.setBounds(470, 400, 110, 35);
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 name = field1.getText();
-                empNo = field2.getText(); // Automatically generated employee number
+                empNo = field2.getText();
                 email = field3.getText();
                 branchCode = field5.getText();
                 salary = field6.getText();
                 designation = (String) jobComboBox.getSelectedItem();
+
+                password = passwordField.getText();
+                System.out.println(salary);
+                //name,empNo,email,password,branchCode,salary,designation
+                employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation,password);
+
                 //---------------commented by abdullah so that i can run my program error free for now, you may add password field here
                 //employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation);
                 //---comment ends here-------------
+
                 dispose(); // Close current window
-                // new Main(); // Open the main page
             }
         });
         submit.setBackground(customColor);
@@ -169,9 +180,10 @@ public class BMOperation4aView extends JFrame {
         submit.setFont(new Font("Impact", Font.PLAIN, 16));
         submit.setToolTipText("Click here to submit!");
 
-        // Add components to panels
         pt1.add(actionLabel1);
         pt1.add(field1);
+        pt1.add(actionLabelPassword);
+        pt1.add(passwordField);
         pt1.add(actionLabel2);
         pt1.add(field2);
         pt1.add(actionLabel3);
@@ -181,28 +193,24 @@ public class BMOperation4aView extends JFrame {
         pt1.add(actionLabel6);
         pt1.add(field6);
         pt1.add(actionLabel7);
-        pt1.add(jobComboBox); // Add the dropdown menu
+        pt1.add(jobComboBox);
         pt1.add(backButton);
         pt1.add(submit);
-        pt1.add(backgroundLabel1); // Add background to pt1
+        pt1.add(backgroundLabel1);
 
-        // Add components to the main panel
         mainPanel.add(titleLabel);
-        mainPanel.add(pt1); // Add rounded panel
-        mainPanel.add(backgroundLabel); // Full background
+        mainPanel.add(pt1);
+        mainPanel.add(backgroundLabel);
 
-        // Revalidate and repaint to ensure proper component visibility
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        // Add main panel to the frame
         add(mainPanel);
         setVisible(true);
     }
 
-    // Method to generate a unique employee number
     public String generateUUIDEmployeeNumber() {
-        return "EMP" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(); // e.g., EMPA1B2C3D4
+        return "EMP" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 
     public static void main(String[] args) {
