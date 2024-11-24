@@ -11,9 +11,10 @@ public class EmployeeDao {
     public EmployeeDao() {
     }
 
+
     // Method to insert employee into the database
    // name,empNo,email,password,branchCode,salary,designation
-    public void insertEmployee(String name,String empNo,String email,String branchCode,String salary,String designation,String password) {
+    public void insertEmployee(String name, String empNo, String email,String password, String branchCode, String salary, String designation) {
 
         String insertSQL = "INSERT INTO employee (emp_no, name, email, branch_code, salary, designation, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         System.out.println("Salary is\t"+salary+"\n");
@@ -33,13 +34,16 @@ public class EmployeeDao {
             }
 
             // Set parameters for the prepared statement
-            pstmt.setString(1, empNo);  // emp_no
-            pstmt.setString(2, name);   // name
-            pstmt.setString(3, email);  // email
-            pstmt.setString(4, branchCode); // branch_code
-            pstmt.setBigDecimal(5, salaryDecimal); // salary
-            pstmt.setString(6, designation); // designation
-            pstmt.setString(7, password); // password
+
+
+            pstmt.setString(1, empNo);            // emp_no
+            pstmt.setString(2, name);             // name
+            pstmt.setString(3, email);            // email
+            pstmt.setString(4, branchCode);       // branch_code
+            pstmt.setBigDecimal(5, new java.math.BigDecimal(salary)); // salary
+            pstmt.setString(6, designation);// designation
+            pstmt.setString(7,password);
+
 
             // Execute the insert operation
             int rowsInserted = pstmt.executeUpdate();
@@ -99,6 +103,44 @@ public class EmployeeDao {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, "Branch Manager");
             ResultSet rs = stmt.executeQuery();
+    public List<Employee> getAllBMs() throws SQLException {
+        List<Employee> employeeList = new ArrayList<>();
+        String query = "SELECT * FROM employee WHERE designation=?;";
+        Connection conn=null;
+
+        try {
+            conn = ConnectionConfigurator.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             stmt.setString(1,"Branch Manager");
+             ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Employee employee = new Employee(
+                        rs.getInt("id"),
+                        rs.getString("emp_no"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("branch_code"),
+                        rs.getBigDecimal("salary"),
+                        rs.getString("designation")
+                );
+                System.out.println(employee.name+"\n");
+                employeeList.add(employee);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(conn!=null)
+            {
+                conn.close();
+            }
+
+        }
+        return employeeList;
+    }
+
 
             while (rs.next()) {
                 Employee employee = new Employee(

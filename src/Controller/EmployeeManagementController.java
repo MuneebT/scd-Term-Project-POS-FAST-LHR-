@@ -10,6 +10,7 @@ public class EmployeeManagementController {
     EmployeeDao employeeDao=new EmployeeDao();
     public EmployeeManagementController() {
     }
+
     public void redirect_employee_insertion(String name,String empNo,String email,String branchCode,String salary,String designation,String password) {
         // Print the data passed to the method
         System.out.println("Redirecting employee insertion with the following details:");
@@ -25,6 +26,12 @@ public class EmployeeManagementController {
         employeeDao.insertEmployee(name,empNo,email,branchCode,salary,designation,password);
     }
 
+
+//     public void redirect_employee_insertion(String name,String empNo,String password,String email,String branchCode,String salary,String designation)
+//     {
+//         //added password parameter here by abdullah
+//         employeeDao.insertEmployee(name,empNo,email,password,branchCode,salary,designation);
+//     }
 
     public List<Employee> redirect_get_All_employees()
     {
