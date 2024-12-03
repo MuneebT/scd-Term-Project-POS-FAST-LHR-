@@ -1,10 +1,18 @@
 package Model;
 
+
 import java.sql.*;
 
 import Connection.ConnectionConfigurator;
 
 import java.util.LinkedList;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import Connection.ConnectionConfigurator;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class VendorDAO {
     public VendorDAO()
@@ -56,7 +64,7 @@ public class VendorDAO {
             return false;
         }
     }
-    public static boolean insertVendor( String name, String contactPerson, String phone, String email,
+    public boolean insertVendor( String name, String contactPerson, String phone, String email,
                                 String address, String city, String stateProvince, String country) {
         // Connection and statement initialization
         String query = "INSERT INTO `vendor` ( `Name`, `ContactPerson`, `Phone`, `Email`, " +
@@ -83,6 +91,7 @@ public class VendorDAO {
             return false;
         }
     }
+
 
     public static LinkedList<Integer> readVendorIDFromVendorTable(){
         LinkedList<Integer> v_id=new LinkedList<>();

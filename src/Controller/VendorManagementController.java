@@ -25,8 +25,10 @@ public class VendorManagementController {
         return vendorDAO.insertVendor( name, contactPerson, phone, email, address, city, stateProvince, country);
     }
 
+
     public LinkedList<String> redirectConcatenatedVendordata(){
       return  VendorDAO.concatenateVendorIDandVendorname();
     }
+
 
 }

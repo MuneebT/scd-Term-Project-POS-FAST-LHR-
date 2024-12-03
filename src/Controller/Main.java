@@ -18,6 +18,9 @@ public class Main {
             throw new RuntimeException(e);
         }
         //new splashView();
+
+        
+
         // new CreateBranchView();
 //new BranchManagementView();
 //new UpdateScreenView();
@@ -25,6 +28,7 @@ public class Main {
 //BranchManagementModel bmm=BranchManagementModel.getInstance();
 //bmm.update_Branch_data_into_db(124,"Dha lahore","Faisilabad","Active","Mall road muree","03338222333");
 //new SearchScreenView();
+
 
 //        //Inventory func calls
     //    DataEntryOperatorDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
@@ -36,5 +40,6 @@ public class Main {
         //Order Functionallity Call order
        // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
     new ManageOrderView();
+
     }
 }
