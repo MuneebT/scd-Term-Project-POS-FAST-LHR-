@@ -4,6 +4,7 @@ import Model.VendorDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class VendorManagementController {
     VendorDAO vendorDAO=new VendorDAO();
@@ -23,5 +24,11 @@ public class VendorManagementController {
     {
         return vendorDAO.insertVendor( name, contactPerson, phone, email, address, city, stateProvince, country);
     }
+
+
+    public LinkedList<String> redirectConcatenatedVendordata(){
+      return  VendorDAO.concatenateVendorIDandVendorname();
+    }
+
 
 }

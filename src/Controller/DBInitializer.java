@@ -1,9 +1,9 @@
 package Controller;
 
 import Connection.ConnectionConfigurator;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.io.IOException;
+import java.sql.*;
 
 public class DBInitializer {
     DBInitializer() throws SQLException {
@@ -12,7 +12,8 @@ public class DBInitializer {
         makeSureEmployeeTableExists();
         makeSureVendorTableExists();
 
-
+        makeSureInventoryTableExists();
+        makeSureOrderTableExists();
     }
 
     void makeSureBranchTableExists() throws SQLException {
@@ -27,6 +28,7 @@ public class DBInitializer {
         } finally {
             conn.close();
         }
+
 
     }
     void makeSureLoginTableExists() throws SQLException {
@@ -46,6 +48,10 @@ public class DBInitializer {
             conn.close();
         }
     }
+
+    }
+    
+
     void makeSureEmployeeTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Employee (\n" +
@@ -91,4 +97,48 @@ public class DBInitializer {
         }
     }
 
+
+    void makeSureInventoryTableExists() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS Inventory ("
+                + "    ProductID INT PRIMARY KEY AUTO_INCREMENT,"
+                + "    ProductName VARCHAR(100) NOT NULL,"
+                + "    ProductQuantity INT DEFAULT 0,"
+                + "    ProductCategory VARCHAR(50),"
+                + "    CostPrice INT DEFAULT 0,"
+                + "    SalePrice INT DEFAULT 0"
+                + ");";
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create the Inventory table", e);
+        }
+    }
+
+    void makeSureOrderTableExists() throws SQLException{
+        String sql = "CREATE TABLE IF NOT EXISTS `Order` (" +
+                "ProductID INT," +
+                "ProductName VARCHAR(255)," +
+                "ProductQuantity INT," +
+                "VendorID INT," +
+                "VendorName VARCHAR(255)," +
+                "CONSTRAINT FK_Product FOREIGN KEY (ProductID) REFERENCES Inventory(ProductID) ON DELETE NO ACTION ON UPDATE NO ACTION," +
+                "CONSTRAINT FK_Vendor FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID) ON DELETE NO ACTION ON UPDATE NO ACTION);";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create the Inventory table", e);
+        }
+    }
+
+    }
+
+
+
+=======
 }
+
