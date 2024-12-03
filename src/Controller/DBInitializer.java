@@ -49,7 +49,7 @@ public class DBInitializer {
         }
     }
 
-    }
+
     
 
     void makeSureEmployeeTableExists() throws SQLException {
@@ -137,8 +137,4 @@ public class DBInitializer {
 
     }
 
-
-
-=======
-}
 

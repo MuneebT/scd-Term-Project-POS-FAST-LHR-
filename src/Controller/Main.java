@@ -39,7 +39,7 @@ public class Main {
   //      ,"GUjranwala","Lahore","Punjab","Pakistan");
         //Order Functionallity Call order
        // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
-    new ManageOrderView();
+    new ManageInventoryView();
 
     }
 }
