@@ -14,6 +14,8 @@ public class DBInitializer {
 
         makeSureInventoryTableExists();
         makeSureOrderTableExists();
+        makeSureInvoiceTableExists();
+        makeSureSaleTableExists();
     }
 
     void makeSureBranchTableExists() throws SQLException {
@@ -135,6 +137,46 @@ public class DBInitializer {
         }
     }
 
+    void makeSureInvoiceTableExists() throws SQLException {
+        String sql ="CREATE TABLE IF NOT EXISTS Invoice (" +
+                "    InvoiceID INT PRIMARY KEY AUTO_INCREMENT," +
+                "    TotalBill DOUBLE," +
+                "    GST DOUBLE," +
+                "    AmountPaid DOUBLE," +
+                "    Balance DOUBLE" +
+                ");";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create the Invoice table", e);
+        }
     }
+
+    void makeSureSaleTableExists() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS Sale (" +
+                "    SaleID INT PRIMARY KEY AUTO_INCREMENT," +
+                "    ProdId INT," +
+                "    ProdName VARCHAR(100)," +
+                "    Price DECIMAL(10, 2)," +
+                "    Quantity INT," +
+                "    TotalPrice DECIMAL(10, 2)," +
+                "    InvoiceNumber INT," +
+                "    FOREIGN KEY (ProdId) REFERENCES Inventory(ProductID)," +
+                "    FOREIGN KEY (InvoiceNumber) REFERENCES Invoice(InvoiceID)" +
+                ");";
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create the Sale table", e);
+        }
+    }
+
+
+}
 
 
