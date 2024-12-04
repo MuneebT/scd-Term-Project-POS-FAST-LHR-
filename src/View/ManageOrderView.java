@@ -1,6 +1,7 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.OrderController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +14,7 @@ public class ManageOrderView extends JFrame {
     private JTable table;
     private JScrollPane scrollPane;
     private JButton btnAdd;
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private OrderController oc = new OrderController();
 
     public ManageOrderView() {
         setTitle("Inventory Management");
@@ -24,7 +25,7 @@ public class ManageOrderView extends JFrame {
 
         String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "VendorID", "VendorName", "Delete", "Update"};
 
-        Object[][] data = deoc.redirectGatherOrderDatarequest();
+        Object[][] data = oc.redirectGatherOrderDatarequest();
 
         // Add Delete and Update as button text in the data
         for (int i = 0; i < data.length; i++) {
@@ -79,7 +80,7 @@ public class ManageOrderView extends JFrame {
     public void refreshTable() {
         SwingUtilities.invokeLater(() -> {
             // Fetch updated data from the controller
-            Object[][] updatedData = deoc.redirect_object_array();
+            Object[][] updatedData = oc.redirectGatherOrderDatarequest();
 
             // Update the table model
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -127,7 +128,7 @@ public class ManageOrderView extends JFrame {
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Get the ID of the row and call delete method
                         int id = (Integer) table.getValueAt(row, 0);
-                        deoc.redirectOrderDeleteRequest(id);
+                        oc.redirectOrderDeleteRequest(id);
                         ((DefaultTableModel) table.getModel()).removeRow(row); // Remove from UI
                     }
                 } else if (label.equals("Update")) {

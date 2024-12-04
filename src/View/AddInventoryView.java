@@ -1,6 +1,7 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.InventoryCntroller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ public class AddInventoryView extends JFrame {
     private JLabel imagelabel;
     private JLabel p_quantity, costprice, saleprice, p_name, p_category;
     private JTextField tfquantity, tfprice, tfsaleprice, tfname, tfcategory;
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private InventoryCntroller ic = new InventoryCntroller();
 
     public AddInventoryView() {
         setTitle("Add Inventory");
@@ -87,7 +88,7 @@ public class AddInventoryView extends JFrame {
                     int salePrice = Integer.parseInt(tfsaleprice.getText());
 
                     // Updated to exclude vendor parameters
-                    deoc.redirect_Inventory_Insert_request(name, quantity, category, costPrice, salePrice);
+                    ic.redirect_Inventory_Insert_request(name, quantity, category, costPrice, salePrice);
                     dispose();
                 }
             }
