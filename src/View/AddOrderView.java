@@ -1,6 +1,8 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.InventoryCntroller;
+import Controller.OrderController;
 import Controller.VendorManagementController;
 import Model.DataEntryOperatorDAO;
 
@@ -24,7 +26,8 @@ public class AddOrderView extends JFrame {
     private JLabel lblVendorID;
     private JComboBox<String> comboVendorID;
 
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private OrderController oc = new OrderController();
+    private InventoryCntroller ic=new InventoryCntroller();
   private VendorManagementController vmc=new VendorManagementController();
     public AddOrderView() {
         setTitle("Add Order");
@@ -46,7 +49,7 @@ public class AddOrderView extends JFrame {
         lblProductID.setFont(new Font("Arial", Font.BOLD, 15));
         lblProductID.setBounds(420, 50, 150, 30);
 
-        LinkedList<String> productdata=deoc.redirectProductConcatenatedDataRequest();
+        LinkedList<String> productdata=ic.redirectProductConcatenatedDataRequest();
         comboProductID = new JComboBox<>( productdata.toArray(new String[0]));
         comboProductID.setBounds(580, 50, 180, 30);
         // Vendor ID ComboBox
@@ -88,7 +91,7 @@ public class AddOrderView extends JFrame {
                     int vendorid=Integer.parseInt(st1.nextToken());
                     String vendorname=st1.nextToken();
 
-                    deoc.redirectOrderInsertRequest(productid,productname,productquantity,vendorid,vendorname);
+                    oc.redirectOrderInsertRequest(productid,productname,productquantity,vendorid,vendorname);
                     dispose();
 
             }

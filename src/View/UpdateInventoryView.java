@@ -1,6 +1,7 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.InventoryCntroller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ public class UpdateInventoryView extends JFrame {
     private JLabel imageLabel;
     private JLabel pQuantity, costPrice, salePrice;
     private JTextField tfQuantity, tfPrice, tfSalePrice;
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private InventoryCntroller ic = new InventoryCntroller();
 
     public UpdateInventoryView(int id, int quantity, int price, int sp, ManageInventoryView.ButtonEditor miv) {
         setTitle("Update Inventory");
@@ -62,7 +63,7 @@ public class UpdateInventoryView extends JFrame {
                 int updatedSalePrice = Integer.parseInt(tfSalePrice.getText());
 
                 // Send updated values to controller
-                deoc.redirect_Inventory_update_request(id, updatedQuantity, updatedPrice, updatedSalePrice);
+                ic.redirect_Inventory_update_request(id, updatedQuantity, updatedPrice, updatedSalePrice);
                 miv.updateCompleted();
                 dispose();
             }
