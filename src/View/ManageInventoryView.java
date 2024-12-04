@@ -1,6 +1,7 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.InventoryCntroller;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +14,7 @@ public class ManageInventoryView extends JFrame {
     private JTable table;
     private JScrollPane scrollPane;
     private JButton btnAdd;
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private InventoryCntroller ic = new InventoryCntroller();
 
     public ManageInventoryView() {
         setTitle("Inventory Management");
@@ -25,7 +26,7 @@ public class ManageInventoryView extends JFrame {
         String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "ProdctCategory", "CostPrice",
                 "SalePrice", "Delete", "Update"};
 
-        Object[][] data = deoc.redirect_object_array();
+        Object[][] data = ic.redirect_object_array();
 
         // Add Delete and Update as button text in the data
         for (int i = 0; i < data.length; i++) {
@@ -80,7 +81,7 @@ public class ManageInventoryView extends JFrame {
     public void refreshTable() {
         SwingUtilities.invokeLater(() -> {
             // Fetch updated data from the controller
-            Object[][] updatedData = deoc.redirect_object_array();
+            Object[][] updatedData = ic.redirect_object_array();
 
             // Update the table model
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -127,7 +128,7 @@ public class ManageInventoryView extends JFrame {
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Get the ID of the row and call delete method
                         int id = (Integer) table.getValueAt(row, 0);
-                        deoc.redirect_Inventory_delete_request(id);
+                        ic.redirect_Inventory_delete_request(id);
                         ((DefaultTableModel) table.getModel()).removeRow(row); // Remove from UI
                     }
                 } else if (label.equals("Update")) {

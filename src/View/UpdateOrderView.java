@@ -1,6 +1,7 @@
 package View;
 
 import Controller.DataEntryOperatorController;
+import Controller.OrderController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class UpdateOrderView extends JFrame {
     private JButton btnUpdate;
     private ImageIcon img;
     private JLabel imagelabel;
-    private DataEntryOperatorController deoc = new DataEntryOperatorController();
+    private OrderController oc = new OrderController();
 
     public UpdateOrderView(int p_id, String p_name, int p_quantity, int v_id, String v_name) {
         // Set the frame title
@@ -86,7 +87,7 @@ public class UpdateOrderView extends JFrame {
                     String newProductname = txtProductName.getText();
                     int newProductQuantity = Integer.parseInt(txtProductQuantity.getText());
                     String newVendorname = txtVendorName.getText();
-                    deoc.redirectOrderUpdateRequest(p_id, newProductname, newProductQuantity, newVendorname);
+                    oc.redirectOrderUpdateRequest(p_id, newProductname, newProductQuantity, newVendorname);
                     JOptionPane.showMessageDialog(null, "Data Updated In DB");
                     dispose();
                 }
