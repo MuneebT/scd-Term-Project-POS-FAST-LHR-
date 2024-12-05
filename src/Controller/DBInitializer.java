@@ -144,7 +144,9 @@ public class DBInitializer {
                 "    GST DOUBLE NOT NULL," +
                 "    AmountPaid DOUBLE NOT NULL," +
                 "    Balance DOUBLE NOT NULL," +
-                "    DateTime DATETIME NOT NULL" +
+                "    DateTime DATETIME NOT NULL," +
+                "    branchID INT," +
+                "    FOREIGN KEY (branchID) REFERENCES branch(branchID)" +
                 ");";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
@@ -166,8 +168,10 @@ public class DBInitializer {
                 "    Quantity INT," +
                 "    TotalPrice DECIMAL(10, 2)," +
                 "    InvoiceNumber INT," +
+                "    branchID INT," +
                 "    FOREIGN KEY (ProdId) REFERENCES Inventory(ProductID)," +
-                "    FOREIGN KEY (InvoiceNumber) REFERENCES Invoice(InvoiceID)" +
+                "    FOREIGN KEY (InvoiceNumber) REFERENCES Invoice(InvoiceID)," +
+                "    FOREIGN KEY (branchID) REFERENCES branch(branchID)" +
                 ");";
 
         try (Connection conn = ConnectionConfigurator.getConnection();

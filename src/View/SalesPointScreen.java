@@ -214,7 +214,7 @@ public class SalesPointScreen {
                 balanceField.setText(String.format("%.2f", balance));
 
                 InvoiceDAO invoiceDAO = new InvoiceDAO();
-                int invoiceNumber = invoiceDAO.createInvoice(totalBill, gst, totalAmount, balance);
+                int invoiceNumber = invoiceDAO.createInvoice(totalBill, gst, totalAmount, balance,1);
 
                 SaleDAO saleDAO = new SaleDAO();
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -224,7 +224,7 @@ public class SalesPointScreen {
                     double price = Double.parseDouble(String.valueOf(tableModel.getValueAt(i, 3)));
                     double totalPrice = Double.parseDouble(String.valueOf(tableModel.getValueAt(i, 4)));
 
-                    saleDAO.createSale(Integer.parseInt(code), name, price, qty, totalPrice, invoiceNumber);
+                    saleDAO.createSale(Integer.parseInt(code), name, price, qty, totalPrice, invoiceNumber,1);
                 }
 
                 JOptionPane.showMessageDialog(frame, "Transaction Complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
