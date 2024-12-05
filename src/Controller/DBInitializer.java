@@ -138,13 +138,15 @@ public class DBInitializer {
     }
 
     void makeSureInvoiceTableExists() throws SQLException {
-        String sql ="CREATE TABLE IF NOT EXISTS Invoice (" +
+        String sql = "CREATE TABLE IF NOT EXISTS Invoice (" +
                 "    InvoiceID INT PRIMARY KEY AUTO_INCREMENT," +
-                "    TotalBill DOUBLE," +
-                "    GST DOUBLE," +
-                "    AmountPaid DOUBLE," +
-                "    Balance DOUBLE" +
+                "    TotalBill DOUBLE NOT NULL," +
+                "    GST DOUBLE NOT NULL," +
+                "    AmountPaid DOUBLE NOT NULL," +
+                "    Balance DOUBLE NOT NULL," +
+                "    DateTime DATETIME NOT NULL" +
                 ");";
+
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.execute();
@@ -153,6 +155,7 @@ public class DBInitializer {
             throw new RuntimeException("Failed to create the Invoice table", e);
         }
     }
+
 
     void makeSureSaleTableExists() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Sale (" +
