@@ -7,10 +7,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +35,9 @@ public class ReportView {
                     dataset       // Data
             );
 
-            return new ChartPanel(chart);
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(600, 400));  // Set chart panel size
+            return chartPanel;
         }
     }
 
@@ -43,17 +45,21 @@ public class ReportView {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Reports and Graphs");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1000, 700);
 
         JPanel reportPanel = new JPanel();
-        reportPanel.setLayout(new BorderLayout());
+        reportPanel.setLayout(new BorderLayout(10, 10));
+        reportPanel.setBackground(new Color(245, 245, 245));
+
+        // Panel for Dropdowns and Buttons
+        JPanel controls = new JPanel();
+        controls.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         // Dropdowns for Report Selection
         JComboBox<String> reportTypeDropdown = new JComboBox<>(new String[]{"Sales", "Remaining Stock", "Profit"});
         JComboBox<String> timeRangeDropdown = new JComboBox<>(new String[]{"Today", "Weekly", "Monthly", "Yearly", "Custom Range"});
-        JButton generateButton = new JButton("Generate");
+        JButton generateButton = new JButton("Generate Report");
 
-        JPanel controls = new JPanel();
         controls.add(new JLabel("Report Type:"));
         controls.add(reportTypeDropdown);
         controls.add(new JLabel("Time Range:"));
@@ -62,9 +68,17 @@ public class ReportView {
 
         reportPanel.add(controls, BorderLayout.NORTH);
 
-        // Chart Area
-        JPanel chartArea = new JPanel(new BorderLayout());
+        // Panel for displaying chart and data
+        JPanel chartArea = new JPanel();
+        chartArea.setLayout(new BorderLayout(10, 10));
         reportPanel.add(chartArea, BorderLayout.CENTER);
+
+        // Table for displaying data
+        JTable dataTable = new JTable();
+        JScrollPane scrollPane = new JScrollPane(dataTable);
+        chartArea.add(scrollPane, BorderLayout.EAST);
+        dataTable.setModel(new DefaultTableModel(new Object[]{"Date", "Value"}, 0));
+        dataTable.setEnabled(false);
 
         generateButton.addActionListener(e -> {
             String reportType = (String) reportTypeDropdown.getSelectedItem();
@@ -73,10 +87,18 @@ public class ReportView {
             // Fetch Data from Database
             HashMap<String, Double> data = fetchData(reportType, timeRange);
 
-            // Generate Chart
-            JPanel chart = ChartGenerator.createBarChart(reportType, "Date", "Value", data);
+            // Update Table with Data
+            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+            model.setRowCount(0);  // Clear existing rows
+            for (Map.Entry<String, Double> entry : data.entrySet()) {
+                model.addRow(new Object[]{entry.getKey(), String.format("%.2f", entry.getValue())});
+            }
+
+            // Generate Chart and add it to panel
+            JPanel chartPanel = ChartGenerator.createBarChart(reportType, "Date", "Value", data);
             chartArea.removeAll();
-            chartArea.add(chart, BorderLayout.CENTER);
+            chartArea.add(chartPanel, BorderLayout.CENTER);
+            chartArea.add(scrollPane, BorderLayout.EAST);
             chartArea.revalidate();
             chartArea.repaint();
         });
@@ -106,10 +128,14 @@ public class ReportView {
             try (PreparedStatement ps = conn.prepareStatement(query);
                  ResultSet rs = ps.executeQuery()) {
 
+                // Date format as specified: dd/MM/yyyy
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
                 while (rs.next()) {
-                    String date = rs.getString("Date");
+                    Date sqlDate = rs.getDate("Date");
+                    String formattedDate = dateFormat.format(sqlDate);
                     double value = rs.getDouble("Value");
-                    data.put(date, value);
+                    data.put(formattedDate, value);
                 }
             }
         } catch (Exception ex) {
