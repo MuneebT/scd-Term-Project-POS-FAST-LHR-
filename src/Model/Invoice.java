@@ -1,31 +1,28 @@
 package Model;
-import java.time.LocalDateTime;
 
 public class Invoice {
-    private int invoiceID;
+    private int invoiceId;
     private double totalBill;
     private double gst;
     private double amountPaid;
     private double balance;
-    private LocalDateTime dateTime;
-    private int branchID;
 
-    public Invoice(int invoiceID, double totalBill, double gst, double amountPaid, double balance, LocalDateTime dateTime, int branchID) {
-        this.invoiceID = invoiceID;
+
+    public Invoice(int invoiceId, double totalBill, double gst, double amountPaid, double balance) {
+        this.invoiceId = invoiceId;
         this.totalBill = totalBill;
         this.gst = gst;
         this.amountPaid = amountPaid;
         this.balance = balance;
-        this.dateTime = dateTime;
-        this.branchID = branchID;
     }
 
-    public int getInvoiceID() {
-        return invoiceID;
+    // Getters and Setters
+    public int getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setInvoiceID(int invoiceID) {
-        this.invoiceID = invoiceID;
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public double getTotalBill() {
@@ -58,21 +55,5 @@ public class Invoice {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public int getBranchID() {
-        return branchID;
-    }
-
-    public void setBranchID(int branchID) {
-        this.branchID = branchID;
     }
 }

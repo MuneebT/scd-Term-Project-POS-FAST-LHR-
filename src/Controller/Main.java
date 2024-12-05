@@ -31,15 +31,15 @@ public class Main {
 
 
 //        //Inventory func calls
-    //    DataEntryOperatorDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
-      //          ,1200,1300);
+//        DataEntryOperatorDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
+//                ,1200,1300);
 //new ManageInventoryView();
-
+//
 //        VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
-  //      ,"GUjranwala","Lahore","Punjab","Pakistan");
-        //Order Functionallity Call order
-       // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
-    new ManageInventoryView();
+//        ,"GUjranwala","Lahore","Punjab","Pakistan");
+//        Order Functionallity Call order
+//        DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
+//    new ManageInventoryView();
 
     }
 }
