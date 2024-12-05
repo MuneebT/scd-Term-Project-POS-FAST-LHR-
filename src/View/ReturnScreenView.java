@@ -94,9 +94,10 @@ public class ReturnScreenView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 invoiceNumber = fieldInvoice.getText();
-                List<Sale> salesList = new ArrayList<>();
-                ReturnController returnController=new ReturnController();
-                returnController.redirect_get_sales(invoiceNumber);
+//                List<Sale> salesList = new ArrayList<>();
+//                ReturnController returnController=new ReturnController();
+//               // returnController.redirect_get_sales(invoiceNumber);
+                new SaleTableView(invoiceNumber);
                 // System.out.println("Submitted Invoice Number: " + invoiceNumber);
                 dispose(); // Close current window
             }
