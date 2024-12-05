@@ -1,10 +1,18 @@
 package Model;
 
+
+import java.sql.*;
+
+import Connection.ConnectionConfigurator;
+
+import java.util.LinkedList;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import Connection.ConnectionConfigurator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 
 public class VendorDAO {
     public VendorDAO()
@@ -82,6 +90,55 @@ public class VendorDAO {
             e.printStackTrace();  // Handle exceptions as appropriate
             return false;
         }
+    }
+
+
+    public static LinkedList<Integer> readVendorIDFromVendorTable(){
+        LinkedList<Integer> v_id=new LinkedList<>();
+        String sql="SELECT VendorID FROM Vendor";
+        Connection temp=null;
+        try{
+            temp=ConnectionConfigurator.getConnection();
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                v_id.add(rs.getInt(1));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return v_id;
+    }
+
+    public static LinkedList<String> readVendorNameFromVendorTable(){
+        LinkedList<String> v_name=new LinkedList<>();
+        String sql="SELECT Name FROM Vendor";
+        Connection temp=null;
+        try{
+            temp=ConnectionConfigurator.getConnection();
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                v_name.add(rs.getString(1));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return v_name;
+    }
+
+    public static LinkedList<String> concatenateVendorIDandVendorname(){
+        LinkedList<Integer> vendorid=readVendorIDFromVendorTable();
+        LinkedList<String> vendorname=readVendorNameFromVendorTable();
+        LinkedList<String> concatenateddata=new LinkedList<>();
+        String temp;
+        for(int i=0;i<vendorid.size();i++){
+            temp=vendorid.get(i)+"_"+vendorname.get(i);
+            concatenateddata.add(temp);
+        }
+        return concatenateddata;
     }
 
 }
