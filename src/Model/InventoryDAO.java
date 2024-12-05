@@ -167,4 +167,49 @@ public class InventoryDAO {
         }
         return concatenateddate;
     }
+
+
+    public Inventory getProductById(int productId) {
+        Inventory product = null;
+
+        String query = "SELECT ProductID, ProductName, ProductQuantity, ProductCategory, CostPrice, SalePrice FROM Inventory WHERE ProductID = ?";
+        try (Connection conn = ConnectionConfigurator.getConnection(); // Get connection
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, productId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int productQuantity = rs.getInt("ProductQuantity");
+                String productCategory = rs.getString("ProductCategory");
+                int costPrice = rs.getInt("CostPrice");
+                int salePrice = rs.getInt("SalePrice");
+
+                product = new Inventory(id, productName, productQuantity, productCategory, costPrice, salePrice);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
+
+    public boolean reduceProductQuantity(int productId, int quantitySold) {
+        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ?";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, quantitySold);
+            pstmt.setInt(2, productId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0; // Return true if update is successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if update fails
+    }
 }
+
+
