@@ -1,7 +1,7 @@
-package View;
+package Views;
 
-import View.CustomerElements.RoundedButton;
-import View.CustomerElements.RoundedLabel;
+import Views.CustomerElements.RoundedButton;
+import Views.CustomerElements.RoundedLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -167,6 +167,7 @@ public class BMDashboardView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 //JOptionPane.showMessageDialog(null, "Managing");
                 dispose();
+                new BMOperation4View();
             }
         });
 
