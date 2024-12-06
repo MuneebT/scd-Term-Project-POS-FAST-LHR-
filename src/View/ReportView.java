@@ -5,12 +5,12 @@
 //import org.jfree.chart.ChartPanel;
 //import org.jfree.chart.JFreeChart;
 //import org.jfree.data.category.DefaultCategoryDataset;
-//
 //import javax.swing.*;
 //import javax.swing.table.DefaultTableModel;
 //import java.awt.*;
 //import java.sql.*;
 //import java.text.SimpleDateFormat;
+//import java.util.Date;
 //import java.util.HashMap;
 //import java.util.Map;
 //
@@ -23,20 +23,17 @@
 //    public static class ChartGenerator {
 //        public static JPanel createBarChart(String title, String xAxisLabel, String yAxisLabel, Map<String, Double> data) {
 //            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//
 //            for (Map.Entry<String, Double> entry : data.entrySet()) {
 //                dataset.addValue(entry.getValue(), title, entry.getKey());
 //            }
-//
 //            JFreeChart chart = ChartFactory.createBarChart(
-//                    title,        // Chart title
-//                    xAxisLabel,   // X-axis label
-//                    yAxisLabel,   // Y-axis label
-//                    dataset       // Data
+//                    title,
+//                    xAxisLabel,
+//                    yAxisLabel,
+//                    dataset
 //            );
-//
 //            ChartPanel chartPanel = new ChartPanel(chart);
-//            chartPanel.setPreferredSize(new Dimension(600, 400));  // Set chart panel size
+//            chartPanel.setPreferredSize(new Dimension(600, 400));
 //            return chartPanel;
 //        }
 //    }
@@ -83,13 +80,11 @@
 //        generateButton.addActionListener(e -> {
 //            String reportType = (String) reportTypeDropdown.getSelectedItem();
 //            String timeRange = (String) timeRangeDropdown.getSelectedItem();
-//
-//            // Fetch Data from Database
 //            HashMap<String, Double> data = fetchData(reportType, timeRange);
 //
 //            // Update Table with Data
 //            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
-//            model.setRowCount(0);  // Clear existing rows
+//            model.setRowCount(0);
 //            for (Map.Entry<String, Double> entry : data.entrySet()) {
 //                model.addRow(new Object[]{entry.getKey(), String.format("%.2f", entry.getValue())});
 //            }
@@ -127,10 +122,7 @@
 //
 //            try (PreparedStatement ps = conn.prepareStatement(query);
 //                 ResultSet rs = ps.executeQuery()) {
-//
-//                // Date format as specified: dd/MM/yyyy
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//
 //                while (rs.next()) {
 //                    Date sqlDate = rs.getDate("Date");
 //                    String formattedDate = dateFormat.format(sqlDate);
@@ -141,7 +133,6 @@
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //        }
-//
 //        return data;
 //    }
 //
@@ -181,8 +172,8 @@
 //                return "MONTH(DateTime) = MONTH(CURRENT_DATE) AND YEAR(DateTime) = YEAR(CURRENT_DATE)";
 //            case "Yearly":
 //                return "YEAR(DateTime) = YEAR(CURRENT_DATE)";
-//            default: // "Custom Range" or others
-//                return "1=1"; // No specific condition, for demonstration purposes
+//            default:
+//                return "1=1";
 //        }
 //    }
 //}

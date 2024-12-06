@@ -1,15 +1,14 @@
 package Controller;
-import Model.BranchDAO;
-import Model.BranchManagementModel;
-import Model.DataEntryOperatorDAO;
-import Model.VendorDAO;
+import Model.*;
 import View.*;
 
 
 import java.sql.SQLException;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RuntimeException {
       
         try {
             DBInitializer in=new DBInitializer();
@@ -31,8 +30,8 @@ public class Main {
 
 
 //        //Inventory func calls
-    //    DataEntryOperatorDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
-      //          ,1200,1300);
+//        InventoryDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
+//                ,1200,1300,1);
 //new ManageInventoryView();
 
 //        VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
@@ -40,6 +39,10 @@ public class Main {
         //Order Functionallity Call order
        // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
     new ManageInventoryView();
+
+
+ //   new ManageOrderView();
+
 
     }
 }
