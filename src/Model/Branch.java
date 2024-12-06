@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.LinkedList;
+
 public class Branch
 {
 
@@ -10,7 +12,18 @@ public class Branch
     String branchAddress;
     String branchPhone;
     int noOfEmployees;
+    public Branch(){
 
+    }
+    public Branch(int id,String name,String city,String status,String address,String phoneno,int noofemployees){
+      branchID=id;
+      branchName=name;
+      branchCity=city;
+      branchStatus=status;
+      branchAddress=address;
+      branchPhone=phoneno;
+      this.noOfEmployees=noofemployees;
+    }
 
   public int getNoOfEmployees() {
 
@@ -70,7 +83,17 @@ public class Branch
   }
 
 
+public LinkedList<String> concatenateBranchIDandBranchName(){
+LinkedList<Branch> branches=BranchDAO.getAllBranches();
+LinkedList<String> concatenateddata=new LinkedList<>();
+String data;
+for(int i=0;i<branches.size();i++){
+  data=branches.get(i).getBranchID()+"_"+branches.get(i).getBranchName();
+  concatenateddata.add(data);
+}
 
+return concatenateddata;
+}
 
 
 }
