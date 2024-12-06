@@ -1,36 +1,32 @@
 package Model;
-
 public class Sale {
-    private int saleId;
+    private int saleID;
     private int prodId;
     private String prodName;
     private double price;
     private int quantity;
     private double totalPrice;
     private int invoiceNumber;
+    private int branchID;
 
-
-    public Sale(int saleId, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber) {
-        this.saleId = saleId;
+    public Sale(int saleID, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+        this.saleID = saleID;
         this.prodId = prodId;
         this.prodName = prodName;
         this.price = price;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.invoiceNumber = invoiceNumber;
+        this.branchID = branchID;
     }
 
-    public Sale() {
 
+    public int getSaleID() {
+        return saleID;
     }
 
-    // Getters and Setters
-    public int getSaleId() {
-        return saleId;
-    }
-
-    public void setSaleId(int saleId) {
-        this.saleId = saleId;
+    public void setSaleID(int saleID) {
+        this.saleID = saleID;
     }
 
     public int getProdId() {
@@ -79,5 +75,13 @@ public class Sale {
 
     public void setInvoiceNumber(int invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
+    }
+
+    public int getBranchID() {
+        return branchID;
+    }
+
+    public void setBranchID(int branchID) {
+        this.branchID = branchID;
     }
 }

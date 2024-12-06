@@ -44,6 +44,9 @@ public class SalesPointScreenTemp {
         JScrollPane tableScrollPane = new JScrollPane(table);
         frame.add(tableScrollPane, BorderLayout.CENTER);
 
+
+
+
         // Bottom Panel (Inputs and Clear Button)
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(Color.WHITE);
@@ -105,6 +108,7 @@ public class SalesPointScreenTemp {
             }
         });
 
+
         inputPanel.add(new JLabel("Item Code"));
         inputPanel.add(itemCodeField);
         inputPanel.add(new JLabel("Name"));
@@ -116,6 +120,9 @@ public class SalesPointScreenTemp {
         inputPanel.add(addButton);
 
         bottomPanel.add(inputPanel, BorderLayout.CENTER);
+
+
+
 
         // Clear Button
         JButton clearButton = new JButton("Clear Sale");
@@ -185,6 +192,42 @@ public class SalesPointScreenTemp {
         rightPanel.add(finishButton);
 
         frame.add(rightPanel, BorderLayout.EAST);
+
+
+        // Add MouseListener to the table for row selection
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Get values from the selected row
+                    String code = tableModel.getValueAt(selectedRow, 0).toString();
+                    String name = tableModel.getValueAt(selectedRow, 1).toString();
+                    String qty = tableModel.getValueAt(selectedRow, 2).toString();
+                    String price = tableModel.getValueAt(selectedRow, 3).toString();
+
+                    // Populate input fields
+                    itemCodeField.setText(code);
+                    nameField.setText(name);
+                    qtyField.setText(qty);
+                    priceField.setText(price);
+
+                    // Remove the selected row from the table
+                    tableModel.removeRow(selectedRow);
+
+                    // Recalculate total
+                    int sum = 0;
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        sum += (int) tableModel.getValueAt(i, 4);
+                    }
+                    totalField.setText(String.valueOf(sum + (sum * 0.16))); // Update total with GST
+                }
+            }
+        });
+
+// Disable direct editing of table cells
+        table.setDefaultEditor(Object.class, null);
+
 
         // Add Button Action
         addButton.addActionListener(e -> {
@@ -266,10 +309,12 @@ public class SalesPointScreenTemp {
 
                 balanceField.setText(String.format("%.2f", balance));
 
+                int BRANCH_CODE=1;
+
                 // Database operations
                 try {
                     InvoiceDAO invoiceDAO = new InvoiceDAO();
-                    int invoiceNumber = invoiceDAO.createInvoice(totalBill, gst, totalAmount, balance);
+                    int invoiceNumber = invoiceDAO.createInvoice(totalBill, gst, totalAmount, balance,BRANCH_CODE);
 
                     SaleDAO saleDAO = new SaleDAO();
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -279,7 +324,7 @@ public class SalesPointScreenTemp {
                         double price = Double.parseDouble(String.valueOf(tableModel.getValueAt(i, 3)));
                         double totalPrice = Double.parseDouble(String.valueOf(tableModel.getValueAt(i, 4)));
 
-                        saleDAO.createSale(Integer.parseInt(code), name, price, qty, totalPrice, invoiceNumber);
+                        saleDAO.createSale(Integer.parseInt(code), name, price, qty, totalPrice, invoiceNumber,BRANCH_CODE);
                     }
 
                     JOptionPane.showMessageDialog(frame, "Transaction Complete!", "Success", JOptionPane.INFORMATION_MESSAGE);
