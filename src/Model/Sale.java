@@ -24,6 +24,9 @@ public class Sale {
 
     }
 
+    public Sale(int saleID, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+    }
+
     // Getters and Setters
     public int getSaleId() {
         return saleId;
@@ -79,5 +82,13 @@ public class Sale {
 
     public void setInvoiceNumber(int invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
+    }
+
+    public int getSaleID() {
+        return saleId;
+    }
+
+    public void setSaleID(int i) {
+        this.saleId=i;
     }
 }
