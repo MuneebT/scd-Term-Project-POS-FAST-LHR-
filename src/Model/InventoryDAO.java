@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.LinkedList;
 import Connection.ConnectionConfigurator;
+import Controller.BranchManagementController;
 
 public class InventoryDAO {
     private static final LinkedList<Integer> id = new LinkedList<>();
@@ -12,7 +13,7 @@ public class InventoryDAO {
     private static final LinkedList<String> p_category = new LinkedList<>();
     private static final LinkedList<Integer> costprice = new LinkedList<>();
     private static final LinkedList<Integer> saleprice = new LinkedList<>();
-
+private static BranchManagementController bmc=new BranchManagementController();
     public static Object[][] gatherData() {
         LinkedList<Integer> p_id = readProductIDFromDB();
         LinkedList<String> productName = readProductNameFromDB();
@@ -20,9 +21,9 @@ public class InventoryDAO {
         LinkedList<String> productCategory = readProductCategoryFromDB();
         LinkedList<Integer> productCostPrice = readProductCostPriceFromDB();
         LinkedList<Integer> productSalePrice = readProductSalesPriceFromDB();
-
+        LinkedList<Integer> branchId=bmc.returnListofBranchIDs();
         int size = p_id.size();
-        Object[][] data = new Object[size][8]; // Adjusted for 8 columns (including action buttons)
+        Object[][] data = new Object[size][9]; // Adjusted for 8 columns (including action buttons)
 
         for (int i = 0; i < size; i++) {
             data[i][0] = p_id.get(i);
@@ -31,16 +32,17 @@ public class InventoryDAO {
             data[i][3] = productCategory.get(i);
             data[i][4] = productCostPrice.get(i);
             data[i][5] = productSalePrice.get(i);
-            data[i][6] = "Delete";
-            data[i][7] = "Update";
+            data[i][6]=branchId.get(i);
+            data[i][7] = "Delete";
+            data[i][8] = "Update";
         }
 
         return data;
     }
 
-    public static void insertDataIntoInventoryDb(String name, int quantity, String category, int cp, int sp) {
+    public static void insertDataIntoInventoryDb(String name, int quantity, String category, int cp, int sp,int b_id) {
         String sql = "INSERT INTO Inventory (ProductName, ProductQuantity, ProductCategory, "
-                + "CostPrice, SalePrice) VALUES (?, ?, ?, ?, ?)";
+                + "CostPrice, SalePrice,BranchID) VALUES (?, ?, ?, ?, ?,?)";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -50,7 +52,7 @@ public class InventoryDAO {
             ps.setString(3, category);
             ps.setInt(4, cp);
             ps.setInt(5, sp);
-
+            ps.setInt(6,b_id);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

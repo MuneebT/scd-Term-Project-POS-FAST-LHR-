@@ -64,7 +64,6 @@ public class UpdateInventoryView extends JFrame {
 
                 // Send updated values to controller
                 ic.redirect_Inventory_update_request(id, updatedQuantity, updatedPrice, updatedSalePrice);
-                miv.updateCompleted();
                 dispose();
             }
         });
