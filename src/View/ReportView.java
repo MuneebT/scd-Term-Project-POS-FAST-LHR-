@@ -7,10 +7,14 @@
 //import org.jfree.data.category.DefaultCategoryDataset;
 //
 //import javax.swing.*;
+
+//import java.awt.*;
+
 //import javax.swing.table.DefaultTableModel;
 //import java.awt.*;
 //import java.sql.*;
 //import java.text.SimpleDateFormat;
+
 //import java.util.HashMap;
 //import java.util.Map;
 //
@@ -35,9 +39,11 @@
 //                    dataset       // Data
 //            );
 //
+
 //            ChartPanel chartPanel = new ChartPanel(chart);
 //            chartPanel.setPreferredSize(new Dimension(600, 400));  // Set chart panel size
 //            return chartPanel;
+
 //        }
 //    }
 //
@@ -45,6 +51,10 @@
 //    private static void createAndShowGUI() {
 //        JFrame frame = new JFrame("Reports and Graphs");
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+//
+//        JPanel reportPanel = new JPanel();
+
 //        frame.setSize(1000, 700);
 //
 //        JPanel reportPanel = new JPanel();
@@ -54,11 +64,14 @@
 //        // Panel for Dropdowns and Buttons
 //        JPanel controls = new JPanel();
 //        controls.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
 //
 //        // Dropdowns for Report Selection
 //        JComboBox<String> reportTypeDropdown = new JComboBox<>(new String[]{"Sales", "Remaining Stock", "Profit"});
 //        JComboBox<String> timeRangeDropdown = new JComboBox<>(new String[]{"Today", "Weekly", "Monthly", "Yearly", "Custom Range"});
+
 //        JButton generateButton = new JButton("Generate Report");
+
 //
 //        controls.add(new JLabel("Report Type:"));
 //        controls.add(reportTypeDropdown);
@@ -68,6 +81,9 @@
 //
 //        reportPanel.add(controls, BorderLayout.NORTH);
 //
+
+//        reportPanel.add(chartArea, BorderLayout.CENTER);
+
 //        // Panel for displaying chart and data
 //        JPanel chartArea = new JPanel();
 //        chartArea.setLayout(new BorderLayout(10, 10));
@@ -80,6 +96,7 @@
 //        dataTable.setModel(new DefaultTableModel(new Object[]{"Date", "Value"}, 0));
 //        dataTable.setEnabled(false);
 //
+
 //        generateButton.addActionListener(e -> {
 //            String reportType = (String) reportTypeDropdown.getSelectedItem();
 //            String timeRange = (String) timeRangeDropdown.getSelectedItem();
@@ -87,6 +104,8 @@
 //            // Fetch Data from Database
 //            HashMap<String, Double> data = fetchData(reportType, timeRange);
 //
+
+//            chartArea.removeAll();
 //            // Update Table with Data
 //            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
 //            model.setRowCount(0);  // Clear existing rows
@@ -99,6 +118,7 @@
 //            chartArea.removeAll();
 //            chartArea.add(chartPanel, BorderLayout.CENTER);
 //            chartArea.add(scrollPane, BorderLayout.EAST);
+
 //            chartArea.revalidate();
 //            chartArea.repaint();
 //        });
@@ -128,6 +148,10 @@
 //            try (PreparedStatement ps = conn.prepareStatement(query);
 //                 ResultSet rs = ps.executeQuery()) {
 //
+
+//                while (rs.next()) {
+//                    double value = rs.getDouble("Value");
+
 //                // Date format as specified: dd/MM/yyyy
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //
@@ -136,6 +160,7 @@
 //                    String formattedDate = dateFormat.format(sqlDate);
 //                    double value = rs.getDouble("Value");
 //                    data.put(formattedDate, value);
+
 //                }
 //            }
 //        } catch (Exception ex) {
