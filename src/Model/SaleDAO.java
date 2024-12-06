@@ -1,16 +1,14 @@
 package Model;
 
 import Connection.ConnectionConfigurator;
-
-import Model.Sale;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SaleDAO {
 
-    public boolean createSale(int productId, String productName, double price, int quantity, double totalPrice, int invoiceNumber) {
-        String sql = "INSERT INTO Sale (ProdId, ProdName, Price, Quantity, TotalPrice, InvoiceNumber) VALUES (?, ?, ?, ?, ?, ?)";
+    public boolean createSale(int productId, String productName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+        String sql = "INSERT INTO Sale (ProdId, ProdName, Price, Quantity, TotalPrice, InvoiceNumber, BranchID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -22,11 +20,12 @@ public class SaleDAO {
             pstmt.setInt(4, quantity);
             pstmt.setDouble(5, totalPrice);
             pstmt.setInt(6, invoiceNumber);
+            pstmt.setInt(7, branchID); // Set branchID
 
             int rowsAffected = pstmt.executeUpdate();
 
             // Reduce inventory if sale is successful
-            InventoryDAO inventoryDAO=new InventoryDAO();
+            InventoryDAO inventoryDAO = new InventoryDAO();
             if (rowsAffected > 0) {
                 return inventoryDAO.reduceProductQuantity(productId, quantity);
             }
@@ -35,7 +34,6 @@ public class SaleDAO {
         }
         return false; // Return false if sale or inventory update fails
     }
-
 
     public Sale getSaleById(int saleId) {
         String sql = "SELECT * FROM Sale WHERE SaleID = ?";
@@ -52,15 +50,15 @@ public class SaleDAO {
                 int quantity = rs.getInt("Quantity");
                 double totalPrice = rs.getDouble("TotalPrice");
                 int invoiceNumber = rs.getInt("InvoiceNumber");
+                int branchID = rs.getInt("BranchID"); // Retrieve branchID
 
-                return new Sale(saleId, prodId, prodName, price, quantity, totalPrice, invoiceNumber);
+                return new Sale(saleId, prodId, prodName, price, quantity, totalPrice, invoiceNumber, branchID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
 
     public List<Sale> getAllSales() {
         List<Sale> sales = new ArrayList<>();
@@ -77,8 +75,9 @@ public class SaleDAO {
                 int quantity = rs.getInt("Quantity");
                 double totalPrice = rs.getDouble("TotalPrice");
                 int invoiceNumber = rs.getInt("InvoiceNumber");
+                int branchID = rs.getInt("BranchID"); // Retrieve branchID
 
-                sales.add(new Sale(saleId, prodId, prodName, price, quantity, totalPrice, invoiceNumber));
+                sales.add(new Sale(saleId, prodId, prodName, price, quantity, totalPrice, invoiceNumber, branchID));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,9 +8,10 @@ public class Sale {
     private int quantity;
     private double totalPrice;
     private int invoiceNumber;
+    private int branchID; // Added branchID field
 
-
-    public Sale(int saleId, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber) {
+    // Constructor including branchID
+    public Sale(int saleId, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
         this.saleId = saleId;
         this.prodId = prodId;
         this.prodName = prodName;
@@ -18,13 +19,11 @@ public class Sale {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.invoiceNumber = invoiceNumber;
+        this.branchID = branchID; // Initialize branchID
     }
 
+    // Default constructor
     public Sale() {
-
-    }
-
-    public Sale(int saleID, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
     }
 
     // Getters and Setters
@@ -84,11 +83,11 @@ public class Sale {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public int getSaleID() {
-        return saleId;
+    public int getBranchID() {
+        return branchID; // Getter for branchID
     }
 
-    public void setSaleID(int i) {
-        this.saleId=i;
+    public void setBranchID(int branchID) {
+        this.branchID = branchID; // Setter for branchID
     }
 }

@@ -7,7 +7,16 @@ import java.util.List;
 
 public class SaleTableModel extends AbstractTableModel {
     private List<Sale> salesList;
-    private String[] columnNames = {"Sale ID", "Product ID", "Product Name", "Price", "Quantity", "Total Price", "Invoice Number"};
+    private String[] columnNames = {
+            "Sale ID",
+            "Product ID",
+            "Product Name",
+            "Price",
+            "Quantity",
+            "Total Price",
+            "Invoice Number",
+            "Branch ID"
+    };
 
     public SaleTableModel(List<Sale> salesList) {
         this.salesList = salesList;
@@ -32,13 +41,14 @@ public class SaleTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Sale sale = salesList.get(rowIndex);
         switch (columnIndex) {
-            case 0: return sale.getSaleID();
+            case 0: return sale.getSaleId();
             case 1: return sale.getProdId();
             case 2: return sale.getProdName();
             case 3: return sale.getPrice();
             case 4: return sale.getQuantity();
             case 5: return sale.getTotalPrice();
             case 6: return sale.getInvoiceNumber();
+            case 7: return sale.getBranchID(); // Added branchID handling
             default: return null;
         }
     }
@@ -53,13 +63,14 @@ public class SaleTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Sale sale = salesList.get(rowIndex);
         switch (columnIndex) {
-            case 0: sale.setSaleID(Integer.parseInt((String) aValue)); break;
+            case 0: sale.setSaleId(Integer.parseInt((String) aValue)); break;
             case 1: sale.setProdId(Integer.parseInt((String) aValue)); break;
             case 2: sale.setProdName((String) aValue); break;
             case 3: sale.setPrice((Double) aValue); break;
             case 4: sale.setQuantity((Integer) aValue); break;
             case 5: sale.setTotalPrice((Double) aValue); break;
             case 6: sale.setInvoiceNumber(Integer.parseInt((String) aValue)); break;
+            case 7: sale.setBranchID(Integer.parseInt((String) aValue)); break; // Added branchID handling
         }
         fireTableCellUpdated(rowIndex, columnIndex);
     }

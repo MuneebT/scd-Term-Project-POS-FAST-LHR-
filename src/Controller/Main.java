@@ -16,7 +16,7 @@ public class Main {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //new splashView();
+        new splashView();
 
         
 
@@ -38,7 +38,7 @@ public class Main {
   //      ,"GUjranwala","Lahore","Punjab","Pakistan");
         //Order Functionallity Call order
        // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
-    new ManageInventoryView();
+        // new ManageInventoryView();
 
 
  //   new ManageOrderView();
