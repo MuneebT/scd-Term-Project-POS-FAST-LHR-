@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Branch;
 import Model.BranchDAO;
 import Model.BranchManagementModel;
 import View.BranchManagementView;
@@ -8,7 +9,7 @@ import java.util.LinkedList;
 
 public class BranchManagementController {
     private BranchDAO bmm=new BranchDAO();
-
+private Branch branches=new Branch();
  public   Object[][] return_object_Array(){
         return bmm.Insert_data_into_Array();
     }
@@ -29,5 +30,12 @@ public LinkedList<String> return_list_of_branch_names(){return BranchDAO.read_br
 
     public   Object[][] return_object_Array(String b_name,String c_name){
         return bmm.Insert_data_into_Array(b_name,c_name);
+    }
+
+    public LinkedList<Integer> returnListofBranchIDs(){
+     return BranchDAO.read_branch_code_data_from_db();
+    }
+    public LinkedList<String> redirectConcatenatedData(){
+    return branches.concatenateBranchIDandBranchName();
     }
 }
