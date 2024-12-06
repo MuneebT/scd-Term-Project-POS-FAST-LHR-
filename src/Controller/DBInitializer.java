@@ -11,6 +11,7 @@ public class DBInitializer {
         makeSureLoginTableExists();
         makeSureEmployeeTableExists();
         makeSureVendorTableExists();
+
         makeSureInventoryTableExists();
         makeSureOrderTableExists();
     }
@@ -27,6 +28,7 @@ public class DBInitializer {
         } finally {
             conn.close();
         }
+
 
     }
     void makeSureLoginTableExists() throws SQLException {
@@ -46,6 +48,10 @@ public class DBInitializer {
             conn.close();
         }
     }
+
+
+    
+
     void makeSureEmployeeTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Employee (\n" +
@@ -91,6 +97,7 @@ public class DBInitializer {
         }
     }
 
+
     void makeSureInventoryTableExists() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Inventory ("
                 + "    ProductID INT PRIMARY KEY AUTO_INCREMENT,"
@@ -129,6 +136,7 @@ public class DBInitializer {
     }
 
     }
+
 
 
 

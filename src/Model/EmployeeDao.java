@@ -93,16 +93,7 @@ public class EmployeeDao {
     }
 
     // Method to fetch all employees with designation "Branch Manager"
-//    public List<Employee> getAllBMs() throws SQLException {
-//        List<Employee> employeeList = new ArrayList<>();
-//        String query = "SELECT * FROM employee WHERE designation=?";
-//        Connection conn = null;
-//
-//        try {
-//            conn = ConnectionConfigurator.getConnection();
-//            PreparedStatement stmt = conn.prepareStatement(query);
-//            stmt.setString(1, "Branch Manager");
-//            ResultSet rs = stmt.executeQuery();
+
 
     public List<Employee> getAllBMs() throws SQLException {
         List<Employee> employeeList = new ArrayList<>();
@@ -143,28 +134,7 @@ public class EmployeeDao {
     }
 
 
-//            while (rs.next()) {
-//                Employee employee = new Employee(
-//                        rs.getInt("id"),
-//                        rs.getString("emp_no"),
-//                        rs.getString("name"),
-//                        rs.getString("email"),
-//                        rs.getString("branch_code"),
-//                        rs.getBigDecimal("salary"),
-//                        rs.getString("designation")
-//                );
-//                System.out.println(employee.name + "\n");
-//                employeeList.add(employee);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (conn != null) {
-//                conn.close();
-//            }
-//        }
-//        return employeeList;
-//    }
+
 
     // Method to update an existing employee's details
     public void updateEmployee(Employee employee) {
