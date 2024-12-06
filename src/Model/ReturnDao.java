@@ -30,9 +30,10 @@ public class ReturnDao {
                         rs.getDouble("Price"),
                         rs.getInt("Quantity"),
                         rs.getDouble("TotalPrice"),
-                        rs.getInt("InvoiceNumber")
+                        rs.getInt("InvoiceNumber"),
+                        rs.getInt("branchID")
                 );
-                System.out.println("Sale is \t"+sale.getSaleId()+" "+sale.getProdName()+" "+sale.getProdId()+" "+sale.getInvoiceNumber()+" "+sale.getQuantity()+" "+sale.getPrice());
+                System.out.println("Sale is \t"+sale.getSaleID()+" "+sale.getProdName()+" "+sale.getProdId()+" "+sale.getInvoiceNumber()+" "+sale.getQuantity()+" "+sale.getPrice());
                 salesList.add(sale); // Add to the list
             }
         } catch (SQLException e) {
