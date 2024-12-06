@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ReturnController;
+import Model.LoggedEmp;
 import Model.Sale;
 import Model.SaleTableModel;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class SaleTableView extends JFrame {
     private JTable salesTable;
+   private LoggedEmp loggedEmp = LoggedEmp.getInstance();
     private ReturnController returnController = new ReturnController();
 
     public SaleTableView(String invoice) {
@@ -135,6 +137,7 @@ public class SaleTableView extends JFrame {
                 try {
                     saleToUpdate.setQuantity(Integer.parseInt(quantityField.getText()));
 
+                    System.out.println("loggedEmp.getBranch()\t"+loggedEmp.getBranch());
                     // Optionally, update the database (commented out)
                     // returnController.redirect_sale_Update(saleToUpdate);
 
