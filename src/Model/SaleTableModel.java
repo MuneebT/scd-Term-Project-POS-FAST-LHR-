@@ -32,7 +32,7 @@ public class SaleTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Sale sale = salesList.get(rowIndex);
         switch (columnIndex) {
-            case 0: return sale.getSaleId();
+            case 0: return sale.getSaleID();
             case 1: return sale.getProdId();
             case 2: return sale.getProdName();
             case 3: return sale.getPrice();
@@ -53,7 +53,7 @@ public class SaleTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Sale sale = salesList.get(rowIndex);
         switch (columnIndex) {
-            case 0: sale.setSaleId(Integer.parseInt((String) aValue)); break;
+            case 0: sale.setSaleID(Integer.parseInt((String) aValue)); break;
             case 1: sale.setProdId(Integer.parseInt((String) aValue)); break;
             case 2: sale.setProdName((String) aValue); break;
             case 3: sale.setPrice((Double) aValue); break;

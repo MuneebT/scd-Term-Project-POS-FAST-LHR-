@@ -100,7 +100,7 @@ public class DBInitializer {
     }
 
 
-    void makeSureInventoryTableExists() throws SQLException {
+    void makeSureInventoryTableExists() throws SQLException{
         String sql = "CREATE TABLE IF NOT EXISTS Inventory ("
                 + "    ProductID INT PRIMARY KEY AUTO_INCREMENT,"
                 + "    ProductName VARCHAR(100) NOT NULL,"
