@@ -30,7 +30,7 @@ public class Main {
 //        //Inventory func calls
 //        InventoryDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
 //                ,1200,1300,1);
-new ManageInventoryView();
+//new ManageInventoryView();
 
 //        VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
   //      ,"GUjranwala","Lahore","Punjab","Pakistan");
