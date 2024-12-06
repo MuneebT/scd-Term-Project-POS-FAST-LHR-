@@ -7,6 +7,7 @@ public class Inventory {
     private String productCategory;
     private int costPrice;
     private int salePrice;
+    //branch id attribute here
 
 
     public Inventory() {
