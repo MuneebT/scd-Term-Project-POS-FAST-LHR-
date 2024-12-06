@@ -107,7 +107,9 @@ public class DBInitializer {
                 + "    ProductQuantity INT DEFAULT 0,"
                 + "    ProductCategory VARCHAR(50),"
                 + "    CostPrice INT DEFAULT 0,"
-                + "    SalePrice INT DEFAULT 0"
+                + "    SalePrice INT DEFAULT 0,"
+                + "    BranchID INT,"
+                + "    FOREIGN KEY (BranchID) REFERENCES Branch(branchID)"
                 + ");";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
@@ -118,6 +120,8 @@ public class DBInitializer {
             throw new RuntimeException("Failed to create the Inventory table", e);
         }
     }
+
+
 
     void makeSureOrderTableExists() throws SQLException{
         String sql = "CREATE TABLE IF NOT EXISTS `Order` (" +
@@ -175,6 +179,7 @@ public class DBInitializer {
             throw new RuntimeException("Failed to create the Sale table", e);
         }
     }
+
 
 
 }
