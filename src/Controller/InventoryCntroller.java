@@ -17,8 +17,8 @@ public class InventoryCntroller {
         InventoryDAO.update_data_into_inventory_db(id,quantity,costprice,saleprice);
     }
 
-    public void redirect_Inventory_Insert_request(String name, int quantity, String category, int cp, int sp) {
-        InventoryDAO.insertDataIntoInventoryDb(name, quantity, category, cp, sp);
+    public void redirect_Inventory_Insert_request(String name, int quantity, String category, int cp, int sp,int b_id) {
+        InventoryDAO.insertDataIntoInventoryDb(name, quantity, category, cp, sp,b_id);
     }
 
     public LinkedList<String> redirectProductConcatenatedDataRequest(){

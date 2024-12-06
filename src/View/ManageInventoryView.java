@@ -24,22 +24,22 @@ public class ManageInventoryView extends JFrame {
         setBounds(100, 100, 900, 600); // Adjusted width after removing vendor columns
 
         String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "ProdctCategory", "CostPrice",
-                "SalePrice", "Delete", "Update"};
+                "SalePrice","BranchID", "Delete", "Update"};
 
         Object[][] data = ic.redirect_object_array();
 
         // Add Delete and Update as button text in the data
-        for (int i = 0; i < data.length; i++) {
-            data[i] = new Object[]{
-                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], "Delete", "Update"
-            };
-        }
+//        for (int i = 0; i < data.length; i++) {
+//            data[i] = new Object[]{
+//                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], "Delete", "Update"
+//            };
+//        }
 
         // Create DefaultTableModel
         DefaultTableModel model = new DefaultTableModel(data, columnname) {
             public boolean isCellEditable(int row, int column) {
                 // Allow editing only for Delete and Update columns
-                return column == 6 || column == 7;
+                return column == 7 || column == 8;
             }
         };
 
@@ -78,22 +78,6 @@ public class ManageInventoryView extends JFrame {
         setVisible(true);
     }
 
-    public void refreshTable() {
-        SwingUtilities.invokeLater(() -> {
-            // Fetch updated data from the controller
-            Object[][] updatedData = ic.redirect_object_array();
-
-            // Update the table model
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // Clear existing rows
-            for (Object[] row : updatedData) {
-                Object[] rowData = {
-                        row[0], row[1], row[2], row[3], row[4], row[5], "Delete", "Update"
-                };
-                model.addRow(rowData);
-            }
-        });
-    }
 
     // ButtonRenderer to render buttons in the Delete and Update columns
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -168,8 +152,5 @@ public class ManageInventoryView extends JFrame {
             return super.stopCellEditing();
         }
 
-        public void updateCompleted() {
-            refreshTable();
-        }
     }
 }

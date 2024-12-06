@@ -630,7 +630,29 @@ public class BranchDAO {
         }
         return data;
     }
-
+public static LinkedList<Branch> getAllBranches(){
+    LinkedList<Branch> branches=new LinkedList<>();
+        temp=ConnectionConfigurator.getConnection();
+    try {
+    String sql="SELECT * FROM branch";
+    Statement s=temp.createStatement();
+    ResultSet rs=s.executeQuery(sql);
+    while  (rs.next()){
+        int id=rs.getInt(1);
+        String name=rs.getString(2);
+        String city=rs.getString(3);
+        String status=rs.getString(4);
+        String address=rs.getString(5);
+        String phoneno=rs.getString(6);
+        int noofemployees=rs.getInt(7);
+        branches.add(new Branch(id,name,city,status,address,phoneno,noofemployees));
+    }
+    }
+    catch (Exception e){
+        e.printStackTrace();
+    }
+    return branches;
+}
 
 
 

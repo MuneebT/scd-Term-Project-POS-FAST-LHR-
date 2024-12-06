@@ -1,5 +1,6 @@
 package View;
 
+import Controller.BranchManagementController;
 import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 
@@ -7,15 +8,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 public class AddInventoryView extends JFrame {
     private JButton btnAdd;
     private ImageIcon img;
     private JLabel imagelabel;
-    private JLabel p_quantity, costprice, saleprice, p_name, p_category;
+    private JLabel p_quantity, costprice, saleprice, p_name, p_category, p_branch;
     private JTextField tfquantity, tfprice, tfsaleprice, tfname, tfcategory;
+    private JComboBox<String> branchComboBox; // ComboBox for Branch
     private InventoryCntroller ic = new InventoryCntroller();
-
+private BranchManagementController bmc=new BranchManagementController();
     public AddInventoryView() {
         setTitle("Add Inventory");
         setLayout(null); // Absolute positioning
@@ -71,11 +77,21 @@ public class AddInventoryView extends JFrame {
         tfsaleprice = new JTextField();
         tfsaleprice.setBounds(580, 230, 180, 30);
 
+        // Branch Selection
+        p_branch = new JLabel("Select Branch");
+        p_branch.setFont(new Font("Arial", Font.BOLD, 15));
+        p_branch.setBounds(420, 280, 150, 30);
+
+        LinkedList<String> branchdata=bmc.redirectConcatenatedData();
+        branchComboBox = new JComboBox<String>(branchdata.toArray(new String[0]));
+        branchComboBox.setBounds(580, 280, 180, 30);
+
+
         // Add Button
         btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.CYAN);
         btnAdd.setFont(new Font("Arial", Font.BOLD, 14));
-        btnAdd.setBounds(580, 300, 100, 40);
+        btnAdd.setBounds(580, 330, 100, 40);
 
         btnAdd.addActionListener(new ActionListener() {
             @Override
@@ -86,9 +102,13 @@ public class AddInventoryView extends JFrame {
                     String category = tfcategory.getText();
                     int costPrice = Integer.parseInt(tfprice.getText());
                     int salePrice = Integer.parseInt(tfsaleprice.getText());
+                    String selectedBranch = (String) branchComboBox.getSelectedItem();
+                    StringTokenizer st=new StringTokenizer(selectedBranch,"_");
+                    int branchid=Integer.parseInt(st.nextToken());
+                    String branchname=st.nextToken();
 
-                    // Updated to exclude vendor parameters
-                    ic.redirect_Inventory_Insert_request(name, quantity, category, costPrice, salePrice);
+                     ic.redirect_Inventory_Insert_request(name, quantity, category, costPrice, salePrice, branchid);
+
                     dispose();
                 }
             }
@@ -106,10 +126,13 @@ public class AddInventoryView extends JFrame {
         add(tfprice);
         add(saleprice);
         add(tfsaleprice);
+        add(p_branch);
+        add(branchComboBox);
         add(btnAdd);
 
         setVisible(true);
     }
+
 
     // Validate Inputs
     private boolean validateInputs() {
