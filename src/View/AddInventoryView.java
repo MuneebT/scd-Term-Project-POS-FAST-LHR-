@@ -1,8 +1,10 @@
 package View;
 
 import Controller.BranchManagementController;
+import Controller.CategoryController;
 import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
+import Model.Category;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,13 +21,17 @@ public class AddInventoryView extends JFrame {
     private JLabel imagelabel;
     private JLabel p_quantity, costprice, saleprice, p_name, p_category, p_branch;
     private JTextField tfquantity, tfprice, tfsaleprice, tfname, tfcategory;
-    private JComboBox<String> branchComboBox; // ComboBox for Branch
+    private JComboBox<String> branchComboBox;
+    private JComboBox<String> category;
+    private LinkedList<String> categorytype=new LinkedList<>();
+    private LinkedList<Category> categories=new LinkedList<>();
     private InventoryCntroller ic = new InventoryCntroller();
+    private CategoryController cc=new CategoryController();
 private BranchManagementController bmc=new BranchManagementController();
     public AddInventoryView() {
         setTitle("Add Inventory");
         setLayout(null); // Absolute positioning
-        setBounds(100, 100, 800, 600); // Adjusted height after removing vendor fields
+        setBounds(100, 100, 800, 600);
         setResizable(false);
         getContentPane().setBackground(Color.WHITE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -54,12 +60,18 @@ private BranchManagementController bmc=new BranchManagementController();
         tfquantity.setBounds(580, 80, 180, 30);
 
         // Category
-        p_category = new JLabel("Enter Category");
+        p_category = new JLabel("Select Category");
         p_category.setFont(new Font("Arial", Font.BOLD, 15));
         p_category.setBounds(420, 130, 150, 30);
 
-        tfcategory = new JTextField();
-        tfcategory.setBounds(580, 130, 180, 30);
+
+        categories=cc.redirectgetAllCategoriesRequest();
+        for(int i=0;i<categories.size();i++){
+            categorytype.add(categories.get(i).gettype());
+        }
+        category= new JComboBox<>(categorytype.toArray(new String[0]));
+        JScrollPane scrollPane=new JScrollPane(category);
+        scrollPane.setBounds(580, 130, 180, 30);
 
         // Cost Price
         costprice = new JLabel("Enter Cost Price");
@@ -99,7 +111,7 @@ private BranchManagementController bmc=new BranchManagementController();
                 if (validateInputs()) {
                     String name = tfname.getText();
                     int quantity = Integer.parseInt(tfquantity.getText());
-                    String category = tfcategory.getText();
+                    String selectedcategory =(String) category.getSelectedItem();
                     int costPrice = Integer.parseInt(tfprice.getText());
                     int salePrice = Integer.parseInt(tfsaleprice.getText());
                     String selectedBranch = (String) branchComboBox.getSelectedItem();
@@ -107,7 +119,7 @@ private BranchManagementController bmc=new BranchManagementController();
                     int branchid=Integer.parseInt(st.nextToken());
                     String branchname=st.nextToken();
 
-                     ic.redirect_Inventory_Insert_request(name, quantity, category, costPrice, salePrice, branchid);
+                     ic.redirect_Inventory_Insert_request(name, quantity, selectedcategory, costPrice, salePrice, branchid);
 
                     dispose();
                 }
@@ -121,7 +133,7 @@ private BranchManagementController bmc=new BranchManagementController();
         add(p_quantity);
         add(tfquantity);
         add(p_category);
-        add(tfcategory);
+        add(scrollPane);
         add(costprice);
         add(tfprice);
         add(saleprice);
@@ -140,10 +152,7 @@ private BranchManagementController bmc=new BranchManagementController();
             JOptionPane.showMessageDialog(null, "Product name cannot contain numbers");
             return false;
         }
-        if (!namedoesNotContainInteger(tfcategory.getText())) {
-            JOptionPane.showMessageDialog(null, "Category name cannot contain numbers");
-            return false;
-        }
+
         if (!isPositiveInteger(tfquantity.getText(), "Quantity")) return false;
         if (!isPositiveInteger(tfprice.getText(), "Cost Price")) return false;
         if (!isPositiveInteger(tfsaleprice.getText(), "Sale Price")) return false;

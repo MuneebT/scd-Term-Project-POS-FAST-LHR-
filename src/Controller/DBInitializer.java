@@ -11,11 +11,12 @@ public class DBInitializer {
         makeSureLoginTableExists();
         makeSureEmployeeTableExists();
         makeSureVendorTableExists();
-
+        makeSUreCategoryTableexists();
         makeSureInventoryTableExists();
         makeSureOrderTableExists();
         makeSureInvoiceTableExists();
         makeSureSaleTableExists();
+
     }
 
     void makeSureBranchTableExists() throws SQLException {
@@ -100,17 +101,18 @@ public class DBInitializer {
     }
 
 
-    void makeSureInventoryTableExists() throws SQLException{
-        String sql = "CREATE TABLE IF NOT EXISTS Inventory ("
-                + "    ProductID INT PRIMARY KEY AUTO_INCREMENT,"
-                + "    ProductName VARCHAR(100) NOT NULL,"
-                + "    ProductQuantity INT DEFAULT 0,"
-                + "    ProductCategory VARCHAR(50),"
-                + "    CostPrice INT DEFAULT 0,"
-                + "    SalePrice INT DEFAULT 0,"
-                + "    BranchID INT,"
-                + "    FOREIGN KEY (BranchID) REFERENCES Branch(branchID)"
-                + ");";
+    void makeSureInventoryTableExists() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS Inventory (" +
+                "    ProductID INT PRIMARY KEY AUTO_INCREMENT," +
+                "    ProductName VARCHAR(100) NOT NULL," +
+                "    ProductQuantity INT DEFAULT 0," +
+                "    ProductCategory VARCHAR(50)," +
+                "    CostPrice INT DEFAULT 0," +
+                "    SalePrice INT DEFAULT 0," +
+                "    BranchID INT," +
+                "    FOREIGN KEY (BranchID) REFERENCES Branch(branchID)," +
+                "    FOREIGN KEY (ProductCategory) REFERENCES Category(CategoryType)" +
+                ");";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -123,23 +125,28 @@ public class DBInitializer {
 
 
 
-    void makeSureOrderTableExists() throws SQLException{
+
+    void makeSureOrderTableExists() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS `Order` (" +
-                "ProductID INT," +
-                "ProductName VARCHAR(255)," +
-                "ProductQuantity INT," +
-                "VendorID INT," +
-                "VendorName VARCHAR(255)," +
-                "CONSTRAINT FK_Product FOREIGN KEY (ProductID) REFERENCES Inventory(ProductID) ON DELETE NO ACTION ON UPDATE NO ACTION," +
-                "CONSTRAINT FK_Vendor FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID) ON DELETE NO ACTION ON UPDATE NO ACTION);";
+                "    ProductID INT," +
+                "    ProductName VARCHAR(255)," +
+                "    ProductQuantity INT," +
+                "    VendorID INT," +
+                "    VendorName VARCHAR(255)," +
+                "    BranchID INT," +
+                "    CONSTRAINT FK_Product FOREIGN KEY (ProductID) REFERENCES Inventory(ProductID) ON DELETE NO ACTION ON UPDATE NO ACTION," +
+                "    CONSTRAINT FK_Vendor FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID) ON DELETE NO ACTION ON UPDATE NO ACTION," +
+                "    CONSTRAINT FK_Branch FOREIGN KEY (BranchID) REFERENCES Inventory(BranchID) ON DELETE NO ACTION ON UPDATE NO ACTION" +
+                ");";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to create the Inventory table", e);
+            throw new RuntimeException("Failed to create the Order table", e);
         }
     }
+
 
     void makeSureInvoiceTableExists() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS Invoice (" +
@@ -184,6 +191,33 @@ public class DBInitializer {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to create the Sale table", e);
+        }
+    }
+
+    void makeSUreCategoryTableexists() throws SQLException{
+        String sql = "CREATE TABLE IF NOT EXISTS Category (" +
+                "CategoryID INT PRIMARY KEY AUTO_INCREMENT, " +
+                "CategoryType VARCHAR(20) UNIQUE NOT NULL" +
+                ");";
+
+        Connection temp=null;
+        try{
+            temp=ConnectionConfigurator.getConnection();
+            PreparedStatement ps=temp.prepareStatement(sql);
+            ps.execute();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(temp!=null){
+                    temp.close();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

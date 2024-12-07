@@ -23,21 +23,21 @@ public class ManageOrderView extends JFrame {
         setLayout(null);
         setBounds(100, 100, 900, 600); // Adjusted width after removing vendor columns
 
-        String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "VendorID", "VendorName", "Delete", "Update"};
+        String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "VendorID", "VendorName","BranchID", "Delete", "Update"};
 
         Object[][] data = oc.redirectGatherOrderDatarequest();
 
         // Add Delete and Update as button text in the data
-        for (int i = 0; i < data.length; i++) {
-            data[i] = new Object[]{
-                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], "Delete", "Update"
-            };
-        }
+//        for (int i = 0; i < data.length; i++) {
+//            data[i] = new Object[]{
+//                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4],data[i][5], "Delete", "Update"
+//            };
+//        }
 
         DefaultTableModel model = new DefaultTableModel(data, columnname) {
             public boolean isCellEditable(int row, int column) {
                 // Allow editing only for Delete and Update columns
-                return column == 5 || column == 6;
+                return column == 6 || column == 7;
             }
         };
 
@@ -77,22 +77,7 @@ public class ManageOrderView extends JFrame {
         setVisible(true);
     }
 
-    public void refreshTable() {
-        SwingUtilities.invokeLater(() -> {
-            // Fetch updated data from the controller
-            Object[][] updatedData = oc.redirectGatherOrderDatarequest();
 
-            // Update the table model
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // Clear existing rows
-            for (Object[] row : updatedData) {
-                Object[] rowData = {
-                        row[0], row[1], row[2], row[3], row[4], row[5], "Delete", "Update"
-                };
-                model.addRow(rowData);
-            }
-        });
-    }
 
     // ButtonRenderer to render buttons in the Delete and Update columns
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -107,6 +92,7 @@ public class ManageOrderView extends JFrame {
         }
     }
 
+    // ButtonEditor to handle Delete and Update actions
     // ButtonEditor to handle Delete and Update actions
     class ButtonEditor extends DefaultCellEditor {
         protected JButton button;
@@ -132,11 +118,33 @@ public class ManageOrderView extends JFrame {
                         ((DefaultTableModel) table.getModel()).removeRow(row); // Remove from UI
                     }
                 } else if (label.equals("Update")) {
-                    int confirm = JOptionPane.showConfirmDialog(null, "Do you want to Update?");
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        // Placeholder for update functionality (implement as needed)
-                       new UpdateOrderView(getproductID(),getProductName(),getProductQuantity(),getVendorID()
-                       ,getVendorName());
+
+                    if (row >= 0) {
+                        try {
+                            int confirm = JOptionPane.showConfirmDialog(null, "Do you want to Delete?");
+                            if (confirm == JOptionPane.YES_OPTION) {
+                                int productId = getproductID();
+                                String productName = getProductName();
+                                int productQuantity = getProductQuantity();
+                                int vendorId = getVendorID();
+                                String vendorName = getVendorName();
+
+                                // Ensure that no fields are null or invalid
+                                if (productId != -1 && productName != null && productQuantity >= 0 && vendorId != -1 && vendorName != null) {
+                                    new UpdateOrderView(productId, productName, productQuantity, vendorId, vendorName);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Invalid data for update.");
+                                }
+
+                            }
+
+                        }
+                        catch(Exception ex){
+                            JOptionPane.showMessageDialog(null, "Error retrieving data: " + ex.getMessage());
+
+                        }
+                    }else {
+                        JOptionPane.showMessageDialog(null, "No row selected or data is incomplete.");
                     }
                 }
             });
@@ -146,10 +154,10 @@ public class ManageOrderView extends JFrame {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             this.row = row;
 
-            // Set the button text based on the column index (5 for Delete, 6 for Update)
-            if (column == 5) {
+            // Set the button text based on the column index (6 for Delete, 7 for Update)
+            if (column == 6) {
                 label = "Delete";  // Delete button
-            } else if (column == 6) {
+            } else if (column == 7) {
                 label = "Update";  // Update button
             }
 
@@ -170,7 +178,9 @@ public class ManageOrderView extends JFrame {
             return super.stopCellEditing();
         }
     }
-   public int getproductID(){
+
+
+    public int getproductID(){
         int id= (int) table.getValueAt(table.getSelectedRow(),0);
         return id;
    }

@@ -1,26 +1,31 @@
 package View;
 
-import Controller.DataEntryOperatorController;
 import Controller.OrderController;
+import Controller.BranchManagementController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 import java.util.regex.*;
+
 public class UpdateOrderView extends JFrame {
 
     // Declare components
-    private JLabel lblProductName, lblProductQuantity, lblVendorName;
+    private JLabel lblProductName, lblProductQuantity, lblVendorName, lblBranchID;
     private JTextField txtProductName, txtProductQuantity, txtVendorName;
     private JButton btnUpdate;
     private ImageIcon img;
     private JLabel imagelabel;
+    private JComboBox<String> comboBranchID;
     private OrderController oc = new OrderController();
+    private BranchManagementController bmc = new BranchManagementController();
 
     public UpdateOrderView(int p_id, String p_name, int p_quantity, int v_id, String v_name) {
         // Set the frame title
-        setTitle("Add Order");
+        setTitle("Update Order");
 
         // Set layout to null for absolute positioning
         setLayout(null);
@@ -73,21 +78,56 @@ public class UpdateOrderView extends JFrame {
         txtVendorName.setText(v_name);
         add(txtVendorName);
 
+        // Branch ID ComboBox and Label
+        lblBranchID = new JLabel("Branch ID:");
+        lblBranchID.setBounds(420, 250, 150, 30);
+        add(lblBranchID);
+
+        // Fetch branch data from controller
+        LinkedList<String> branchData = bmc.redirectConcatenatedData();
+        comboBranchID = new JComboBox<>(branchData.toArray(new String[0]));
+
+        // Set the default selected branch ID (optional)
+        for (int i = 0; i < branchData.size(); i++) {
+            String branchEntry = branchData.get(i);
+            // If the branch ID is found, set it as selected
+            if (branchEntry.startsWith(String.valueOf(p_id) + "_")) {
+                comboBranchID.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        // Wrap the ComboBox in a JScrollPane to handle large data sets
+        JScrollPane scrollPane = new JScrollPane(comboBranchID);
+        scrollPane.setBounds(580, 250, 150, 30);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        add(scrollPane);
+
         // Create and position the Update button
         btnUpdate = new JButton("Update");
-        btnUpdate.setBounds(510, 270, 100, 40); // Button centered horizontally below the fields
+        btnUpdate.setBounds(510, 320, 100, 40); // Button centered horizontally below the fields
         add(btnUpdate);
 
         // Make the frame visible
         setVisible(true);
+
+        // Button ActionListener to handle update
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (validateproductquantity() && isValidName() && isValidInteger()) {
-                    String newProductname = txtProductName.getText();
+                if (validateProductQuantity() && isValidName() && isValidInteger()) {
+                    String newProductName = txtProductName.getText();
                     int newProductQuantity = Integer.parseInt(txtProductQuantity.getText());
-                    String newVendorname = txtVendorName.getText();
-                    oc.redirectOrderUpdateRequest(p_id, newProductname, newProductQuantity, newVendorname);
+                    String newVendorName = txtVendorName.getText();
+                    String selectedBranch = (String) comboBranchID.getSelectedItem();
+                    StringTokenizer st = new StringTokenizer(selectedBranch, "_");
+                    int branchID = Integer.parseInt(st.nextToken());
+
+                    // Call the controller to update the order
+                    oc.redirectOrderUpdateRequest(p_id, newProductName, newProductQuantity, newVendorName, branchID);
+
                     JOptionPane.showMessageDialog(null, "Data Updated In DB");
                     dispose();
                 }
@@ -95,37 +135,40 @@ public class UpdateOrderView extends JFrame {
         });
     }
 
-    public boolean validateproductquantity() {
+    // Validate Product Quantity (must be non-negative)
+    public boolean validateProductQuantity() {
         int quantity = Integer.parseInt(txtProductQuantity.getText());
         if (quantity < 0) {
+            JOptionPane.showMessageDialog(null, "Product quantity must be positive.");
             return false;
         }
         return true;
     }
 
+    // Validate that the vendor name contains only alphabetic characters
     public boolean isValidName() {
-        String vendorname = txtVendorName.getText();
-
+        String vendorName = txtVendorName.getText();
         String pattern = "^[A-Za-z\\s]+$";
 
-
         Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(vendorname);
+        Matcher matcher = compiledPattern.matcher(vendorName);
 
-
-        return matcher.matches();
+        if (!matcher.matches()) {
+            JOptionPane.showMessageDialog(null, "Vendor name must only contain letters and spaces.");
+            return false;
+        }
+        return true;
     }
 
+    // Validate that the product quantity is an integer
     public boolean isValidInteger() {
         String str = txtProductQuantity.getText();
         try {
-
             Integer.parseInt(str);
             return true;
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null,"DOnt Enter Characters");
+            JOptionPane.showMessageDialog(null, "Product quantity must be a valid number.");
             return false;
         }
-
     }
 }
