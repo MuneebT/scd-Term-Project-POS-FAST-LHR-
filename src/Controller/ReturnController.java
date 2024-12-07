@@ -30,6 +30,27 @@ ReturnDao returnDao=new ReturnDao();
         // Call the method in ReturnDao to update the sale in the database
        return returnDao.updateSale(saleId, prodId, prodName, price, quantity, totalPrice, invoiceNumber, branchId);
     }
+    public boolean redirect_update_inentory(int productId, int quantityReturned,int branchId)
+    {
+        return returnDao.updateInventory(productId,quantityReturned,branchId);
+
+    }
+    public double redirect_get_Total_bill_sales(int invoice,int branchID)
+    {
+        double totalBill=returnDao.get_Total_bill_sales(invoice,branchID);
+        return totalBill;
+    }
+    public double redirect_get_old_bill_sales(int invoice,int branchID)
+    {
+        return returnDao.get_old_bill_invoice(invoice,branchID);
+    }
+
+    public boolean redirect_update_invoice(int invoiceNo,int branchId,double TotalBill,double gst,double balance )
+    {
+        returnDao.update_invoice(invoiceNo,branchId,TotalBill,gst,balance);
+        return true;
+    }
+
 
 
 }

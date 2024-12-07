@@ -159,9 +159,42 @@ public class SaleTableView extends JFrame {
                     System.out.println("Quantity returned: " + returnedQuantity);
 
                     // Call function to update sale in the list/database and adjust inventory
-                    updateSaleInDatabase(saleToUpdate, returnedQuantity);
+                    if(updateSaleInDatabase(saleToUpdate, returnedQuantity))
+                    {
+                        System.out.println("Sale updated. New Quantity: " + quantity + ", New Total Price: " + total);
 
-                    System.out.println("Sale updated. New Quantity: " + quantity + ", New Total Price: " + total);
+                    }
+                    else
+                    {
+                        System.out.println("Sale not updated.\n");
+
+                    }
+
+                    if(updateInventory(saleToUpdate.getProdId(),returnedQuantity,saleToUpdate.getBranchID()))
+                    {
+                        System.out.println("Inventory updated. ");
+
+                    }
+                    else
+                    {
+                        System.out.println("Inventory not updated.\n");
+
+                    }
+
+
+                    if(updateInvoice(saleToUpdate.getInvoiceNumber(),saleToUpdate.getBranchID()))
+                    {
+                        System.out.println("Invoice updated. ");
+
+                    }
+                    else
+                    {
+                        System.out.println("Invoice not updated.\n");
+
+                    }
+
+
+
 
                     ((AbstractTableModel) table.getModel()).fireTableRowsUpdated(row, row);
 
@@ -172,30 +205,55 @@ public class SaleTableView extends JFrame {
         }
 
         // Function to update sale in the list/database and adjust inventory
-        private void updateSaleInDatabase(Sale updatedSale, int returnedQuantity) {
+        private boolean updateSaleInDatabase(Sale updatedSale, int returnedQuantity) {
             // Placeholder for actual database or data list update logic
             // For now, it updates the sales list directly
             sales.set(row, updatedSale);
             System.out.println(updatedSale.getSaleId() + " " + updatedSale.getProdId() + " " + updatedSale.getProdName() +
                     " " + updatedSale.getPrice() + " " + updatedSale.getTotalPrice() + " " + updatedSale.getInvoiceNumber() +
                     " " + updatedSale.getBranchID());
-
             boolean res = returnController.redirect_update_sale(updatedSale);
-            if (res) {
-                // Update the inventory by adding back the returned quantity
-                updateInventory(updatedSale.getProdId(), returnedQuantity);
-                JOptionPane.showMessageDialog(null, "Sale Table Updated Successfully\n");
-            } else {
-                JOptionPane.showMessageDialog(null, "Sale Table cannot be Updated Successfully\n");
-            }
-            System.out.println("Sale updated in the database list.");
+//            if (res) {
+//                // Update the inventory by adding back the returned quantity
+//                if(updateInventory(updatedSale.getProdId(), returnedQuantity,updatedSale.getBranchID()))
+//                {
+//                    JOptionPane.showMessageDialog(null, "Inventory Table Updated Successfully\n");
+//
+//                }
+//                else
+//                {
+//                    JOptionPane.showMessageDialog(null, "Inventory Table cannot be Updated Successfully\n");
+//                }
+//            }
+          //  System.out.println("Sale updated in the database list.");
+            return res;
         }
 
         // Placeholder method for updating inventory logic
-        private void updateInventory(int productId, int quantityReturned) {
+        private boolean updateInventory(int productId, int quantityReturned, int branchId) {
             // Add logic here to update the inventory in the database or data list
             System.out.println("Adding " + quantityReturned + " units back to the inventory for Product ID: " + productId);
+            if(returnController.redirect_update_inentory(productId,quantityReturned,branchId)){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
+        private boolean updateInvoice(int invoiceNo,int branchId)
+        {
+            double newBill=returnController.redirect_get_Total_bill_sales(invoiceNo, branchId);
+            double gst=newBill*0.16;
+            newBill=newBill+gst;
+            double oldBill=returnController.redirect_get_old_bill_sales(invoiceNo,branchId);
+            double balance =oldBill-newBill;
+            returnController.redirect_update_invoice(invoiceNo,branchId,newBill,gst,balance);
+            return true;
+        }
+
+
     }
 
     // Wrapper table model to add an "Actions" column

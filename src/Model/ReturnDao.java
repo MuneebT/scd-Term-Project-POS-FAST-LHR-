@@ -89,4 +89,102 @@ public class ReturnDao {
         return false;
     }
 
+    public boolean updateInventory(int productId, int quantityReturned, int branchId) {
+        String query = "UPDATE inventory SET quantity = quantity + ? WHERE productID = ? AND BranchID = ?";
+        try (Connection conn = ConnectionConfigurator.getConnection(); // Replace with your connection method
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the query parameters
+            stmt.setInt(1, quantityReturned);
+            stmt.setInt(2, productId);
+            stmt.setInt(3, branchId);
+
+            // Execute the update
+            int rowsAffected = stmt.executeUpdate();
+
+            // Return true if at least one row was updated
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+            return false; // Indicate failure
+        }
+    }
+    public double get_Total_bill_sales(int invoice,int branchID)
+    {
+        double totalBill = 0.0;
+        String sumQuery = "SELECT SUM(`TotalPrice`) FROM `sale` WHERE `InvoiceNumber` = ? AND `branchID` = ?";
+
+        try (   Connection conn = ConnectionConfigurator.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sumQuery)) {
+            preparedStatement.setInt(1, invoice);
+            preparedStatement.setInt(2, branchID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                totalBill = resultSet.getDouble(1); // Retrieve the sum from the result set
+                System.out.println("Total Bill is "+totalBill+"\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalBill;
+    }
+
+    public double get_old_bill_invoice(int invoiceID, int branchID) {
+        double totalBill = 0.0;
+        String query = "SELECT `TotalBill` FROM `invoice` WHERE `InvoiceID` = ? AND `branchID` = ?";
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, invoiceID);
+            preparedStatement.setInt(2, branchID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                totalBill = resultSet.getDouble("TotalBill"); // Retrieve the TotalBill from the invoice table
+                System.out.println("Old Bill for InvoiceID " + invoiceID + " is: " + totalBill);
+            } else {
+                System.out.println("No matching record found for InvoiceID: " + invoiceID + " and BranchID: " + branchID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalBill;
+    }
+
+    public boolean update_invoice(int invoiceNo, int branchId, double TotalBill, double gst, double balance) {
+        String updateQuery = "UPDATE `invoice` SET `TotalBill` = ?, `GST` = ?, `Balance` = ? WHERE `InvoiceID` = ? AND `branchID` = ?";
+        boolean isUpdated = false;
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(updateQuery)) {
+
+            preparedStatement.setDouble(1, TotalBill);
+            preparedStatement.setDouble(2, gst);
+            preparedStatement.setDouble(3, balance);
+            preparedStatement.setInt(4, invoiceNo);
+            preparedStatement.setInt(5, branchId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                isUpdated = true;
+                System.out.println("Invoice updated successfully for InvoiceID: " + invoiceNo + " and BranchID: " + branchId);
+            } else {
+                System.out.println("No matching record found for InvoiceID: " + invoiceNo + " and BranchID: " + branchId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
+    }
+
+
+
+
+
+
+
 }
