@@ -16,6 +16,7 @@ public class DBInitializer {
         makeSureOrderTableExists();
         makeSureInvoiceTableExists();
         makeSureSaleTableExists();
+        makeSUreCategoryTableexists();
 
     }
 

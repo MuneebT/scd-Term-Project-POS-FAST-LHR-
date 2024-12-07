@@ -14,6 +14,7 @@ public class InventoryDAO {
     private static final LinkedList<Integer> costprice = new LinkedList<>();
     private static final LinkedList<Integer> saleprice = new LinkedList<>();
 private static BranchManagementController bmc=new BranchManagementController();
+
     public static Object[][] gatherData() {
         LinkedList<Integer> p_id = readProductIDFromDB();
         LinkedList<String> productName = readProductNameFromDB();
