@@ -1,32 +1,38 @@
 package Model;
+
 public class Sale {
-    private int saleID;
+    private int saleId;
     private int prodId;
     private String prodName;
     private double price;
     private int quantity;
     private double totalPrice;
     private int invoiceNumber;
-    private int branchID;
+    private int branchID; // Added branchID field
 
-    public Sale(int saleID, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
-        this.saleID = saleID;
+    // Constructor including branchID
+    public Sale(int saleId, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+        this.saleId = saleId;
         this.prodId = prodId;
         this.prodName = prodName;
         this.price = price;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.invoiceNumber = invoiceNumber;
-        this.branchID = branchID;
+        this.branchID = branchID; // Initialize branchID
     }
 
-
-    public int getSaleID() {
-        return saleID;
+    // Default constructor
+    public Sale() {
     }
 
-    public void setSaleID(int saleID) {
-        this.saleID = saleID;
+    // Getters and Setters
+    public int getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(int saleId) {
+        this.saleId = saleId;
     }
 
     public int getProdId() {
@@ -78,10 +84,10 @@ public class Sale {
     }
 
     public int getBranchID() {
-        return branchID;
+        return branchID; // Getter for branchID
     }
 
     public void setBranchID(int branchID) {
-        this.branchID = branchID;
+        this.branchID = branchID; // Setter for branchID
     }
 }

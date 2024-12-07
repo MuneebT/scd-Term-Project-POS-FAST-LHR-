@@ -54,7 +54,7 @@ public class DBInitializer {
     }
 
 
-    
+
 
     void makeSureEmployeeTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
@@ -225,5 +225,4 @@ public class DBInitializer {
 
 
 }
-
 
