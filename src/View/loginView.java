@@ -10,7 +10,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.sql.SQLException;
 
 class loginView extends JFrame {
-    LoginController loginController=new LoginController();
+    LoginController loginController = new LoginController();
+
     public loginView() {
         // Setup frame
         setTitle("Login Page");
@@ -21,11 +22,12 @@ class loginView extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
+        // Title Label
         JLabel titleLabel = new JLabel("Login");
-        titleLabel.setBounds(379, 100, 300, 40); // Set position and size
+        titleLabel.setBounds(379, 100, 300, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87); // RGB for #795757
-        titleLabel.setForeground(customColor); // Set font, style, and size
+        Color customColor = new Color(121, 87, 87);
+        titleLabel.setForeground(customColor);
 
         ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -34,12 +36,14 @@ class loginView extends JFrame {
         titleLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        // Background Image
         ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
         backgroundLabel.setBounds(0, 0, 800, 800);
 
+        // Rounded Panel
         JPanel pt1 = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -53,7 +57,7 @@ class loginView extends JFrame {
             }
         };
         pt1.setLayout(null);
-        pt1.setBounds(120, 70, 550, 420);
+        pt1.setBounds(120, 70, 550, 450);
         pt1.setOpaque(false);
 
         ImageIcon bk1 = new ImageIcon("src/resources/bulb3.jpg");
@@ -62,7 +66,8 @@ class loginView extends JFrame {
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);
         backgroundLabel1.setBounds(0, 0, 270, 800);
 
-        JLabel customerIdLabel = new JLabel( "User Name");
+        // User Name Field
+        JLabel customerIdLabel = new JLabel("User Name");
         customerIdLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         customerIdLabel.setForeground(Color.BLACK);
         customerIdLabel.setBounds(439, 150, 100, 30);
@@ -72,6 +77,7 @@ class loginView extends JFrame {
         customerIdField.setForeground(Color.GRAY);
         customerIdField.setText("Enter User Name:");
 
+        // Password Field
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         passwordLabel.setForeground(Color.BLACK);
@@ -82,31 +88,37 @@ class loginView extends JFrame {
         passwordField.setForeground(Color.GRAY);
         passwordField.setText("Enter Password");
 
-
-
+        // Designation Dropdown
         JLabel designationlb = new JLabel("Designation:");
-        designationlb.setBounds(439, 280, 150, 40); // Increased width to match dropdown
+        designationlb.setBounds(439, 280, 150, 40);
         designationlb.setFont(new Font("Arial", Font.PLAIN, 16));
-        designationlb.setForeground(Color.black);
+        designationlb.setForeground(Color.BLACK);
 
-
-        String[] designationTypes = {"Super Admin", "Branch Manager","Data Entry Operator","Cashier"};
+        String[] designationTypes = {"Super Admin", "Branch Manager", "Data Entry Operator", "Cashier"};
         JComboBox<String> designationTypeComboBox = new JComboBox<>(designationTypes);
         designationTypeComboBox.setBounds(439, 330, 150, 40);
-        designationTypeComboBox.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font for ComboBox
+        designationTypeComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
         designationTypeComboBox.setForeground(customColor);
 
+        // Branch Field
+        JLabel branchLabel = new JLabel("Branch");
+        branchLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        branchLabel.setForeground(Color.BLACK);
+        branchLabel.setBounds(439, 370, 150, 30);
 
+        final JTextField branchField = new JTextField();
+        branchField.setBounds(439, 400, 150, 32);
+        branchField.setForeground(Color.GRAY);
+        branchField.setText("Enter Branch");
 
-
-
-        // Error message label (initially hidden)
-        final JLabel errorLabel = new JLabel("Wrong Name/Password/Designation");
-        errorLabel.setBounds(403, 420, 350, 30);
+        // Error Label
+        final JLabel errorLabel = new JLabel("Wrong Credentials");
+        errorLabel.setBounds(413, 110, 350, 30);
         errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
         errorLabel.setForeground(Color.RED);
-        errorLabel.setVisible(false); // Set to hidden initially
+        errorLabel.setVisible(false);
 
+        // Focus Listeners
         customerIdField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -143,122 +155,115 @@ class loginView extends JFrame {
             }
         });
 
-        RoundedButton openFPage = new RoundedButton("Submit");
-        openFPage.setBounds(416, 310, 110, 32);
-        openFPage.addActionListener(new ActionListener() {
+        branchField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (branchField.getText().equals("Enter Branch")) {
+                    branchField.setText("");
+                    branchField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (branchField.getText().isEmpty()) {
+                    branchField.setText("Enter Branch");
+                    branchField.setForeground(Color.GRAY);
+                }
+            }
+        });
+        designationTypeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedDesignation = (String) designationTypeComboBox.getSelectedItem();
+                if ("Super Admin".equals(selectedDesignation)) {
+                    branchField.setEnabled(false); // Disable Branch Field
+                    branchField.setText("N/A");   // Set default text
+                } else {
+                    branchField.setEnabled(true); // Enable Branch Field
+                    branchField.setText("");      // Clear the field
+                }
+            }
+        });
+        if ("Super Admin".equals(designationTypeComboBox.getSelectedItem())) {
+            branchField.setEnabled(false); // Disable if Super Admin is selected by default
+            branchField.setText("N/A");
+        } else {
+            branchField.setEnabled(true); // Enable for other roles
+        }
+
+        // Buttons
+        RoundedButton submitBtn = new RoundedButton("Submit");
+        submitBtn.setBounds(416, 390, 110, 32);
+        submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userName = customerIdField.getText();
                 String password = passwordField.getText();
                 String designation = (String) designationTypeComboBox.getSelectedItem();
-                if (designation == "Super Admin") {
+                String branch = branchField.getText();
 
-                    try {
-                        if (loginController.redirect_validateUser(userName,password,designation)) {
-                            //  new custDesktop();
+                try {
+                    if (loginController.redirect_validateUser(userName, password, designation)) {
+                        loginController.redirect_set_credientials(userName, password, designation,branch);
+                        if (designation.equals("Super Admin")) {
                             new SADashboardView();
-                            dispose();
-                            //   JOptionPane.showMessageDialog(null, "Matched");
-                        } else {
-                            errorLabel.setVisible(true); // Show error message
-                        }
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-                else if(designation=="Branch Manager")
-                {
-                    try {
-                        if (loginController.redirect_validateUser(userName,password,designation)) {
-                            //  new custDesktop();
+                        } else if (designation.equals("Branch Manager")) {
                             new BMDashboardView();
-                            dispose();
-                            //   JOptionPane.showMessageDialog(null, "Matched");
-                        } else {
-                            errorLabel.setVisible(true); // Show error message
-                        }
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-
-                } else if (designation=="Cashier") {
-                    try {
-                        if (loginController.redirect_validateUser(userName,password,designation)) {
-                            //  new custDesktop();
-                            new CashierDashboard();
-                            dispose();
-                            //   JOptionPane.showMessageDialog(null, "Matched");
-                        } else {
-                            errorLabel.setVisible(true); // Show error message
-                        }
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                }
-                else if(designation=="Data Entry Operator")
-                {
-                    try {
-                        if (loginController.redirect_validateUser(userName,password,designation)) {
-                            //  new custDesktop();
+                        } else if (designation.equals("Data Entry Operator")) {
                             new DEODashboardView();
-                            dispose();
-                            //   JOptionPane.showMessageDialog(null, "Matched");
-                        } else {
-                            errorLabel.setVisible(true); // Show error message
+                        } else if (designation.equals("Cashier")) {
+                            new CashierDashboard();
                         }
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
+                        dispose();
+                    } else {
+                        errorLabel.setVisible(true);
                     }
-
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
-
         });
 
-        openFPage.setBackground(customColor);
-        openFPage.setForeground(Color.WHITE);
-        openFPage.setFont(new Font("Impact", Font.PLAIN, 16));
+        submitBtn.setBackground(customColor);
+        submitBtn.setForeground(Color.WHITE);
+        submitBtn.setFont(new Font("Impact", Font.PLAIN, 16));
+        submitBtn.setVisible(true);
 
-        RoundedButton openLoginPage = new RoundedButton("Back");
-        openLoginPage.setBounds(295, 310, 110, 32);
-        openLoginPage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new UserSelectionView();
-            }
+        RoundedButton backBtn = new RoundedButton("Back");
+        backBtn.setBounds(295, 390, 110, 32);
+        backBtn.addActionListener(e -> {
+            dispose();
+            new UserSelectionView();
         });
 
-        openLoginPage.setBackground(customColor);
-        openLoginPage.setForeground(Color.WHITE);
-        openLoginPage.setFont(new Font("Impact", Font.PLAIN, 16));
+        backBtn.setBackground(customColor);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setFont(new Font("Impact", Font.PLAIN, 16));
+        backBtn.setVisible(true);
 
+        // Add components to the panel
         mainPanel.add(customerIdLabel);
         mainPanel.add(customerIdField);
         mainPanel.add(passwordLabel);
         mainPanel.add(passwordField);
-        mainPanel.add(errorLabel); // Add the error message label
-        mainPanel.add(titleLabel);
         mainPanel.add(designationlb);
         mainPanel.add(designationTypeComboBox);
-        mainPanel.add(pt1); // Add rounded panel
-        pt1.add(openLoginPage); // Add the Back button inside pt1
-        pt1.add(openFPage); // Add the Submit button inside pt1
-        pt1.add(backgroundLabel1); // Add background to pt1
-
-        mainPanel.add(backgroundLabel); // Add full background to the main panel
-
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        mainPanel.add(branchLabel);
+        mainPanel.add(branchField);
+        mainPanel.add(errorLabel);
+        pt1.add(backBtn);
+        pt1.add(submitBtn);
+        pt1.add(backgroundLabel1);
+        mainPanel.add(pt1);
+        mainPanel.add(titleLabel);
+        mainPanel.add(backgroundLabel);
 
         add(mainPanel);
         setVisible(true);
     }
 
     public static void main(String[] args) {
-        loginView sc=new loginView();
-
+        new loginView();
     }
 }
