@@ -90,7 +90,7 @@ public class ReturnDao {
     }
 
     public boolean updateInventory(int productId, int quantityReturned, int branchId) {
-        String query = "UPDATE inventory SET quantity = quantity + ? WHERE productID = ? AND BranchID = ?";
+        String query = "UPDATE inventory SET ProductQuantity = ProductQuantity + ? WHERE productID = ? AND BranchID = ?";
         try (Connection conn = ConnectionConfigurator.getConnection(); // Replace with your connection method
              PreparedStatement stmt = conn.prepareStatement(query)) {
 

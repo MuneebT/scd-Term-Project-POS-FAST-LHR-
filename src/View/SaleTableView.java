@@ -245,6 +245,7 @@ public class SaleTableView extends JFrame {
         private boolean updateInvoice(int invoiceNo,int branchId)
         {
             double newBill=returnController.redirect_get_Total_bill_sales(invoiceNo, branchId);
+            System.out.println("\n\n Total Bill is \t"+newBill);
             double gst=newBill*0.16;
             newBill=newBill+gst;
             double oldBill=returnController.redirect_get_old_bill_sales(invoiceNo,branchId);
