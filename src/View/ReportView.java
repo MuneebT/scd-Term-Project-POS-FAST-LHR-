@@ -63,7 +63,7 @@ public class ReportView {
         }
     }
 
-    // Main GUI Method
+    // Main GUI Metho
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("View Reports");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
