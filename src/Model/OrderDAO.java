@@ -1,15 +1,12 @@
 package Model;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 import Connection.ConnectionConfigurator;
 public class OrderDAO {
-    public static void insertdataintoOrderTable(int p_id,String p_name,int p_quantity,int v_id,String v_name){
-        String sql="INSERT INTO `Order`  (ProductID,PRoductName,ProductQuantity,VendorID,VendorName) Values(?,?,?,?,?)";
+    public static void insertdataintoOrderTable(int p_id,String p_name,int p_quantity,int v_id,String v_name,int b_id){
+        String sql="INSERT INTO `Order`  (ProductID,PRoductName,ProductQuantity,VendorID,VendorName,BranchID) Values(?,?,?,?,?,?)";
         try{
             Connection temp= ConnectionConfigurator.getConnection();
             PreparedStatement ps=temp.prepareStatement(sql);
@@ -18,6 +15,7 @@ public class OrderDAO {
             ps.setInt(3,p_quantity);
             ps.setInt(4,v_id);
             ps.setString(5,v_name);
+            ps.setInt(6,b_id);
             int num=ps.executeUpdate();
             if(num>0){
                 JOptionPane.showMessageDialog(null,"Data Inserted in DB");
@@ -160,6 +158,22 @@ public class OrderDAO {
         }
         return v_name;
     }
+    public static LinkedList<Integer> readBranchIDfromOrderTable(){
+        String sql="SELECT BranchID FROM `Order`";
+        LinkedList<Integer> branchid=new LinkedList<>();
+        try{
+            Connection temp=ConnectionConfigurator.getConnection();
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while(rs.next()){
+                int id=rs.getInt(1);
+                branchid.add(id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return branchid;
+    }
 
     public static Object[][] gatherOrderData(){
         LinkedList<Integer> p_id=readProductIDfromOrderDB();
@@ -167,20 +181,22 @@ public class OrderDAO {
         LinkedList<Integer> p_quantity=readProductQuantityFromOrderDB();
         LinkedList<Integer> v_id=readVendorIDFromOrderDB();
         LinkedList<String> v_name=readVendorNameFromOrderDB();
-        Object data[][]=new Object[p_id.size()][7];
+        LinkedList<Integer> b_id=readBranchIDfromOrderTable();
+        Object data[][]=new Object[p_id.size()][8];
         for (int i = 0; i < p_id.size(); i++) {
             data[i][0] = p_id.get(i);
             data[i][1] = p_name.get(i);
             data[i][2] = p_quantity.get(i);
             data[i][3] = v_id.get(i);
             data[i][4] = v_name .get(i);
-            data[i][5] = "Delete";
-            data[i][6] = "Update";
+            data[i][5]=b_id.get(i);
+            data[i][6] = "Delete";
+            data[i][7] = "Update";
         }
         return data;
     }
-    public static void updateDataIntoOrderTable(int productid,String productname,int productquantity,String vendorname){
-        String sql="UPDATE `Order` SET ProductName=?, ProductQuantity=?,VendorName=? WHERE ProductID="+productid;
+    public static void updateDataIntoOrderTable(int productid,String productname,int productquantity,String vendorname,int b_id){
+        String sql="UPDATE `Order` SET ProductName=?, ProductQuantity=?,VendorName=?,BranchID=? WHERE ProductID="+productid;
         Connection temp=null;
         try{
             temp= ConnectionConfigurator.getConnection();
@@ -188,6 +204,7 @@ public class OrderDAO {
             ps.setString(1,productname);
             ps.setInt(2,productquantity);
             ps.setString(3,vendorname);
+            ps.setInt(4,b_id);
             int num=ps.executeUpdate();
             if(num>0){
                 System.out.println("Data Updated in DB");
