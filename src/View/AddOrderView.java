@@ -37,7 +37,7 @@ public class AddOrderView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Image icon
-        img = new ImageIcon("update.jpg");
+        img = new ImageIcon("src/resources/login.png");
 
         // Image label
         imagelabel = new JLabel(img);
@@ -72,7 +72,8 @@ public class AddOrderView extends JFrame {
 
         // Add Button
         btnAdd = new JButton("Add");
-        btnAdd.setBackground(Color.CYAN);
+        btnAdd.setForeground(Color.white);
+        btnAdd.setBackground(Color.decode("#415a77"));
         btnAdd.setFont(new Font("Arial", Font.BOLD, 14));
         btnAdd.setBounds(580, 300, 100, 40);
 
@@ -113,5 +114,9 @@ public class AddOrderView extends JFrame {
         add(btnAdd);
 
         setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new AddOrderView();
     }
 }

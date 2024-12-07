@@ -50,7 +50,7 @@ public class BMDashboardView extends JFrame {
 
 
         // Load and scale the icon image
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo1.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         headerlabel0.setIcon(scaledIcon);

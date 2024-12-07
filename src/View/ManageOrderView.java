@@ -201,4 +201,8 @@ public class ManageOrderView extends JFrame {
         String name= (String) table.getValueAt(table.getSelectedRow(),4);
         return name;
     }
+
+    public static void main(String[] args) {
+        new ManageOrderView();
+    }
 }

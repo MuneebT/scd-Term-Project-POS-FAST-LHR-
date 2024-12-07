@@ -31,14 +31,20 @@ public class UpdateVendorView extends JFrame {
         JLabel titleLabel = new JLabel("Update Vendor");
         titleLabel.setBounds(0, 30, 800, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87);
-        titleLabel.setForeground(customColor);
+        Color customColor =Color.decode("#415a77");
+        titleLabel.setForeground((Color.decode("#fff0f3")));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        titleLabel.setIcon(scaledIcon);
+        titleLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Background image
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
-        Image scaledImage = bk.getImage().getScaledInstance(800, 1200, Image.SCALE_SMOOTH); // Adjust size for added fields
-        JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage));
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
+        Image scaledImage1 = bk.getImage().getScaledInstance(800, 1200, Image.SCALE_SMOOTH); // Adjust size for added fields
+        JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage1));
         backgroundLabel.setBounds(0, 0, 800, 1200);
 
         // Rounded panel setup
@@ -55,7 +61,7 @@ public class UpdateVendorView extends JFrame {
             }
         };
         formPanel.setLayout(null);
-        formPanel.setBounds(100, 100, 600, 1000); // Adjust for additional fields
+        formPanel.setBounds(100, 90, 600, 600); // Adjust for additional fields
         formPanel.setOpaque(false);
 
         // Vendor ID label and field
@@ -209,6 +215,30 @@ public class UpdateVendorView extends JFrame {
     }
 
     public static void main(String[] args) {
-      //  new UpdateVendorView();
+        int vendorID = 101;
+        String name = "Tech Supplies Co.";
+        String contactPerson = "John Doe";
+        String phone = "123-456-7890";
+        String email = "contact@techsupplies.com";
+        String address = "123 Innovation Street";
+        String city = "Techville";
+        String stateProvince = "California";
+        String country = "USA";
+
+        // Create an instance of UpdateVendorView
+        UpdateVendorView vendorView = new UpdateVendorView(
+                vendorID,
+                name,
+                contactPerson,
+                phone,
+                email,
+                address,
+                city,
+                stateProvince,
+                country
+        );
+
+        // Example usage of vendorView
+        System.out.println("Vendor View Created Successfully!");
     }
 }

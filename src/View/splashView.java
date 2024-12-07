@@ -10,7 +10,7 @@ public class splashView extends JFrame {
 
     public splashView() {
         // Load background image
-        backgroundImage = new ImageIcon("src/resources/background.jpg"); // Ensure this image is in your project directory
+        backgroundImage = new ImageIcon("src/resources/Splash.png"); // Ensure this image is in your project directory
 
         // Set up JFrame
         setTitle("Splash Screen");
@@ -31,83 +31,10 @@ public class splashView extends JFrame {
         panel.setLayout(null); // Set layout to null for absolute positioning
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Add "Welcome to" label
         JLabel welcomeLabel = new JLabel("Welcome to");
         welcomeLabel.setFont(new Font("Serif", Font.PLAIN, 24)); // Set font and size
-        welcomeLabel.setForeground(Color.WHITE); // Set text color (e.g., white)
+        welcomeLabel.setForeground(Color.decode("#415a77")); // Set text color (e.g., white)//#415a77
         welcomeLabel.setBounds(120, 50, 200, 30); // Adjust position (x, y, width, height)
         welcomeLabel.setOpaque(false); // Transparent background
         panel.add(welcomeLabel);
@@ -115,11 +42,11 @@ public class splashView extends JFrame {
         // Add "QuickBill" label with an icon
         JLabel titleLabel = new JLabel("QuickBill");
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 32)); // Set a larger, bold font
-        titleLabel.setForeground(new Color(121, 87, 87)); // Set custom color for the text
+        titleLabel.setForeground(Color.decode("#415a77")); // Set custom color for the text
         titleLabel.setBounds(125, 90, 200, 40); // Adjust position and size
 
         // Load and scale the icon image
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Larger size for better visibility
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         titleLabel.setIcon(scaledIcon); // Add the icon to the label
@@ -135,7 +62,7 @@ public class splashView extends JFrame {
         progressBar.setValue(0);
         progressBar.setString(null); // Remove any text from the progress bar
         progressBar.setStringPainted(false); // Do not display the percentage
-        progressBar.setForeground(new Color(121, 87, 87)); // Set progress bar color
+        progressBar.setForeground(Color.decode("#fff0f3")); // Set progress bar color
         progressBar.setBackground(Color.BLACK); // Set background color
         progressBar.setBorderPainted(false);
 
@@ -146,7 +73,7 @@ public class splashView extends JFrame {
         // Add loading message under progress bar
         JLabel loadingLabel = new JLabel("Loading, please wait...");
         loadingLabel.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font and size
-        loadingLabel.setForeground(Color.WHITE); // Set text color
+        loadingLabel.setForeground(Color.decode("#415a77")); // Set text color
         loadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loadingLabel.setBounds(100, 270, 300, 20); // Position it right under the progress bar
         panel.add(loadingLabel);

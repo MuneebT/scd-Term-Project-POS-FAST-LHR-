@@ -22,7 +22,7 @@ public class AddCategoryView extends JFrame {
         setLayout(null);
 
         // Load the image
-        img = new ImageIcon("update.jpg");
+        img = new ImageIcon("src/resources/login.png");
 
         // Image label
         imagelabel = new JLabel(img);
@@ -53,6 +53,10 @@ public class AddCategoryView extends JFrame {
         add(addButton);
 
         setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new AddCategoryView();
     }
 }
 

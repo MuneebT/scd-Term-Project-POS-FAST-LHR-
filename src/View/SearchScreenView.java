@@ -86,4 +86,8 @@ public class SearchScreenView extends JFrame {
         }
         return copieddata;
     }
+
+    public static void main(String[] args) {
+        new SearchScreenView();
+    }
 }

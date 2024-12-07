@@ -24,12 +24,12 @@ class loginView extends JFrame {
 
         // Title Label
         JLabel titleLabel = new JLabel("Login");
-        titleLabel.setBounds(379, 100, 300, 40);
+        titleLabel.setBounds(249, 20, 300, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87);
+        Color customColor = Color.decode("#415a77");
         titleLabel.setForeground(customColor);
 
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo1.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         titleLabel.setIcon(scaledIcon);
@@ -37,7 +37,7 @@ class loginView extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Background Image
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
@@ -60,7 +60,7 @@ class loginView extends JFrame {
         pt1.setBounds(120, 70, 550, 450);
         pt1.setOpaque(false);
 
-        ImageIcon bk1 = new ImageIcon("src/resources/bulb3.jpg");
+        ImageIcon bk1 = new ImageIcon("src/resources/login1.png");
         Image scaledImage1 = bk1.getImage().getScaledInstance(270, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);
@@ -113,7 +113,7 @@ class loginView extends JFrame {
 
         // Error Label
         final JLabel errorLabel = new JLabel("Wrong Credentials");
-        errorLabel.setBounds(413, 110, 350, 30);
+        errorLabel.setBounds(413, 120, 350, 30);
         errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
         errorLabel.setForeground(Color.RED);
         errorLabel.setVisible(false);
@@ -256,7 +256,7 @@ class loginView extends JFrame {
         pt1.add(submitBtn);
         pt1.add(backgroundLabel1);
         mainPanel.add(pt1);
-        mainPanel.add(titleLabel);
+        pt1.add(titleLabel);
         mainPanel.add(backgroundLabel);
 
         add(mainPanel);

@@ -13,7 +13,7 @@ public class UserSelectionView extends JFrame {
 
     public UserSelectionView() {
         // Load background image
-        backgroundImage = new ImageIcon("src/resources/background.jpg"); // Ensure this image is in your project directory
+        backgroundImage = new ImageIcon("src/resources/Splash.png"); // Ensure this image is in your project directory
 
         // Set up JFrame
         setTitle("User Selection");
@@ -50,10 +50,10 @@ public class UserSelectionView extends JFrame {
 
 
         // Create labels with background color
-        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"  SuperAdmin", new Color(121, 87, 87), 56, 56);
-        RoundedLabel ManagerLabel = new RoundedLabel(scaledOriginalIcon2,"  ManagerLabel", new Color(121, 87, 87), 56, 56);
-        RoundedLabel DataEntryOperatorLabel = new RoundedLabel(scaledOriginalIcon2,"  Data Entry Operator", new Color(121, 87, 87), 56, 56);
-        RoundedLabel CashierLabel = new RoundedLabel(scaledOriginalIcon2,"  Cashier", new Color(121, 87, 87), 56, 56);
+        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"  SuperAdmin", Color.decode("#415a77"), 56, 56);
+        RoundedLabel ManagerLabel = new RoundedLabel(scaledOriginalIcon2,"  ManagerLabel", Color.decode("#415a77"), 56, 56);
+        RoundedLabel DataEntryOperatorLabel = new RoundedLabel(scaledOriginalIcon2,"  Data Entry Operator", Color.decode("#415a77"), 56, 56);
+        RoundedLabel CashierLabel = new RoundedLabel(scaledOriginalIcon2,"  Cashier", Color.decode("#415a77"), 56, 56);
 
         // Set different icons, font, and alignment for labels
         setupLabel(SuperAdminLabel, SuperAdminIcon);
