@@ -1,6 +1,7 @@
 package View;
 
 import Controller.BranchManagementController;
+import Model.BranchDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +10,8 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-public class UpdateScreenView extends JFrame {
-    private BranchManagementController bmc=new BranchManagementController();
-    private JButton btnupdate;
+public class CreateBranchView extends JFrame {
+    private JButton btnCreate;
     private JScrollPane scrollPane;
     private String[] citynames;
     private ImageIcon img;
@@ -21,14 +21,15 @@ public class UpdateScreenView extends JFrame {
     private JComboBox<String> cb_status;
     private JComboBox<String> cb_cityname;
 
-    public UpdateScreenView(int code,String name,String city,String status,String address,String phoneno,int employeecount) {
+         private BranchManagementController bmc=new BranchManagementController();
+    public CreateBranchView() {
 
 
-        setTitle("Update");
+        setTitle("Create Branch");
         setLayout(null); // Still using null layout for absolute positioning
         setBounds(100, 100, 800, 600);
         setResizable(false);
-        getContentPane().setBackground(Color.WHITE);
+        getContentPane().setBackground(Color.darkGray);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Image icon
@@ -42,23 +43,21 @@ public class UpdateScreenView extends JFrame {
         b_phone_no = new JLabel("Enter Phone No");
         b_phone_no.setForeground(Color.BLACK);
         b_phone_no.setFont(new Font("", Font.BOLD, 15));
-        b_phone_no.setBounds(420, 100, 150, 30);
+        b_phone_no.setBounds(420, 170, 150, 30);
 
         // Phone number text field
         tfphoneno = new JTextField();
-        tfphoneno.setBounds(580, 100, 180, 30);
-        tfphoneno.setText(phoneno);
+        tfphoneno.setBounds(580, 170, 180, 30);
 
         // Branch name label
-        b_name = new JLabel("Enter New Name");
+        b_name = new JLabel("Enter Branch Name");
         b_name.setForeground(Color.BLACK);
         b_name.setFont(new Font("", Font.BOLD, 15));
-        b_name.setBounds(420, 170, 150, 30);
+        b_name.setBounds(420, 100, 150, 30);
 
         // Branch name text field
         tfname = new JTextField();
-        tfname.setBounds(580, 170, 180, 30);
-         tfname.setText(name);
+        tfname.setBounds(580, 100, 180, 30);
 
         // Address label
         b_address = new JLabel("Enter Address");
@@ -69,7 +68,6 @@ public class UpdateScreenView extends JFrame {
         // Address text field
         tfaddress = new JTextField();
         tfaddress.setBounds(580, 240, 180, 30);
-         tfaddress.setText(address);
 
         // branch status label
         b_status=new JLabel("Set status");
@@ -82,7 +80,6 @@ public class UpdateScreenView extends JFrame {
         cb_status=new JComboBox<>(branchstatus);
         //cb_status.setSelectedIndex(0);
         cb_status.setBounds(580,310,150,30);
-         cb_status.setSelectedItem(status);
 
         //city label
         b_city=new JLabel("Select city");
@@ -91,19 +88,22 @@ public class UpdateScreenView extends JFrame {
         b_city.setBounds(420,380,150,30);
 
         // branch address combo box
+
+  
+      
         LinkedList<String> list_citynames=bmc.return_list_of_city_names();
         copy_data(list_citynames);
         cb_cityname=new JComboBox<>(citynames);
-       // cb_cityname.setSelectedIndex(-1);
+        // cb_cityname.setSelectedIndex(-1);
+  
         scrollPane=new JScrollPane(cb_cityname);
         cb_cityname.setBounds(580,380,150,30);
-         cb_cityname.setSelectedItem(city);
 
         // Update button
-        btnupdate = new JButton("Update");
-        btnupdate.setBackground(Color.CYAN);
-        btnupdate.setFont(new Font("", Font.BOLD, 14));
-        btnupdate.setBounds(580, 450, 100, 40);
+        btnCreate = new JButton("Create Branch");
+        btnCreate.setBackground(Color.CYAN);
+        btnCreate.setFont(new Font("", Font.BOLD, 14));
+        btnCreate.setBounds(580, 450, 150, 40);
 
         // Adding components to frame
         add(imagelabel);
@@ -117,44 +117,45 @@ public class UpdateScreenView extends JFrame {
         add(b_status);
         add(cb_status);
         add(cb_cityname);
-        add(btnupdate);
+        add(btnCreate);
 
         setVisible(true);
 
         // Button action listener
-        btnupdate.addActionListener(new ActionListener() {
+        btnCreate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()
-                && validate_is_cityname_combobox_empty()) {
-                    String branchname=tfname.getText();
-                    String cityname=(String)cb_cityname.getSelectedItem();
-                    String branchstatus=(String) cb_status.getSelectedItem();
-                    String branchaddress=tfaddress.getText();
-                    String branchphoneno=tfphoneno.getText();
-                          bmc.redirect_update_request(code,branchname,cityname,branchstatus,branchaddress,branchphoneno);
-                    JOptionPane.showMessageDialog(UpdateScreenView.this, "Data Updated Succesfully");
+                if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()&& validate_is_cityname_combobox_empty())
+                {
 
-                    dispose();
-                      new BranchManagementView();
+
+
+                    BranchDAO branchDAO=new BranchDAO();
+                    branchDAO.createBranch(tfname.getText(),cb_cityname.getSelectedItem().toString(),cb_status.getSelectedItem().toString(),tfaddress.getText(),tfphoneno.getText());
+                    JOptionPane.showMessageDialog(CreateBranchView.this, "Branch Added Succesfully");
+
+                    tfphoneno.setText("");
+                    tfaddress.setText("");
+                    tfname.setText("");
+
                 } else {
 
-//                    tfphoneno.setText("");
-//                    tfaddress.setText("");
-//                    tfname.setText("");
+
                 }
             }
         });
     }
 
     //copying data from citynames list to array
-private void copy_data(LinkedList<String> data){
+    private void copy_data(LinkedList<String> data){
         citynames=new String[data.size()];
         for(int i=0;i<data.size();i++){
             citynames[i]=data.get(i);
         }
 }
+    
+
     private boolean validatePhoneNumber() {
         String phoneNo = tfphoneno.getText();
         boolean isValidLength = verify_Phone_No_length(phoneNo);
@@ -222,3 +223,4 @@ private void copy_data(LinkedList<String> data){
     }
 
 }
+
