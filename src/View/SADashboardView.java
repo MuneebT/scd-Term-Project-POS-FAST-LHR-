@@ -57,7 +57,7 @@ public class SADashboardView extends JFrame {
 
 
         // Load and scale the icon image
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         headerlabel0.setIcon(scaledIcon);
@@ -199,9 +199,38 @@ public class SADashboardView extends JFrame {
         titleLabel5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Managing");
+                new ReportView();
             }
         });
+
+
+
+        // Create rounded label for "Change Password" tile
+        RoundedLabel titleLabel6 = new RoundedLabel(scaledOriginalIcon1, "Click here to Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel6.setFont(new Font("Arial", Font.PLAIN, 18));
+        titleLabel6.setForeground(customColor);
+
+// Create label for the text
+        RoundedLabel titleLabel6_1 = new RoundedLabel("  Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel6_1.setBounds(9, 0, 280, 40);
+        titleLabel6_1.setFont(new Font("Impact", Font.PLAIN, 18));
+        titleLabel6_1.setForeground(customColor);
+        titleLabel6.add(titleLabel6_1);
+
+// Set bounds for the new tile (6th tile)
+       // Adjust position and size
+
+// Add action listener to open the password change dialog
+        titleLabel6.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showChangePasswordDialog();  // Call the method to show the password dialog
+            }
+        });
+
+// Add the new tile to the panel
+
+
 
 
         // Back button
@@ -229,7 +258,7 @@ public class SADashboardView extends JFrame {
 
         // Adjusted position for the fifth card
         titleLabel5.setBounds(750, 50, 300, 200); // Make this larger for emphasis on reports
-
+        titleLabel6.setBounds(750, 300, 300, 200);
 
 
 
@@ -265,6 +294,7 @@ public class SADashboardView extends JFrame {
         pt1.add(titleLabel3);
         pt1.add(titleLabel4);
         pt1.add(titleLabel5);
+        pt1.add(titleLabel6);
         footerPanel.add(openFirstPageButton);
 
         // Add components to the main panel

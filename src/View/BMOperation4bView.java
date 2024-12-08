@@ -13,7 +13,7 @@ public class BMOperation4bView extends JFrame {
 
     public BMOperation4bView() {
         // Load background image
-        backgroundImage = new ImageIcon("src/resources/background.jpg"); // Ensure this image is in your project directory
+        backgroundImage = new ImageIcon("src/resources/Splash.png"); // Ensure this image is in your project directory
 
         // Set up JFrame
         setTitle("User Selection");
@@ -50,8 +50,8 @@ public class BMOperation4bView extends JFrame {
 
 
         // Create labels with background color
-        RoundedLabel AddEmployeeLabel = new RoundedLabel(scaledOriginalIcon1,"  Delete Employee", new Color(121, 87, 87), 56, 56);
-        RoundedLabel ManageEmployeeLabel = new RoundedLabel(scaledOriginalIcon2,"  Update Employee", new Color(121, 87, 87), 56, 56);
+        RoundedLabel AddEmployeeLabel = new RoundedLabel(scaledOriginalIcon1,"  Delete Employee", Color.decode("#415a77"), 56, 56);
+        RoundedLabel ManageEmployeeLabel = new RoundedLabel(scaledOriginalIcon2,"  Update Employee", Color.decode("#415a77"), 56, 56);
 
         // Set different icons, font, and alignment for labels
         setupLabel(AddEmployeeLabel, AddEmployeeIcon);

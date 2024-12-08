@@ -14,7 +14,6 @@ public class InventoryDAO {
     private static final LinkedList<Integer> costprice = new LinkedList<>();
     private static final LinkedList<Integer> saleprice = new LinkedList<>();
 private static BranchManagementController bmc=new BranchManagementController();
-
     public static Object[][] gatherData() {
         LinkedList<Integer> p_id = readProductIDFromDB();
         LinkedList<String> productName = readProductNameFromDB();
@@ -174,13 +173,17 @@ private static BranchManagementController bmc=new BranchManagementController();
 
 
     public Inventory getProductById(int productId) {
-        Inventory product = null;
 
-        String query = "SELECT ProductID, ProductName, ProductQuantity, ProductCategory, CostPrice, SalePrice FROM Inventory WHERE ProductID = ?";
+        Inventory product = null;
+        LoggedEmp loggedEmp=LoggedEmp.getInstance();
+        int branchID=Integer.parseInt(loggedEmp.getBranch());
+
+        String query = "SELECT ProductID, ProductName, ProductQuantity, ProductCategory, CostPrice, SalePrice FROM Inventory WHERE ProductID = ? AND BranchID=?";
         try (Connection conn = ConnectionConfigurator.getConnection(); // Get connection
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, productId);
+            pstmt.setInt(2, branchID);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -200,12 +203,15 @@ private static BranchManagementController bmc=new BranchManagementController();
     }
 
     public boolean reduceProductQuantity(int productId, int quantitySold) {
-        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ?";
+        LoggedEmp loggedEmp=LoggedEmp.getInstance();
+        int branchID=Integer.parseInt(loggedEmp.getBranch());
+        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ? AND AND BranchID=?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, quantitySold);
             pstmt.setInt(2, productId);
+            pstmt.setInt(3, branchID);
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0; // Return true if update is successful

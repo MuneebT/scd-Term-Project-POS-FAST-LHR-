@@ -12,22 +12,23 @@ public class ReportDAO {
     {
 
     }
-    public LinkedHashMap<String, Double> fetchData(String reportType, String timeRange) {
+    public LinkedHashMap<String, Double> fetchData(String reportType, String timeRange, String branchID) {
         LinkedHashMap<String, Double> data = new LinkedHashMap<>();
         String query = "";
 
         try (Connection conn = ConnectionConfigurator.getConnection()) {
             switch (reportType) {
                 case "Sales":
-                    query = generateSalesQuery(timeRange);
+                    query = generateSalesQuery(timeRange,branchID);
                     break;
                 case "Remaining Stock":
-                    query = generateRemainingStockQuery();
+                    query = generateRemainingStockQuery(branchID);
                     break;
                 case "Profit":
-                    query = generateProfitQuery(timeRange);
+                    query = generateProfitQuery(timeRange,branchID);
                     break;
             }
+            System.out.println("Query to be Executed"+query);
 
             try (PreparedStatement ps = conn.prepareStatement(query);
                  ResultSet rs = ps.executeQuery()) {
@@ -99,35 +100,35 @@ public class ReportDAO {
     }
 
     // Generate Sales Query
-    private String generateSalesQuery(String timeRange) {
+    private String generateSalesQuery(String timeRange,String branchID) {
         String dateCondition = getDateCondition(timeRange, "Sales");
         return "SELECT MONTH(DateTime) AS Month, WEEKDAY(DateTime) AS Weekday, YEAR(DateTime) AS Year, SUM(TotalBill) AS Value " +
                 "FROM Invoice " +
-                "WHERE " + dateCondition;
+                "WHERE" +" branchID="+branchID+" AND "+ dateCondition ;
     }
 
     // Generate Remaining Stock Query
-    private String generateRemainingStockQuery() {
+    private String generateRemainingStockQuery(String branchID) {
         return "SELECT ProductCategory AS 'Product Category', SUM(ProductQuantity) AS Quantity " +
-                "FROM Inventory " +
-                "GROUP BY ProductCategory";
+                "FROM Inventory " + "WHERE" +" branchID="+branchID+
+                " GROUP BY ProductCategory";
     }
 
     // Generate Profit Query
-    private String generateProfitQuery(String timeRange) {
+    private String generateProfitQuery(String timeRange, String branchID) {
         String dateCondition = getDateCondition(timeRange, "Profit");
         return "SELECT MONTH(DateTime) AS Month, WEEKDAY(DateTime) AS Weekday, YEAR(DateTime) AS Year, SUM(Sale.TotalPrice - (Inventory.CostPrice * Sale.Quantity)) AS Value " +
                 "FROM Sale " +
                 "JOIN Inventory ON Sale.ProdId = Inventory.ProductID " +
                 "JOIN Invoice ON Sale.InvoiceNumber = Invoice.InvoiceID " +
-                "WHERE " + dateCondition;
+                "WHERE" +" Invoice.branchID="+branchID+" AND "+ dateCondition ;
     }
 
     // Determine Date Condition Based on Time Range and Report Type
     private String getDateCondition(String timeRange, String reportType) {
         switch (timeRange) {
             case "Today":
-                return "DATE(DateTime) = CURRENT_DATE  GROUP BY YEAR(DateTime), MONTH(DateTime), WEEKDAY(DateTime)";
+                return "YEARWEEK(DateTime, 1) = YEARWEEK(CURRENT_DATE, 1) GROUP BY WEEKDAY(DateTime) ORDER BY WEEKDAY(DateTime) ASC;";
             case "Weekly":
                 return "YEARWEEK(DateTime, 1) = YEARWEEK(CURRENT_DATE, 1) GROUP BY WEEKDAY(DateTime) ORDER BY WEEKDAY(DateTime) ASC;";
             case "Monthly":
@@ -162,13 +163,13 @@ public class ReportDAO {
     private String getWeekdayName(int weekday) {
         switch (weekday) {
 
-            case 1: return "Monday";
-            case 2: return "Tuesday";
-            case 3: return "Wednesday";
-            case 4: return "Thursday";
-            case 5: return "Friday";
-            case 6: return "Saturday";
-            case 7: return "Sunday";
+            case 0: return "Monday";
+            case 1: return "Tuesday";
+            case 2: return "Wednesday";
+            case 3: return "Thursday";
+            case 4: return "Friday";
+            case 5: return "Saturday";
+            case 6: return "Sunday";
             default: return "";
         }
     }

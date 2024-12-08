@@ -162,6 +162,31 @@ public class DEODashboardView extends JFrame {
         });
 
 
+
+
+        RoundedLabel titleLabel4 = new RoundedLabel(scaledOriginalIcon1,"Click here to Change Password", new Color(34, 34, 59), 50, 50);
+        //  titleLabel3.setBounds(70, 330, 250, 250);
+        titleLabel4.setFont(new Font("Arial", Font.PLAIN, 18));
+        titleLabel4.setForeground(customColor); // Set the font color
+        RoundedLabel titleLabel4_1 = new RoundedLabel("  Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel4_1.setBounds(9,0,280,40);
+        titleLabel4_1.setFont(new Font("Impact", Font.PLAIN, 18));
+        titleLabel4_1.setForeground(customColor);
+        titleLabel4.add(titleLabel4_1);
+
+        titleLabel4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showChangePasswordDialog();
+
+            }
+        });
+
+
+
+        ImageIcon scaledOriginalIcon2 = new ImageIcon(scaledImage2);
+
+
         // Back button
         RoundedButton openFirstPageButton = new RoundedButton("Back");
         openFirstPageButton.setBounds(1200, 490, 110, 40);
@@ -181,6 +206,7 @@ public class DEODashboardView extends JFrame {
 
         // Adjusted position for the third card
         titleLabel3.setBounds(750, 50, 300, 200);
+        titleLabel4.setBounds(50, 300, 300, 200);
 
 
 
@@ -210,6 +236,7 @@ public class DEODashboardView extends JFrame {
         pt1.add(titleLabel1);
         pt1.add(titleLabel2);
         pt1.add(titleLabel3);
+        pt1.add(titleLabel4);
         footerPanel.add(openFirstPageButton);
 
         // Add components to the main panel

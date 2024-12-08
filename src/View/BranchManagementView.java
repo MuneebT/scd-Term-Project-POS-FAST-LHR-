@@ -1,51 +1,92 @@
 package View;
 
 import Controller.BranchManagementController;
-import Model.BranchManagementModel;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
 
-public class BranchManagementView extends JFrame  {
+public class BranchManagementView extends JFrame {
     public JTable bmtable;
     private DefaultTableModel dtm1;
-    private BranchManagementController bmc=new BranchManagementController();
+    private BranchManagementController bmc = new BranchManagementController();
     private JScrollPane bmScroll;
+    private JButton createBranchButton; // Create Branch Button
+    private JButton backButton; // Back Button
 
+    public BranchManagementView() {
+        setTitle("Branch Management");
+        setResizable(false);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(null);
+        setBounds(100, 100, 800, 600);
 
-public BranchManagementView(){
-    setTitle("Branch Management");
-    setResizable(false);
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setLayout(null);
-    setBounds(100, 100, 800, 600);
+        // Add header panel
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setBounds(0, 0, getWidth(), 50);
+        headerPanel.setBackground(new Color(0, 120, 215)); // Blue header background
 
-    // Table column names
-    String[] columnNames = { "ID", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
+        // Title label
+        JLabel titleLabel = new JLabel("Manage Branches");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(Color.WHITE);
 
-    Object[][] data1= bmc.return_object_Array();
+        // Create Branch button
+        createBranchButton = new JButton("Create");
+        createBranchButton.setPreferredSize(new Dimension(100, 30));
+        createBranchButton.setBackground(Color.WHITE);
+        createBranchButton.setForeground(new Color(0, 120, 215));
+        createBranchButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        createBranchButton.addActionListener(e -> {
 
-    // Create the table with data and column names
-    bmtable = new JTable(new DefaultTableModel(data1, columnNames));
+            new CreateBranchView();
 
-    // Set custom renderer and editor for the last two columns (buttons)
-    bmtable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
-    bmtable.getColumn("Delete").setCellEditor(new ButtonEditor(new JCheckBox(), "Delete"));
+        });
 
-    bmtable.getColumn("Update").setCellRenderer(new ButtonRenderer());
-    bmtable.getColumn("Update").setCellEditor(new ButtonEditor(new JCheckBox(), "Update"));
+        // Back button
+        backButton = new JButton("Back");
+        backButton.setPreferredSize(new Dimension(100, 30));
+        backButton.setBackground(Color.WHITE);
+        backButton.setForeground(new Color(0, 120, 215));
+        backButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        backButton.addActionListener(e -> {
+            // Action for Back button
+            JOptionPane.showMessageDialog(this, "Navigating back...");
+            dispose(); // Close the current window
+            new SADashboardView();
+        });
 
-    // Scroll pane
-    bmScroll = new JScrollPane(bmtable);
-    bmScroll.setBounds(0, 50, getWidth(), getHeight());
+        headerPanel.add(titleLabel);
+        headerPanel.add(Box.createHorizontalStrut(20)); // Spacing
+        headerPanel.add(createBranchButton);
+        headerPanel.add(Box.createHorizontalStrut(10)); // Spacing
+        headerPanel.add(backButton);
+        add(headerPanel);
 
-    add(bmScroll);
+        // Table column names
+        String[] columnNames = { "ID", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
 
-    setVisible(true);
-}
+        Object[][] data1 = bmc.return_object_Array();
+
+        // Create the table with data and column names
+        bmtable = new JTable(new DefaultTableModel(data1, columnNames));
+
+        // Set custom renderer and editor for the last two columns (buttons)
+        bmtable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
+        bmtable.getColumn("Delete").setCellEditor(new ButtonEditor(new JCheckBox(), "Delete"));
+
+        bmtable.getColumn("Update").setCellRenderer(new ButtonRenderer());
+        bmtable.getColumn("Update").setCellEditor(new ButtonEditor(new JCheckBox(), "Update"));
+
+        // Scroll pane
+        bmScroll = new JScrollPane(bmtable);
+        bmScroll.setBounds(0, 50, getWidth(), getHeight() - 100); // Adjust height to leave space for header
+        add(bmScroll);
+
+        setVisible(true);
+    }
 
     // Custom renderer for rendering buttons in the table
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -122,44 +163,48 @@ public BranchManagementView(){
         }
     }
 
-
-    //getter to get selected row id
-  public  int get_branch_id(){
-      Object num=bmtable.getValueAt(bmtable.getSelectedRow(),0);
+    // Getter to get selected row id
+    public int get_branch_id() {
+        Object num = bmtable.getValueAt(bmtable.getSelectedRow(), 0);
         return num.hashCode();
     }
 
-    //getter to get branch name
-  public  String get_Branch_name(){
-        Object name=bmtable.getValueAt(bmtable.getSelectedRow(),1);
+    // Getter to get branch name
+    public String get_Branch_name() {
+        Object name = bmtable.getValueAt(bmtable.getSelectedRow(), 1);
         return name.toString();
     }
 
-    //getter to get branch city
-   public String get_branch_city(){
-    Object city=bmtable.getValueAt(bmtable.getSelectedRow(),2);
-    return city.toString();
+    // Getter to get branch city
+    public String get_branch_city() {
+        Object city = bmtable.getValueAt(bmtable.getSelectedRow(), 2);
+        return city.toString();
     }
 
-    //getter to get branch status
-   public String get_branch_status(){
-Object status= bmtable.getValueAt(bmtable.getSelectedRow(),3);
-return  status.toString();
+    // Getter to get branch status
+    public String get_branch_status() {
+        Object status = bmtable.getValueAt(bmtable.getSelectedRow(), 3);
+        return status.toString();
     }
 
-    //getter for branch address
-public    String get_branch_address(){
- Object address=bmtable.getValueAt(bmtable.getSelectedRow(),4);
-    return address.toString();
+    // Getter for branch address
+    public String get_branch_address() {
+        Object address = bmtable.getValueAt(bmtable.getSelectedRow(), 4);
+        return address.toString();
     }
 
     // Getter for branch phone number
     public String get_branch_phoneno() {
-     Object phoneno=bmtable.getValueAt(bmtable.getSelectedRow(),5);
-     return phoneno.toString();
+        Object phoneno = bmtable.getValueAt(bmtable.getSelectedRow(), 5);
+        return phoneno.toString();
     }
-    public int get_branch_employee_count(){
-    Object employeecount=bmtable.getValueAt(bmtable.getSelectedRow(),6);
-    return employeecount.hashCode();
+
+    public int get_branch_employee_count() {
+        Object employeecount = bmtable.getValueAt(bmtable.getSelectedRow(), 6);
+        return employeecount.hashCode();
+    }
+
+    public static void main(String[] args) {
+        new BranchManagementView();
     }
 }

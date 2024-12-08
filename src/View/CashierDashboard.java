@@ -110,8 +110,7 @@ public class CashierDashboard extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                //new EmployeeOperation3_1();
+                new SalesPointScreenTemp();
             }
         });
 
@@ -140,6 +139,30 @@ public class CashierDashboard extends JFrame {
 
 
 
+        RoundedLabel titleLabel3 = new RoundedLabel(scaledOriginalIcon1,"Click here to Change Password", new Color(34, 34, 59), 50, 50);
+        //  titleLabel3.setBounds(70, 330, 250, 250);
+        titleLabel3.setFont(new Font("Arial", Font.PLAIN, 18));
+        titleLabel3.setForeground(customColor); // Set the font color
+        RoundedLabel titleLabel3_1 = new RoundedLabel("Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel3_1.setBounds(9,0,280,40);
+        titleLabel3_1.setFont(new Font("Impact", Font.PLAIN, 18));
+        titleLabel3_1.setForeground(customColor);
+        titleLabel3.add(titleLabel3_1);
+
+        titleLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showChangePasswordDialog();
+                //  new ViewIndividualBill();
+            }
+        });
+
+
+
+
+
+
+
 
 
 
@@ -159,6 +182,7 @@ public class CashierDashboard extends JFrame {
 
         // Adjusted position for the second card
         titleLabel2.setBounds(400, 50, 300, 200);
+        titleLabel3.setBounds(750, 50, 300, 200);
 
 
 
@@ -187,6 +211,7 @@ public class CashierDashboard extends JFrame {
 //        mainPanel.add(titleLabel5);
         pt1.add(titleLabel1);
         pt1.add(titleLabel2);
+        pt1.add(titleLabel3);
         footerPanel.add(openFirstPageButton);
 
         // Add components to the main panel

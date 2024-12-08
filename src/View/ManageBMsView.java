@@ -46,7 +46,7 @@ public class ManageBMsView extends JFrame {
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton backButton = new JButton("Back");
         backButton.setFont(new Font("Impact", Font.PLAIN, 16));
-        backButton.setBackground(new Color(121, 87, 87));
+        backButton.setBackground(Color.decode("#415a77"));
         backButton.setForeground(Color.WHITE);
         backButton.setToolTipText("Click here to return!");
 
