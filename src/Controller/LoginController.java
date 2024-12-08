@@ -11,8 +11,8 @@ public class LoginController {
     public LoginController() {
     }
 
-    public boolean redirect_validateUser(String name,String password,String designation) throws SQLException {
-        return loginDAO.validateUser(name,password,designation);
+    public boolean redirect_validateUser(String name,String password,String designation,String branch) throws SQLException {
+        return loginDAO.validateUser(name,password,designation,branch);
 
     }
     public void redirect_set_credientials(String name,String password,String designation,String branch) throws SQLException {

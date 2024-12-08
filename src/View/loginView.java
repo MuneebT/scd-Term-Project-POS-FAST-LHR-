@@ -204,7 +204,7 @@ class loginView extends JFrame {
                 String branch = branchField.getText();
 
                 try {
-                    if (loginController.redirect_validateUser(userName, password, designation)) {
+                    if (loginController.redirect_validateUser(userName, password, designation,branch)) {
                         loginController.redirect_set_credientials(userName, password, designation,branch);
                         if (designation.equals("Super Admin")) {
                             new SADashboardView();
