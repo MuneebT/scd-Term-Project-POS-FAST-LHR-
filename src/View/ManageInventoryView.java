@@ -131,13 +131,9 @@ else{
                         int costPrice = (Integer) table.getValueAt(row, 4);
                         int salePrice = (Integer) table.getValueAt(row, 5);
 
-                        boolean isconnected=icc.startChecking();
-                        if(isconnected) {
                             new UpdateInventoryView(id, quantity, costPrice, salePrice);
-                        }
-                        else{
-                            storemanageinventoryupdatedata(id,quantity,costPrice,salePrice);
-                        }
+
+
                     }
                 }
             });
@@ -186,28 +182,6 @@ else{
             }
         }
     }
-
-    public void storemanageinventoryupdatedata(int id,int quantity,int costprice,int saleprice){
-        BufferedWriter bw=null;
-        try{
-            bw=new BufferedWriter(new FileWriter("updatemanageinventoryview.txt",true));
-            bw.write(id+","+quantity+","+costprice+","+saleprice);
-            bw.newLine();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        finally {
-            try{
-                if(bw!=null){
-                    bw.close();
-                }
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
     public Object[][] readinventorydata() {
         BufferedReader br = null;
         Object[][] data = null;
@@ -227,13 +201,15 @@ else{
             }
 
             // Convert the LinkedList to an Object[][]
-            data = new Object[lines.size()][5];
+            data = new Object[lines.size()][7];
             for (int i = 0; i < lines.size(); i++) {
                 data[i][0] = Integer.parseInt(lines.get(i)[0]); // Product ID
                 data[i][1] = lines.get(i)[1];                  // Product Name
                 data[i][2] = Integer.parseInt(lines.get(i)[2]); // Product Quantity
                 data[i][3] = Double.parseDouble(lines.get(i)[3]); // Cost Price
                 data[i][4] = Double.parseDouble(lines.get(i)[4]); // Sale Price
+                data[i][5]="Delete";
+                data[i][6]="Update";
             }
 
         } catch (IOException e) {

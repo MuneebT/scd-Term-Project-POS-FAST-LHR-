@@ -12,10 +12,9 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ManageBMsView extends JFrame {
@@ -28,13 +27,20 @@ public class ManageBMsView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Fetch all employees
-        List<Employee> employees = employeeManagementController.redirect_get_All_BMs();
-        System.out.println("BMs fetched: " + employees.size());
+        EmployeeTableModel model=null;
+        boolean isconnected=icc.startChecking();
+        List<Employee> employees=null;
+        if(isconnected) {
+             employees = employeeManagementController.redirect_get_All_BMs();
+            System.out.println("BMs fetched: " + employees.size());
 
-        // Create a custom table model
-        EmployeeTableModel model = new EmployeeTableModel(employees);
-
+            // Create a custom table model
+             model = new EmployeeTableModel(employees);
+        }
+        else{
+            employees=getallemployess();
+            model=new EmployeeTableModel(employees);
+        }
         // Wrap the model to add action buttons
         JTable table = new JTable(new EmployeeButtonTableModel(model));
         table.setRowHeight(70);
@@ -294,4 +300,45 @@ public class ManageBMsView extends JFrame {
             }
         }
     }
+    public LinkedList<Employee> getallemployess() {
+        LinkedList<Employee> employees = new LinkedList<>();
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader("employee.txt"));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                // Split the line into parts
+                String[] parts = line.split(",");
+
+                // Ensure the line contains all the required fields
+                if (parts.length == 6) {
+                    String name = parts[0].trim();
+                    String salary = parts[1].trim();
+                    String empNo = parts[2].trim();
+                    String email = parts[3].trim();
+                    String branchCode = parts[4].trim();
+                    String designation = parts[5].trim();
+
+                    // Create an Employee object and add it to the list
+                    Employee employee = new Employee(name, salary, empNo, email, branchCode, designation);
+                    employees.add(employee);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return employees;
+    }
+
 }

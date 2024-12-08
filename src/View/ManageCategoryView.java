@@ -207,10 +207,11 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
             }
 
             // Convert the LinkedList to an Object[][]
-            data = new Object[lines.size()][2];
+            data = new Object[lines.size()][3];
             for (int i = 0; i < lines.size(); i++) {
                 data[i][0] = lines.get(i)[0]; // ID
                 data[i][1] = lines.get(i)[1]; // Type
+                data[i][2]="Delete";
             }
 
         } catch (IOException e) {

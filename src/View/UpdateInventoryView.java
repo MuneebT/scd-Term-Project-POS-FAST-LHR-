@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 
@@ -13,7 +14,7 @@ public class UpdateInventoryView extends JFrame {
     private JLabel pQuantity, costPrice, salePrice;
     private JTextField tfQuantity, tfPrice, tfSalePrice;
     private InventoryCntroller ic = new InventoryCntroller();
-
+private InternetConnectionChecker icc=new InternetConnectionChecker();
     public UpdateInventoryView(int id, int quantity, int price, int sp) {
         setTitle("Update Inventory");
         setLayout(null); // Using null layout for absolute positioning

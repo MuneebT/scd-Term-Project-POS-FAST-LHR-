@@ -9,11 +9,14 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.sql.*;
+import java.util.LinkedList;
 
+import Connection.InternetConnectionChecker;
 public class ManageVendorView extends JFrame {
     VendorManagementController vendorManagementController = new VendorManagementController();
-
+private static InternetConnectionChecker icc=new InternetConnectionChecker();
     public ManageVendorView() throws SQLException {
         setTitle("Manage Vendors");
         setBounds(100, 100, 1000, 600);
@@ -48,22 +51,27 @@ public class ManageVendorView extends JFrame {
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
         // Fetch data from database
-        ResultSet resultSet = vendorManagementController.redirect_Get_All_Vendors();
-        while (resultSet.next()) {
-            int vendorID = resultSet.getInt("VendorID");
-            String name = resultSet.getString("Name");
-            String contactPerson = resultSet.getString("ContactPerson");
-            String phone = resultSet.getString("Phone");
-            String email = resultSet.getString("Email");
-            String address = resultSet.getString("Address");
-            String city = resultSet.getString("City");
-            String stateProvince = resultSet.getString("State_Province");
-            String country = resultSet.getString("Country");
+        boolean isconnected=icc.startChecking();
+        if(isconnected) {
+            ResultSet resultSet = vendorManagementController.redirect_Get_All_Vendors();
+            while (resultSet.next()) {
+                int vendorID = resultSet.getInt("VendorID");
+                String name = resultSet.getString("Name");
+                String contactPerson = resultSet.getString("ContactPerson");
+                String phone = resultSet.getString("Phone");
+                String email = resultSet.getString("Email");
+                String address = resultSet.getString("Address");
+                String city = resultSet.getString("City");
+                String stateProvince = resultSet.getString("State_Province");
+                String country = resultSet.getString("Country");
 
-            // Add row data and placeholders for buttons
-            tableModel.addRow(new Object[]{vendorID, name, contactPerson, phone, email, address, city, stateProvince, country, "Update", "Delete"});
+                // Add row data and placeholders for buttons
+                tableModel.addRow(new Object[]{vendorID, name, contactPerson, phone, email, address, city, stateProvince, country, "Update", "Delete"});
+            }
         }
-
+        else{
+            tableModel.addRow(readvendordatafromfile());
+        }
         // Create JTable with custom cell renderers and editors for buttons
         JTable table = new JTable(tableModel) {
             @Override
@@ -96,8 +104,8 @@ public class ManageVendorView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
 
         // Add topPanel and table to the frame
-        add(topPanel, BorderLayout.NORTH);  // Adding the top panel with the button
-        add(scrollPane, BorderLayout.CENTER);  // Adding the table
+        add(topPanel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
 
         setVisible(true);
     }
@@ -150,8 +158,14 @@ public class ManageVendorView extends JFrame {
                             if ("Update".equals(actionType)) {
                                 handleUpdate(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
                             } else if ("Delete".equals(actionType)) {
-                                handleDelete(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
-                            }
+                                boolean isconnected=icc.startChecking();
+                                if(isconnected) {
+                                    handleDelete(vendorID, name, contactPerson, phone, email, address, city, stateProvince, country);
+                                }
+                                else{
+                                    storedeletemanagevendordata(vendorID);
+                                }
+                                }
                         }
                     }
                 }
@@ -208,4 +222,75 @@ public class ManageVendorView extends JFrame {
             return button;
         }
     }
+    public Object[][] readvendordatafromfile() {
+        BufferedReader br = null;
+        Object[][] vendorData = null;
+
+        try {
+            br = new BufferedReader(new FileReader("vendor.txt"));
+            LinkedList<String[]> tempData = new LinkedList<>();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+
+                if (data.length == 9) { // Ensure the line matches vendor schema
+                    tempData.add(data);
+                }
+            }
+
+            // Convert LinkedList to 2D Object array
+            int rowCount = tempData.size();
+            int columnCount = 9; // Columns in vendor schema
+            vendorData = new Object[rowCount][columnCount + 2]; // +2 for Update and Delete columns
+
+            for (int i = 0; i < rowCount; i++) {
+                // Copy data to the row
+                System.arraycopy(tempData.get(i), 0, vendorData[i], 0, columnCount);
+
+                // Add placeholders for buttons
+                vendorData[i][columnCount] = "Update"; // Column 9
+                vendorData[i][columnCount + 1] = "Delete"; // Column 10
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return vendorData;
+    }
+    public static void storedeletemanagevendordata(int id) {
+        BufferedWriter bw = null;
+        try {
+            // Open the file in append mode
+            bw = new BufferedWriter(new FileWriter("deletemanagevendordata.txt", true));
+
+            // Write the ID followed by a new line
+            bw.write(String.valueOf(id));
+            bw.newLine();
+
+            System.out.println("Vendor ID " + id + " has been stored in deletemanagevendordata.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to store Vendor ID: " + id);
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
