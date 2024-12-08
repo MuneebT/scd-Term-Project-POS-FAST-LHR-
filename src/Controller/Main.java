@@ -43,7 +43,7 @@ public class Main {
 
     //new AddCategoryView();
 
-        new ReportView();
+       new loginView();
 
 
     }

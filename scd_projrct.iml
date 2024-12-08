@@ -20,5 +20,87 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="JUnit5.8.1">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.8.1/junit-jupiter-5.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.8.1/junit-jupiter-api-5.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.8.1/junit-platform-commons-1.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.8.1/junit-jupiter-params-5.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.8.1/junit-jupiter-engine-5.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.8.1/junit-platform-engine-1.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Mockito">
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-core/src/main/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-core/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-android/src/main/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-errorprone/src/main/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-errorprone/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-junit-jupiter/src/main/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-junit-jupiter/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-proxy/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-extensions/mockito-subclass/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/extensions-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/inline-mocks-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/java-21-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/junit-jupiter-extension-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/junit-jupiter-inline-mock-maker-extension-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/junit-jupiter-parallel-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/memory-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/module-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/osgi-tests/src/otherBundle/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/osgi-tests/src/testBundle/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/osgi-tests/src/test/java" />
+          <root url="jar://$USER_HOME$/Downloads/Mockito_v5.14.2 source code.zip!/mockito-mockito-9942641/mockito-integration-tests/programmatic-tests/src/test/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/jar_files (1)/mockito-core-5.14.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/jar_files (1)/byte-buddy-1.15.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/jar_files (1)/objenesis-3.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/jar_files (1)/byte-buddy-agent-1.15.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

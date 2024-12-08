@@ -57,12 +57,10 @@ public class SalesPointScreenTemp {
 // Back button action listener (Closes the current window)
         backButton.addActionListener(e -> {
             new CashierDashboard();
-             // Close the current window
-            // Alternatively, you can navigate to a different screen here, if you have one:
-            // new PreviousScreen(); // Replace with actual class for previous screen
+
         });
 
-// Add Back button to the title panel
+
         titlePanel.add(backButton, BorderLayout.EAST);  // Place back button on the right
 
         frame.add(titlePanel, BorderLayout.NORTH);
@@ -72,7 +70,7 @@ public class SalesPointScreenTemp {
 
 
 
-        // Center Panel (Table)
+
         String[] columnNames = {"Code", "Name", "Qty", "Price", "Total"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
@@ -86,10 +84,6 @@ public class SalesPointScreenTemp {
 
 
 
-
-
-
-        // Bottom Panel (Inputs and Clear Button)
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(Color.WHITE);
 
@@ -164,9 +158,6 @@ public class SalesPointScreenTemp {
         bottomPanel.add(inputPanel, BorderLayout.CENTER);
 
 
-
-
-        // Clear Button
         JButton clearButton = new JButton("Clear Sale");
         clearButton.setBackground(new Color(244, 67, 54)); // Red
         clearButton.setForeground(Color.WHITE);
@@ -235,8 +226,6 @@ public class SalesPointScreenTemp {
 
         frame.add(rightPanel, BorderLayout.EAST);
 
-
-        // Add MouseListener to the table for row selection
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -267,11 +256,11 @@ public class SalesPointScreenTemp {
             }
         });
 
-// Disable direct editing of table cells
+
         table.setDefaultEditor(Object.class, null);
 
 
-        // Add Button Action
+
         addButton.addActionListener(e -> {
             try {
                 String code = itemCodeField.getText();
