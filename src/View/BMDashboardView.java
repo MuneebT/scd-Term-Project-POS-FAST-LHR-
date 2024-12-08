@@ -1,5 +1,7 @@
 package View;
 
+import Controller.LoginController;
+import Model.LoggedEmp;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedLabel;
 
@@ -10,10 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
 
 public class BMDashboardView extends JFrame {
     public BMDashboardView() {
         // Setup second frame
+        LoggedEmp loggedEmp=LoggedEmp.getInstance();
         setTitle("Branch Manager Operations");
         setBounds(20, 20, 1400, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,7 +113,7 @@ public class BMDashboardView extends JFrame {
         });
 
 
-        RoundedLabel titleLabel2 = new RoundedLabel(scaledOriginalIcon1,"Click here to Generate Invoice", new Color(34, 34, 59), 50, 50);
+        RoundedLabel titleLabel2 = new RoundedLabel(scaledOriginalIcon1,"Click here to Go to POS Screen", new Color(34, 34, 59), 50, 50);
        // titleLabel2.setBounds(650, 50, 250, 250);
         titleLabel2.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel2.setForeground(customColor);
@@ -185,10 +189,34 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                JOptionPane.showMessageDialog(null, "Managing");
+                new ReportView();
             }
         });
 
+
+
+        // Create rounded label for "Change Password" tile
+        RoundedLabel titleLabel6 = new RoundedLabel(scaledOriginalIcon1, "Click here to Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel6.setFont(new Font("Arial", Font.PLAIN, 18));
+        titleLabel6.setForeground(customColor);
+
+// Create label for the text
+        RoundedLabel titleLabel6_1 = new RoundedLabel("  Change Password", new Color(34, 34, 59), 50, 50);
+        titleLabel6_1.setBounds(9, 0, 280, 40);
+        titleLabel6_1.setFont(new Font("Impact", Font.PLAIN, 18));
+        titleLabel6_1.setForeground(customColor);
+        titleLabel6.add(titleLabel6_1);
+
+// Set bounds for the new tile (6th tile)
+        // Adjust position and size
+
+// Add action listener to open the password change dialog
+        titleLabel6.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showChangePasswordDialog();  // Call the method to show the password dialog
+            }
+        });
 
         // Back button
         RoundedButton openFirstPageButton = new RoundedButton("Back");
@@ -215,7 +243,7 @@ public class BMDashboardView extends JFrame {
 
         // Adjusted position for the fifth card
         titleLabel5.setBounds(750, 50, 300, 200); // Make this larger for emphasis on reports
-
+        titleLabel6.setBounds(750, 300, 300, 200);
 
 
 
@@ -251,6 +279,8 @@ public class BMDashboardView extends JFrame {
         pt1.add(titleLabel3);
         pt1.add(titleLabel4);
         pt1.add(titleLabel5);
+        pt1.add(titleLabel6);
+
         footerPanel.add(openFirstPageButton);
 
         // Add components to the main panel
@@ -270,6 +300,18 @@ public class BMDashboardView extends JFrame {
         // Add main panel to the frame
         add(mainPanel);
         setVisible(true);
+
+
+        int isFirstTimePasswordChange=loggedEmp.getFirstTimePasswordChange();
+        boolean isFirstTimeLogin=false;
+        if(isFirstTimePasswordChange==0)
+        {
+            isFirstTimeLogin=true;
+        }
+        if(isFirstTimeLogin)
+        {
+            showChangePasswordDialog();
+        }
     }
     // Helper method to create action labels
     private JLabel createActionLabel(String text, int y, Color color) {
@@ -278,6 +320,102 @@ public class BMDashboardView extends JFrame {
         label.setFont(new Font("Arial", Font.PLAIN, 24));
         label.setForeground(color);
         return label;
+    }
+
+
+    private void showChangePasswordDialog()
+    {
+
+        JDialog passwordDialog = new JDialog(this, "Change Password", true);
+        passwordDialog.setLayout(new GridBagLayout());
+        passwordDialog.setSize(400, 300);
+        passwordDialog.setLocationRelativeTo(this);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel currentPasswordLabel = new JLabel("Current Password:");
+        JPasswordField currentPasswordField = new JPasswordField(15);
+
+        JLabel newPasswordLabel = new JLabel("New Password:");
+        JPasswordField newPasswordField = new JPasswordField(15);
+
+        JButton submitButton = new JButton("Submit");
+
+        // Add components to the dialog
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        passwordDialog.add(currentPasswordLabel, gbc);
+
+        gbc.gridx = 1;
+        passwordDialog.add(currentPasswordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        passwordDialog.add(newPasswordLabel, gbc);
+
+        gbc.gridx = 1;
+        passwordDialog.add(newPasswordField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        passwordDialog.add(submitButton, gbc);
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoggedEmp loggedEmp=LoggedEmp.getInstance();
+
+
+                int isFirstTimePasswordChange=loggedEmp.getFirstTimePasswordChange();
+                boolean isFirstTimeLogin=false;
+                if(isFirstTimePasswordChange==0)
+                {
+                    isFirstTimeLogin=true;
+                }
+
+                String currentPassword = new String(currentPasswordField.getPassword());
+                String newPassword = new String(newPasswordField.getPassword());
+
+                String retrievedCurrPass=loggedEmp.getPassword();
+
+                // Validate passwords
+                if (currentPassword.isEmpty() || newPassword.isEmpty()) {
+                    JOptionPane.showMessageDialog(passwordDialog, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (currentPassword.equals(newPassword)) {
+                    JOptionPane.showMessageDialog(passwordDialog, "New password must be different from the current password!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                else if (!currentPassword.equals(retrievedCurrPass)) {
+                    JOptionPane.showMessageDialog(passwordDialog, "The Password you provided is not current Password", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                else {
+                    boolean errorExists=false;
+                    // Process password change logic here
+                    LoginController AuthService=new LoginController();
+                    try {
+                        AuthService.updatePassword(currentPassword,newPassword);
+                    } catch (SQLException ex) {
+                        errorExists=true;
+                        JOptionPane.showMessageDialog(passwordDialog, "Password could not be changed", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if(!errorExists)
+                    {
+                        JOptionPane.showMessageDialog(passwordDialog, "Password changed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        isFirstTimeLogin = false; // Mark the user as logged in
+
+                    }
+                    passwordDialog.dispose();
+
+                }
+            }
+        });
+
+        passwordDialog.setVisible(true);
     }
 
     public static void main(String[] args) {
