@@ -82,7 +82,7 @@ public class ReturnScreenView extends JFrame {
 
         // Create back button
         RoundedButton backButton = new RoundedButton("Back");
-        backButton.setBounds(50, 120, 110, 35);
+        backButton.setBounds(80, 120, 110, 35);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +96,7 @@ public class ReturnScreenView extends JFrame {
 
         // Create submit button
         RoundedButton submitButton = new RoundedButton("Submit");
-        submitButton.setBounds(295, 120, 110, 35);
+        submitButton.setBounds(405, 120, 110, 35);
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,28 +114,11 @@ public class ReturnScreenView extends JFrame {
         submitButton.setFont(new Font("Impact", Font.PLAIN, 16));
         submitButton.setToolTipText("Click here to submit!");
 
-        // Create add button
-        RoundedButton addButton = new RoundedButton("Add");
-        addButton.setBounds(470, 120, 110, 35);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = fieldInvoice.getText();
-                System.out.println("Added Invoice Number: " + input);
-                JOptionPane.showMessageDialog(ReturnScreenView.this, "Invoice Number '" + input + "' added successfully!");
-            }
-        });
-        addButton.setBackground(customColor);
-        addButton.setForeground(Color.WHITE);
-        addButton.setFont(new Font("Impact", Font.PLAIN, 16));
-        addButton.setToolTipText("Click here to add!");
-
         // Add components to panel
         pt1.add(actionLabelInvoice);
         pt1.add(fieldInvoice);
         pt1.add(backButton);
         pt1.add(submitButton);
-        pt1.add(addButton);
         pt1.add(backgroundLabel1);
 
         mainPanel.add(titleLabel);
