@@ -5,11 +5,12 @@ import Controller.CategoryController;
 import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 import Model.Category;
-
+import Connection.InternetConnectionChecker;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ public class AddInventoryView extends JFrame {
     private LinkedList<Category> categories=new LinkedList<>();
     private InventoryCntroller ic = new InventoryCntroller();
     private CategoryController cc=new CategoryController();
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
 private BranchManagementController bmc=new BranchManagementController();
     public AddInventoryView() {
         setTitle("Add Inventory");
@@ -64,12 +66,18 @@ private BranchManagementController bmc=new BranchManagementController();
         p_category.setFont(new Font("Arial", Font.BOLD, 15));
         p_category.setBounds(420, 130, 150, 30);
 
+       boolean isconnected= icc.startChecking();
 
+       if(isconnected){
         categories=cc.redirectgetAllCategoriesRequest();
         for(int i=0;i<categories.size();i++){
             categorytype.add(categories.get(i).gettype());
         }
         category= new JComboBox<>(categorytype.toArray(new String[0]));
+       }
+       else{
+           category=loadCategoryDataintocombobox();
+       }
         JScrollPane scrollPane=new JScrollPane(category);
         scrollPane.setBounds(580, 130, 180, 30);
 
@@ -109,6 +117,7 @@ private BranchManagementController bmc=new BranchManagementController();
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean flag=icc.startChecking();
                 if (validateInputs()) {
                     String name = tfname.getText();
                     int quantity = Integer.parseInt(tfquantity.getText());
@@ -120,9 +129,15 @@ private BranchManagementController bmc=new BranchManagementController();
                     int branchid=Integer.parseInt(st.nextToken());
                     String branchname=st.nextToken();
 
-                     ic.redirect_Inventory_Insert_request(name, quantity, selectedcategory, costPrice, salePrice, branchid);
+                    if(flag) {
+                        ic.redirect_Inventory_Insert_request(name, quantity, selectedcategory, costPrice, salePrice, branchid);
 
-                    dispose();
+                        dispose();
+                    }
+                    else{
+                        storeaddinventorydataintempfile(name, quantity, selectedcategory, costPrice, salePrice, branchid);
+                   writeproductdataintofileforconcatenation(ic.returnlistofproductIDs(),ic.returnProductNames());
+                    }
                 }
             }
         });
@@ -181,7 +196,75 @@ private BranchManagementController bmc=new BranchManagementController();
         return true;
     }
 
+
+    public String[] readCategoryDatafromfile() {
+        ArrayList<String> data = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("AddCategory.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                data.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data.toArray(new String[0]); // Convert ArrayList to array
+    }
+
+    public JComboBox<String> loadCategoryDataintocombobox() {
+        String[] categoryData = readCategoryDatafromfile();
+        return new JComboBox<>(categoryData);
+    }
+    public void storeaddinventorydataintempfile(String name,int quantity,String selectedcategory,int costPrice,int salePrice,int branchid){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("addinventory.txt"));
+            String data=name+","+ quantity+","+ selectedcategory+","+ costPrice+","+ salePrice+","+ branchid;
+        bw.write(data);
+        bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void writeproductdataintofileforconcatenation(LinkedList<Integer> id,LinkedList<String> name){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("concatenatedproductdata.txt"));
+            for(int i=0;i<id.size();i++){
+                String data=id.get(i)+"_"+name.get(i);
+                 bw.write(data);
+                bw.newLine();
+            }
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         new AddInventoryView();
     }
+
 }

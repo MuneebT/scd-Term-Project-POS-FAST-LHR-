@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import Model.Employee;
 import Model.EmployeeDao;
@@ -8,12 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class EditEmployeeView extends JFrame {
     private EmployeeDao emplyeeDao = new EmployeeDao();
     private EmployeeManagementController employeeManagementController=new EmployeeManagementController();
     private Employee employee;
-
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public EditEmployeeView(Employee employee) {
         this.employee = employee;
 
@@ -46,12 +50,30 @@ public class EditEmployeeView extends JFrame {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                employeeManagementController.redirect_employee_Update(employee);
-                dispose(); // Close edit window
+                boolean isconnected=icc.startChecking();
+                if(isconnected) {
+                    employeeManagementController.redirect_employee_Update(employee);
+                    dispose(); // Close edit window
+                }
+                else{
+                    storeeditempoyeedataintempfile(employee);
+                }
             }
         });
 
         add(updateButton);
         setVisible(true);
+    }
+    public void storeeditempoyeedataintempfile(Employee employee){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("editemployee.txt",true));
+            String data=employee.getName()+","+employee.getSalary()+","+employee.getEmpNo()+","+employee.getEmail()
+                    +","+employee.getBranchCode()+","+employee.getDesignation();
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

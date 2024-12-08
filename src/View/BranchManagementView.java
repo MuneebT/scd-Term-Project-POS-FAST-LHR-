@@ -1,17 +1,26 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.BranchManagementController;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+
 
 public class BranchManagementView extends JFrame {
     public JTable bmtable;
     private DefaultTableModel dtm1;
     private BranchManagementController bmc = new BranchManagementController();
     private JScrollPane bmScroll;
+
+private InternetConnectionChecker icc=new InternetConnectionChecker();
+
     private JButton createBranchButton; // Create Branch Button
     private JButton backButton; // Back Button
 
@@ -133,17 +142,26 @@ public class BranchManagementView extends JFrame {
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                // Use currentRow instead of bmtable.getSelectedRow()
+
+                int code=0;
+
+
                 if ("Delete".equals(actionType)) {
                     int response = JOptionPane.showConfirmDialog(null, "Do you want to delete this data?");
                     if (response == 0) {
+                        boolean isconnected = icc.startChecking();
+                     if(isconnected){
                         DefaultTableModel model = (DefaultTableModel) bmtable.getModel();
-                        int code = (int) model.getValueAt(currentRow, 0);
+                         code = (int) model.getValueAt(currentRow, 0);
                         System.out.println("Row to delete=" + currentRow);
                         System.out.println("code=" + code);
                         model.removeRow(currentRow);
                         bmc.redirect_delect_request(code);
                         JOptionPane.showMessageDialog(null, "Data Deleted from DB");
+                    }
+                     else{
+                         storeBranchdatatodelete(code);
+                     }
                     } else {
                         System.out.println("Data not deleted");
                     }
@@ -157,6 +175,8 @@ public class BranchManagementView extends JFrame {
                         System.out.println("Data not updated");
                     }
                 }
+
+
             }
             isPushed = false;
             return label;
@@ -206,5 +226,26 @@ public class BranchManagementView extends JFrame {
 
     public static void main(String[] args) {
         new BranchManagementView();
+    }
+    public void storeBranchdatatodelete(int code){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("deleteBranchdata.txt",true));
+            bw.write(code);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

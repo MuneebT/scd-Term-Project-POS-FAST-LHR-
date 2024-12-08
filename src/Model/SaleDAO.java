@@ -27,7 +27,7 @@ public class SaleDAO {
             // Reduce inventory if sale is successful
             InventoryDAO inventoryDAO = new InventoryDAO();
             if (rowsAffected > 0) {
-                return inventoryDAO.reduceProductQuantity(productId, quantity);
+                return InventoryDAO.reduceProductQuantity(productId, quantity);
             }
         } catch (SQLException e) {
             e.printStackTrace();

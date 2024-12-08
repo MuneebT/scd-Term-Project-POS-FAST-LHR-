@@ -199,7 +199,7 @@ public class SADashboardView extends JFrame {
         titleLabel5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new ReportView();
+                //git new ReportView();
             }
         });
 

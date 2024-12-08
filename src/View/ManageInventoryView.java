@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 
@@ -9,6 +10,8 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.LinkedList;
 
 public class ManageInventoryView extends JFrame {
     private JTable table;
@@ -16,6 +19,7 @@ public class ManageInventoryView extends JFrame {
     private JButton btnAdd;
     private InventoryCntroller ic = new InventoryCntroller();
 
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public ManageInventoryView() {
         setTitle("Inventory Management");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,17 +29,14 @@ public class ManageInventoryView extends JFrame {
 
         String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "ProdctCategory", "CostPrice",
                 "SalePrice","BranchID", "Delete", "Update"};
-
-        Object[][] data = ic.redirect_object_array();
-
-        // Add Delete and Update as button text in the data
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = new Object[]{
-//                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], "Delete", "Update"
-//            };
-//        }
-
-        // Create DefaultTableModel
+boolean isconnected=icc.startChecking();
+        Object[][] data=null;
+if(isconnected) {
+     data = ic.redirect_object_array();
+}
+else{
+    data=readinventorydata();
+}
         DefaultTableModel model = new DefaultTableModel(data, columnname) {
             public boolean isCellEditable(int row, int column) {
                 // Allow editing only for Delete and Update columns
@@ -105,15 +106,21 @@ public class ManageInventoryView extends JFrame {
             button.setOpaque(true);
 
             button.addActionListener(e -> {
-                fireEditingStopped(); // Stop editing before action
+                fireEditingStopped();
 
                 if (label.equals("Delete")) {
                     int confirm = JOptionPane.showConfirmDialog(null, "Do you want to Delete?");
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Get the ID of the row and call delete method
                         int id = (Integer) table.getValueAt(row, 0);
-                        ic.redirect_Inventory_delete_request(id);
-                        ((DefaultTableModel) table.getModel()).removeRow(row); // Remove from UI
+                        boolean isconnected=icc.startChecking();
+                        if(isconnected) {
+                            ic.redirect_Inventory_delete_request(id);
+                            ((DefaultTableModel) table.getModel()).removeRow(row); // Remove from UI
+                        }
+                        else{
+                            storeinventorydeletedata(id);
+                        }
                     }
                 } else if (label.equals("Update")) {
                     int confirm = JOptionPane.showConfirmDialog(null, "Do you want to Update?");
@@ -124,8 +131,9 @@ public class ManageInventoryView extends JFrame {
                         int costPrice = (Integer) table.getValueAt(row, 4);
                         int salePrice = (Integer) table.getValueAt(row, 5);
 
-                        // Updated to exclude vendor parameters
-                        new UpdateInventoryView(id, quantity, costPrice, salePrice, this);
+                            new UpdateInventoryView(id, quantity, costPrice, salePrice);
+
+
                     }
                 }
             });
@@ -153,8 +161,77 @@ public class ManageInventoryView extends JFrame {
         }
 
     }
+    public void storeinventorydeletedata(int id){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("deletemanageinventoryview.txt",true));
+            bw.write(id);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public Object[][] readinventorydata() {
+        BufferedReader br = null;
+        Object[][] data = null;
+        try {
+            br = new BufferedReader(new FileReader("inventory.txt"));
 
+            // Read all lines into a list
+            LinkedList<String[]> lines = new LinkedList<>();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                // Split each line by comma and add to the list
+                String[] parts = line.split(",");
+                if (parts.length == 5) { // Ensure line contains exactly five parts
+                    lines.add(parts);
+                }
+            }
+
+            // Convert the LinkedList to an Object[][]
+            data = new Object[lines.size()][7];
+            for (int i = 0; i < lines.size(); i++) {
+                data[i][0] = Integer.parseInt(lines.get(i)[0]); // Product ID
+                data[i][1] = lines.get(i)[1];                  // Product Name
+                data[i][2] = Integer.parseInt(lines.get(i)[2]); // Product Quantity
+                data[i][3] = Double.parseDouble(lines.get(i)[3]); // Cost Price
+                data[i][4] = Double.parseDouble(lines.get(i)[4]); // Sale Price
+                data[i][5]="Delete";
+                data[i][6]="Update";
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
     public static void main(String[] args) {
+
         new ManageInventoryView();
     }
 }
+
+
+
+
+

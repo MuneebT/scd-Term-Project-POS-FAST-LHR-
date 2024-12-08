@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.BranchManagementController;
 import Model.BranchDAO;
 
@@ -7,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -20,7 +24,7 @@ public class CreateBranchView extends JFrame {
     private JTextField tfphoneno, tfname, tfaddress;
     private JComboBox<String> cb_status;
     private JComboBox<String> cb_cityname;
-
+  private InternetConnectionChecker icc=new InternetConnectionChecker();
          private BranchManagementController bmc=new BranchManagementController();
     public CreateBranchView() {
 
@@ -131,7 +135,8 @@ public class CreateBranchView extends JFrame {
                 if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()&& validate_is_cityname_combobox_empty())
                 {
 
-
+                  boolean flag=icc.startChecking();
+                  if(flag){
 
                     BranchDAO branchDAO=new BranchDAO();
                     branchDAO.createBranch(tfname.getText(),cb_cityname.getSelectedItem().toString(),cb_status.getSelectedItem().toString(),tfaddress.getText(),tfphoneno.getText());
@@ -140,10 +145,12 @@ public class CreateBranchView extends JFrame {
                     tfphoneno.setText("");
                     tfaddress.setText("");
                     tfname.setText("");
-
-                } else {
-
-
+                  }
+                  else {
+                   storedataintempfile(tfname.getText(),cb_cityname.getSelectedItem().toString(),
+                           cb_status.getSelectedItem().toString(),tfaddress.getText(),tfphoneno.getText());
+                   writebranchconcatenateddataforuse(bmc.returnListofBranchIDs(),bmc.return_list_of_branch_names());
+                }
                 }
             }
         });
@@ -222,6 +229,52 @@ public class CreateBranchView extends JFrame {
         }
         JOptionPane.showMessageDialog(null,"Dont leave empty field");
         return false;
+    }
+    public void storedataintempfile( String branchname, String cityname, String status, String address, String phoneno){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("createbranch.txt",true));
+            String data=branchname+","+cityname+","+status+","+address+","+phoneno;
+            bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void writebranchconcatenateddataforuse(LinkedList<Integer> id,LinkedList<String> name){
+       BufferedWriter bw=null;
+       try{
+           bw=new BufferedWriter(new FileWriter("concatenatedbranchdata.txt",true));
+           for(int i=0;i<id.size();i++){
+               String data=id.get(i)+"_"+name.get(i);
+               bw.write(data);
+               bw.newLine();
+           }
+       }
+       catch (IOException e){
+           e.printStackTrace();
+       }
+       finally {
+           try{
+               if(bw!=null){
+                   bw.close();
+               }
+           }
+           catch (IOException e){
+               e.printStackTrace();
+           }
+       }
     }
 
     public static void main(String[] args) {

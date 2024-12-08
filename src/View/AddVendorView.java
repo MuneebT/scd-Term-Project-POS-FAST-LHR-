@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.VendorManagementController;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedField;
@@ -9,6 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
 
 public class AddVendorView extends JFrame {
 
@@ -16,6 +21,7 @@ public class AddVendorView extends JFrame {
             stateProvinceField, countryField, emailField;
     VendorManagementController vendorManagementController = new VendorManagementController();
 
+    private InternetConnectionChecker iccc=new InternetConnectionChecker();
     public AddVendorView() {
         // Frame setup
         setTitle("Add Vendor ");
@@ -179,14 +185,71 @@ public class AddVendorView extends JFrame {
 
     public void handleUpdate(String name, String contactPerson, String phone, String email,
                              String address, String city, String stateProvince, String country) {
-        // Example: Show a message dialog for now (you can replace this with actual update logic)
+        boolean isconnected= iccc.startChecking();
+
+        if(isconnected){
         if (vendorManagementController.redirect_insert_Vendors(name, contactPerson, phone, email, address, city, stateProvince, country)) {
             JOptionPane.showMessageDialog(this, "Vendor updated successfully!");
         } else {
             JOptionPane.showMessageDialog(this, "Vendor update failed.");
         }
+        }
+        else{
+
+            //==================stored vendordata in temp file================
+
+            storeVendordataintempfile(name, contactPerson, phone, email, address, city, stateProvince, country);
+            writevendoridandnameforconcatenation(vendorManagementController.returnlistofvendorids(),vendorManagementController.returnlistofvendornames());
+        }
     }
 
+    public void storeVendordataintempfile(String name,String contactPerson,String phone, String email,
+                                          String address,String city,String stateProvince,String country){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("addvendor.txt",true));
+            String data=name+","+ contactPerson+","+ phone+","+ email+","+ address+","+ city+","+ stateProvince+","+country;
+        bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void writevendoridandnameforconcatenation(LinkedList<Integer> id,LinkedList<String> name){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("concatenatedvendordata.txt",true));
+            for(int i=0;i<id.size();i++){
+                String data=id.get(i)+"_"+name.get(i);
+                bw.write(data);
+                bw.newLine();
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
     public static void main(String[] args) {
         new AddVendorView();
     }

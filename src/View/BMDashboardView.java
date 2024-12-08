@@ -189,7 +189,7 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                new ReportView();
+                //new ReportView();
             }
         });
 

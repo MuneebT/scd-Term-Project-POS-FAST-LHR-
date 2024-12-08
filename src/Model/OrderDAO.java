@@ -227,4 +227,86 @@ public class OrderDAO {
             }
         }
     }
+    public static Object[][] readspecificOrderData(String productname, String vendorname) {
+        // Initialize the required LinkedLists to store the fetched data
+        LinkedList<Integer> productId = new LinkedList<>();
+        LinkedList<String> p_name = new LinkedList<>();
+        LinkedList<String> v_name = new LinkedList<>();
+        LinkedList<Integer> v_id = new LinkedList<>();
+        LinkedList<Integer> branchId = new LinkedList<>();
+
+        // SQL query to fetch order data based on product name OR vendor name
+        String sql = "SELECT ProductID, ProductName,VendorID ,VendorName, BranchID "
+                + "FROM `order` WHERE ProductName = ? OR VendorName = ?";
+
+        // Fetch the data
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, productname);
+            pstmt.setString(2, vendorname);
+
+            // Execute the query and process the result
+            ResultSet rs = pstmt.executeQuery();
+
+            // Collect data from the result set
+            while (rs.next()) {
+                productId.add(rs.getInt("ProductID"));
+                p_name.add(rs.getString("ProductName"));
+                v_name.add(rs.getString("VendorName"));
+                v_id.add(rs.getInt("VendorID"));
+                branchId.add(rs.getInt("BranchID"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Determine the size for the data array (it will be the same as the size of the fetched data)
+        int size = productId.size();
+
+        // Initialize the 2D array to store the result
+        Object[][] data = new Object[size][5]; // 8 columns (OrderID, ProductName, VendorName, Quantity, TotalPrice, OrderDate, BranchID, Actions)
+
+        // Fill the data array
+        for (int i = 0; i < size; i++) {
+            data[i][0] = productId.get(i);
+            data[i][1] = p_name.get(i);
+            data[i][2] = v_id.get(i);
+            data[i][3] = v_name.get(i);
+            data[i][4] = branchId.get(i);
+
+        }
+
+        return data;
+    }
+
+    public static LinkedList<Order> getAllOrders(){
+        LinkedList<Order> orders = new LinkedList<>();
+        String query = "SELECT ProductID, ProductName, ProductQuantity, VendorID, VendorName, BranchID FROM `Order`";
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int productQuantity = rs.getInt("ProductQuantity");
+                int vendorID = rs.getInt("VendorID");
+                String vendorName = rs.getString("VendorName");
+                int branchID = rs.getInt("BranchID");
+
+                // Create an Order object and add it to the list
+                Order order = new Order(productID, productName, productQuantity, vendorID, vendorName, branchID);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch orders from the database", e);
+        }
+
+        return orders;
+    }
+
 }

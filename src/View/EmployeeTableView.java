@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import Model.Employee;
 import Model.EmployeeTableModel;
@@ -11,12 +12,16 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class EmployeeTableView extends JFrame {
     private JTable employeeTable;
     private EmployeeManagementController employeeManagementController = new EmployeeManagementController();
 
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public EmployeeTableView() {
         setTitle("Manage Employees");
         setSize(800, 600);
@@ -100,13 +105,21 @@ public class EmployeeTableView extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            Employee employeeToDelete = null;
             if (e.getSource() == deleteButton) {
                 // Perform delete action
-                Employee employeeToDelete = employees.get(row);
-                System.out.println("Deleting employee: " + employeeToDelete.getName());
-                employeeManagementController.redirect_employee_delete(employeeToDelete.getEmpNo());
-                employees.remove(row);
-                ((AbstractTableModel) table.getModel()).fireTableRowsDeleted(row, row);
+                boolean isconnected=icc.startChecking();
+
+                     employeeToDelete = employees.get(row);
+                    System.out.println("Deleting employee: " + employeeToDelete.getName());
+                if(isconnected) {
+                    employeeManagementController.redirect_employee_delete(employeeToDelete.getEmpNo());
+                    employees.remove(row);
+                    ((AbstractTableModel) table.getModel()).fireTableRowsDeleted(row, row);
+                }
+                else{
+                    storeemployeedatatodelete(employeeToDelete.getEmpNo());
+                }
             } else if (e.getSource() == updateButton) {
                 // Perform update action
                 Employee employeeToUpdate = employees.get(row);
@@ -145,13 +158,18 @@ public class EmployeeTableView extends JFrame {
                 employeeToUpdate.setBranchCode(branchField.getText());
                 employeeToUpdate.setSalary(String.valueOf(Double.parseDouble(salaryField.getText())));
                 employeeToUpdate.setDesignation(designationField.getText());
-
+                           boolean isconnected=icc.startChecking();
                 // Update the database
+                if(isconnected){
                 employeeManagementController.redirect_employee_Update(employeeToUpdate);
 
                 // Refresh the table
                 ((AbstractTableModel) table.getModel()).fireTableRowsUpdated(row, row);
                 System.out.println("Employee updated successfully.");
+                }
+                else{
+                    storeemployeeupdatedata(employeeToUpdate);
+                }
             }
         }
     }
@@ -201,6 +219,50 @@ public class EmployeeTableView extends JFrame {
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex < model.getColumnCount()) {
                 model.setValueAt(aValue, rowIndex, columnIndex);
+            }
+        }
+    }
+    public void storeemployeedatatodelete(String empno){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("deleteemployeetableview.txt",true));
+            bw.write(empno);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void storeemployeeupdatedata(Employee employee){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("updateemployeetableview.txt",true));
+         String data=employee.getName()+","+employee.getSalary()+","+employee.getEmpNo()+","+employee.getEmail()
+                 +","+employee.getBranchCode()+","+employee.getDesignation();
+         bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
             }
         }
     }

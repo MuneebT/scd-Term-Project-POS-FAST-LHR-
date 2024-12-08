@@ -1,11 +1,15 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.BranchManagementController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -21,6 +25,7 @@ public class UpdateScreenView extends JFrame {
     private JComboBox<String> cb_status;
     private JComboBox<String> cb_cityname;
 
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public UpdateScreenView(int code,String name,String city,String status,String address,String phoneno,int employeecount) {
 
 
@@ -125,25 +130,32 @@ public class UpdateScreenView extends JFrame {
         btnupdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String branchname=null;
+                String cityname=null;
+                String branchstatus=null;
+                String branchaddress=null;
+                String branchphoneno=null;
+                boolean isconnected = icc.startChecking();
+             if(isconnected){
                 if (validatePhoneNumber() && validate_empty_Fields() && validate_name_data() && validate_is_status_combobox_empty()
-                && validate_is_cityname_combobox_empty()) {
-                    String branchname=tfname.getText();
-                    String cityname=(String)cb_cityname.getSelectedItem();
-                    String branchstatus=(String) cb_status.getSelectedItem();
-                    String branchaddress=tfaddress.getText();
-                    String branchphoneno=tfphoneno.getText();
-                          bmc.redirect_update_request(code,branchname,cityname,branchstatus,branchaddress,branchphoneno);
+                        && validate_is_cityname_combobox_empty()) {
+                     branchname = tfname.getText();
+                     cityname = (String) cb_cityname.getSelectedItem();
+                     branchstatus = (String) cb_status.getSelectedItem();
+                     branchaddress = tfaddress.getText();
+                     branchphoneno = tfphoneno.getText();
+                    bmc.redirect_update_request(code, branchname, cityname, branchstatus, branchaddress, branchphoneno);
                     JOptionPane.showMessageDialog(UpdateScreenView.this, "Data Updated Succesfully");
 
                     dispose();
-                      new BranchManagementView();
-                } else {
-
-//                    tfphoneno.setText("");
-//                    tfaddress.setText("");
-//                    tfname.setText("");
+                    new BranchManagementView();
                 }
+            }
+             else{
+                 storeupdateddataintempfile(code, branchname, cityname, branchstatus, branchaddress, branchphoneno);
+               dispose();
+                }
+
             }
         });
     }
@@ -221,4 +233,26 @@ private void copy_data(LinkedList<String> data){
         return false;
     }
 
+    void storeupdateddataintempfile(int code,String branchname,String cityname,String branchstatus,String branchaddress,String branchphoneno){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("UpdatedBranchManagement.txt",true));
+            String data=code+","+branchname+","+cityname+","+branchstatus+","+branchaddress+","+branchphoneno;
+            bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }
