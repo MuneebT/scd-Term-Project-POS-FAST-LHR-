@@ -107,7 +107,10 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
+                String br=loggedEmp.getBranch();
+                System.out.println("br   "+br);
+                new PayrollGeneration(br);
+               // JOptionPane.showMessageDialog(null, "Managing");
                 //new EmployeeOperation3_1();
             }
         });

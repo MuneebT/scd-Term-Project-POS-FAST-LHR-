@@ -52,6 +52,30 @@ public class DBInitializer {
         }
     }
 
+//    void makeSureEmployeeTableExists() throws SQLException {
+//        Connection conn = ConnectionConfigurator.getConnection();
+//        String query = "CREATE TABLE IF NOT EXISTS Employee (" +
+//                "    id INT PRIMARY KEY AUTO_INCREMENT," +
+//                "    emp_no VARCHAR(50) UNIQUE," +
+//                "    name VARCHAR(100) NOT NULL," +
+//                "    password VARCHAR(100) NOT NULL," +
+//                "    email VARCHAR(100)," +
+//                "    branch_code VARCHAR(50)," +
+//                "    salary DECIMAL(10, 2)," +
+//                "    designation VARCHAR(50)," +
+//                "    firstPasswordChangedStatus INT DEFAULT 0," +
+//                "    paid BOOLEAN DEFAULT FALSE," + // Payment status
+//                "    lastPaidDate DATE DEFAULT NULL" + // Date when paid status was last updated
+//                ");";
+//        try {
+//            PreparedStatement ps = conn.prepareStatement(query);
+//            ps.execute();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            conn.close();
+//        }
+//    }
 
 
 
