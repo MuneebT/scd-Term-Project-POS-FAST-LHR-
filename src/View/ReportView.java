@@ -18,9 +18,12 @@ import java.util.Map;
 
 public class ReportView {
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(ReportView::createAndShowGUI);
+    public ReportView()
+    {
+        createAndShowGUI();
     }
+
+
 
     // Chart Generator Class
     public static class ChartGenerator {

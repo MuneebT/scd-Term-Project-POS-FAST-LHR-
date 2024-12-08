@@ -9,11 +9,11 @@ import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.SQLException;
 
-class loginView extends JFrame {
+public class loginView extends JFrame {
     LoginController loginController = new LoginController();
 
     public loginView() {
-        // Setup frame
+
         setTitle("Login Page");
         setBounds(20, 20, 800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +22,7 @@ class loginView extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
-        // Title Label
+
         JLabel titleLabel = new JLabel("Login");
         titleLabel.setBounds(379, 100, 300, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
@@ -36,14 +36,14 @@ class loginView extends JFrame {
         titleLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Background Image
+
         ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
         backgroundLabel.setBounds(0, 0, 800, 800);
 
-        // Rounded Panel
+
         JPanel pt1 = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -205,6 +205,7 @@ class loginView extends JFrame {
 
                 try {
                     if (loginController.redirect_validateUser(userName, password, designation)) {
+
                         loginController.redirect_set_credientials(userName, password, designation,branch);
                         if (designation.equals("Super Admin")) {
                             new SADashboardView();

@@ -26,7 +26,7 @@ public class ConnectionConfigurator {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Exception Caught in Connection Config:"+e.getMessage());
         }
 
 

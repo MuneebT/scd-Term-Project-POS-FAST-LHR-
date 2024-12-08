@@ -36,6 +36,7 @@ private static BranchManagementController bmc=new BranchManagementController();
             data[i][6]=branchId.get(i);
             data[i][7] = "Delete";
             data[i][8] = "Update";
+
         }
 
         return data;

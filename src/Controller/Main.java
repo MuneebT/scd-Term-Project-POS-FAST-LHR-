@@ -42,6 +42,7 @@ public class Main {
  //   new ManageOrderView();
 
     //new AddCategoryView();
-        new ReportView();
+        new loginView();
+
     }
 }
