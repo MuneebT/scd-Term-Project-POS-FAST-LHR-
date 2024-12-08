@@ -7,6 +7,7 @@ public class LoggedEmp {
     private String password;
     private String designation;
     private String branch;
+    private int firstTimePasswordChange;
 
     private LoggedEmp() {}
 
@@ -16,6 +17,9 @@ public class LoggedEmp {
         }
         return instance;
     }
+
+
+
 
     public String getUserName() {
         return userName;
@@ -47,5 +51,17 @@ public class LoggedEmp {
 
     public void setBranch(String branch) {
         this.branch = branch;
+    }
+
+    public static void setInstance(LoggedEmp instance) {
+        LoggedEmp.instance = instance;
+    }
+
+    public int getFirstTimePasswordChange() {
+        return firstTimePasswordChange;
+    }
+
+    public void setFirstTimePasswordChange(int firstTimePasswordChange) {
+        this.firstTimePasswordChange = firstTimePasswordChange;
     }
 }

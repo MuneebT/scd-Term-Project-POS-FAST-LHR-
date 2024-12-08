@@ -16,7 +16,8 @@ public class AddCategoryView extends JFrame {
     private ImageIcon img;
     private JLabel imagelabel;
     private CategoryController cc = new CategoryController();
-private InternetConnectionChecker icc=new InternetConnectionChecker();
+    private InternetConnectionChecker icc = new InternetConnectionChecker();
+
     public AddCategoryView() {
         // Set up the frame
         setTitle("Add Category");
@@ -26,7 +27,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         setLayout(null);
 
         // Load the image
-        img = new ImageIcon("update.jpg");
+        img = new ImageIcon("src/resources/login.png");
 
         // Image label
         imagelabel = new JLabel(img);
@@ -46,13 +47,12 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean isconnected=icc.startChecking();
-                if(isconnected) {
+                boolean isconnected = icc.startChecking();
+                if (isconnected) {
                     String type = categoryTypeField.getText();
                     cc.redirectinsertRequest(type);
                     dispose();
-                }
-                else{
+                } else {
                     storeCategoryDataintempfile(categoryTypeField.getText());
                 }
             }
@@ -64,27 +64,30 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
 
         setVisible(true);
     }
-    void storeCategoryDataintempfile(String category){
-        BufferedWriter bw=null;
-        try{
-            bw=new BufferedWriter(new FileWriter("AddCategory.txt",true));
-            String data=category;
+
+    void storeCategoryDataintempfile(String category) {
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter("AddCategory.txt", true));
+            String data = category;
             bw.write(data);
             bw.newLine();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            try{
-                if(bw!=null){
+        } finally {
+            try {
+                if (bw != null) {
                     bw.close();
                 }
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+    }
+    public static void main (String[]args){
+        new AddCategoryView();
+
     }
 }
 

@@ -59,8 +59,8 @@ else{
         // Creating "Add" button at top-right corner
         btnAdd = new JButton("Add");
         btnAdd.setFont(new Font("Arial", Font.BOLD, 15));
-        btnAdd.setBackground(Color.CYAN);
-        btnAdd.setForeground(Color.BLACK);
+        btnAdd.setBackground(Color.decode("#415a77"));
+        btnAdd.setForeground(Color.white);
         btnAdd.setBounds(getWidth() - 100, 10, 80, 30);
 
         btnAdd.addActionListener(new ActionListener() {
@@ -225,5 +225,13 @@ else{
         }
         return data;
     }
+    public static void main(String[] args) {
 
+        new ManageInventoryView();
+    }
 }
+
+
+
+
+

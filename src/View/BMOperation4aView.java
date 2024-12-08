@@ -39,11 +39,11 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         JLabel titleLabel = new JLabel("Employee Desktop");
         titleLabel.setBounds(0, 30, 800, 40); // Centered title
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87); // RGB for #795757
-        titleLabel.setForeground(customColor); // Set font color
+        Color customColor = Color.decode("#415a77"); // RGB for #795757
+        titleLabel.setForeground(Color.decode("#fff0f3")); // Set font color
 
         // Load and scale the icon image
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         titleLabel.setIcon(scaledIcon);
@@ -51,7 +51,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Set background
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
@@ -75,7 +75,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         pt1.setOpaque(false);
 
         // Background for pt1
-        ImageIcon bk1 = new ImageIcon("src/resources/Desktopbg.jpg");
+        ImageIcon bk1 = new ImageIcon("src/resour ces/2.jpg");
         Image scaledImage1 = bk1.getImage().getScaledInstance(600, 460, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);

@@ -30,12 +30,19 @@ public class ReturnScreenView extends JFrame {
         JLabel titleLabel = new JLabel("Return Screen");
         titleLabel.setBounds(0, 30, 800, 40); // Centered title
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87); // RGB for #795757
-        titleLabel.setForeground(customColor); // Set font color
+        Color customColor = Color.decode("#415a77"); // RGB for #795757
+        titleLabel.setForeground((Color.decode("#fff0f3"))); // Set font color
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        titleLabel.setIcon(scaledIcon);
+        titleLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Set background
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
@@ -58,7 +65,7 @@ public class ReturnScreenView extends JFrame {
         pt1.setOpaque(false);
 
         // Background for pt1
-        ImageIcon bk1 = new ImageIcon("src/resources/Desktopbg.jpg");
+        ImageIcon bk1 = new ImageIcon("src/resources/Deskt opbg.jpg");
         Image scaledImage1 = bk1.getImage().getScaledInstance(600, 200, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);
@@ -75,7 +82,7 @@ public class ReturnScreenView extends JFrame {
 
         // Create back button
         RoundedButton backButton = new RoundedButton("Back");
-        backButton.setBounds(50, 120, 110, 35);
+        backButton.setBounds(80, 120, 110, 35);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +96,7 @@ public class ReturnScreenView extends JFrame {
 
         // Create submit button
         RoundedButton submitButton = new RoundedButton("Submit");
-        submitButton.setBounds(295, 120, 110, 35);
+        submitButton.setBounds(405, 120, 110, 35);
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,28 +114,11 @@ public class ReturnScreenView extends JFrame {
         submitButton.setFont(new Font("Impact", Font.PLAIN, 16));
         submitButton.setToolTipText("Click here to submit!");
 
-        // Create add button
-        RoundedButton addButton = new RoundedButton("Add");
-        addButton.setBounds(470, 120, 110, 35);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = fieldInvoice.getText();
-                System.out.println("Added Invoice Number: " + input);
-                JOptionPane.showMessageDialog(ReturnScreenView.this, "Invoice Number '" + input + "' added successfully!");
-            }
-        });
-        addButton.setBackground(customColor);
-        addButton.setForeground(Color.WHITE);
-        addButton.setFont(new Font("Impact", Font.PLAIN, 16));
-        addButton.setToolTipText("Click here to add!");
-
         // Add components to panel
         pt1.add(actionLabelInvoice);
         pt1.add(fieldInvoice);
         pt1.add(backButton);
         pt1.add(submitButton);
-        pt1.add(addButton);
         pt1.add(backgroundLabel1);
 
         mainPanel.add(titleLabel);

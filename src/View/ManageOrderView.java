@@ -213,6 +213,7 @@ public class ManageOrderView extends JFrame {
         String name= (String) table.getValueAt(table.getSelectedRow(),4);
         return name;
     }
+
     public Object[][] readorderdatafromfile() {
         BufferedReader br = null;
         Object[][] data = null;
@@ -280,5 +281,8 @@ public class ManageOrderView extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        new ManageOrderView();
+    }
 
 }

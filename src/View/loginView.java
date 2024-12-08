@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +16,8 @@ import java.sql.SQLException;
 
 class loginView extends JFrame {
     LoginController loginController = new LoginController();
-    private InternetConnectionChecker icc=new InternetConnectionChecker();
+    private InternetConnectionChecker icc = new InternetConnectionChecker();
+
     public loginView() {
         // Setup frame
         setTitle("Login Page");
@@ -30,12 +30,12 @@ class loginView extends JFrame {
 
         // Title Label
         JLabel titleLabel = new JLabel("Login");
-        titleLabel.setBounds(379, 100, 300, 40);
+        titleLabel.setBounds(249, 20, 300, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87);
+        Color customColor = Color.decode("#415a77");
         titleLabel.setForeground(customColor);
 
-        ImageIcon originalIcon = new ImageIcon("src/resources/bulb-icon.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo1.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         titleLabel.setIcon(scaledIcon);
@@ -43,7 +43,7 @@ class loginView extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Background Image
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
@@ -66,7 +66,7 @@ class loginView extends JFrame {
         pt1.setBounds(120, 70, 550, 450);
         pt1.setOpaque(false);
 
-        ImageIcon bk1 = new ImageIcon("src/resources/bulb3.jpg");
+        ImageIcon bk1 = new ImageIcon("src/resources/login1.png");
         Image scaledImage1 = bk1.getImage().getScaledInstance(270, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);
@@ -119,7 +119,7 @@ class loginView extends JFrame {
 
         // Error Label
         final JLabel errorLabel = new JLabel("Wrong Credentials");
-        errorLabel.setBounds(413, 110, 350, 30);
+        errorLabel.setBounds(413, 120, 350, 30);
         errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
         errorLabel.setForeground(Color.RED);
         errorLabel.setVisible(false);
@@ -178,19 +178,18 @@ class loginView extends JFrame {
                 }
             }
         });
-        designationTypeComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedDesignation = (String) designationTypeComboBox.getSelectedItem();
-                if ("Super Admin".equals(selectedDesignation)) {
-                    branchField.setEnabled(false); // Disable Branch Field
-                    branchField.setText("N/A");   // Set default text
-                } else {
-                    branchField.setEnabled(true); // Enable Branch Field
-                    branchField.setText("");      // Clear the field
-                }
+
+        designationTypeComboBox.addActionListener(e -> {
+            String selectedDesignation = (String) designationTypeComboBox.getSelectedItem();
+            if ("Super Admin".equals(selectedDesignation)) {
+                branchField.setEnabled(false); // Disable Branch Field
+                branchField.setText("N/A");   // Set default text
+            } else {
+                branchField.setEnabled(true); // Enable Branch Field
+                branchField.setText("");      // Clear the field
             }
         });
+
         if ("Super Admin".equals(designationTypeComboBox.getSelectedItem())) {
             branchField.setEnabled(false); // Disable if Super Admin is selected by default
             branchField.setText("N/A");
@@ -201,52 +200,41 @@ class loginView extends JFrame {
         // Buttons
         RoundedButton submitBtn = new RoundedButton("Submit");
         submitBtn.setBounds(416, 390, 110, 32);
-        submitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userName = customerIdField.getText();
-                String password = passwordField.getText();
-                String designation = (String) designationTypeComboBox.getSelectedItem();
-                String branch = branchField.getText();
+        submitBtn.addActionListener(e -> {
+            String userName = customerIdField.getText();
+            String password = passwordField.getText();
+            String designation = (String) designationTypeComboBox.getSelectedItem();
+            String branch = branchField.getText();
 
-
-              boolean flag=  icc.startChecking();
+            boolean flag = icc.startChecking();
+            if (flag) {
                 try {
-                    if(flag) {
-                        if (loginController.redirect_validateUser(userName, password, designation)) {
-                            loginController.redirect_set_credientials(userName, password, designation, branch);
-                            if (designation.equals("Super Admin")) {
-                                new SADashboardView();
-                            } else if (designation.equals("Branch Manager")) {
-                                new BMDashboardView();
-                            } else if (designation.equals("Data Entry Operator")) {
-                                new DEODashboardView();
-                            } else if (designation.equals("Cashier")) {
-                                new CashierDashboard();
-                            }
-                            dispose();
-                        } else {
-                            errorLabel.setVisible(true);
+                    if (loginController.redirect_validateUser(userName, password, designation, branch)) {
+                        loginController.redirect_set_credientials(userName, password, designation, branch);
+                        if (designation.equals("Super Admin")) {
+                            new SADashboardView();
+                        } else if (designation.equals("Branch Manager")) {
+                            new BMDashboardView();
+                        } else if (designation.equals("Data Entry Operator")) {
+                            new DEODashboardView();
+                        } else if (designation.equals("Cashier")) {
+                            new CashierDashboard();
                         }
-                    }
-                    else{
-                        storeLoginCredentials(userName,password,designation);
                         dispose();
-                        //JOptionPane.showMessageDialog(null,"No in");
-
+                    } else {
+                        errorLabel.setVisible(true);
                     }
-
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
+            } else {
+                storeLoginCredentials(userName, password, designation);
             }
         });
 
         submitBtn.setBackground(customColor);
         submitBtn.setForeground(Color.WHITE);
         submitBtn.setFont(new Font("Impact", Font.PLAIN, 16));
-        submitBtn.setVisible(true);
 
         RoundedButton backBtn = new RoundedButton("Back");
         backBtn.setBounds(295, 390, 110, 32);
@@ -258,7 +246,6 @@ class loginView extends JFrame {
         backBtn.setBackground(customColor);
         backBtn.setForeground(Color.WHITE);
         backBtn.setFont(new Font("Impact", Font.PLAIN, 16));
-        backBtn.setVisible(true);
 
         // Add components to the panel
         mainPanel.add(customerIdLabel);
@@ -270,38 +257,38 @@ class loginView extends JFrame {
         mainPanel.add(branchLabel);
         mainPanel.add(branchField);
         mainPanel.add(errorLabel);
+        mainPanel.add(pt1);
         pt1.add(backBtn);
         pt1.add(submitBtn);
+        pt1.setComponentZOrder(backBtn, 0);
+        pt1.setComponentZOrder(submitBtn, 0);
         pt1.add(backgroundLabel1);
         mainPanel.add(pt1);
-        mainPanel.add(titleLabel);
+        pt1.add(titleLabel);
         mainPanel.add(backgroundLabel);
 
         add(mainPanel);
         setVisible(true);
     }
 
-    void storeLoginCredentials(String username,String password,String designation){
-       BufferedWriter bw=null;
-       String data=username+","+password+","+designation;
-       try{
-           bw=new BufferedWriter(new FileWriter("Login.txt",true));
-           bw.write(data);
-           bw.newLine();
-       }
-       catch (IOException e){
-           e.printStackTrace();
-       }
-       finally {
-           try{
-               if(bw!=null){
-                   bw.close();
-               }
-           }
-           catch (IOException e){
-               e.printStackTrace();
-           }
-       }
+    void storeLoginCredentials(String username, String password, String designation) {
+        BufferedWriter bw = null;
+        String data = username + "," + password + "," + designation;
+        try {
+            bw = new BufferedWriter(new FileWriter("Login.txt", true));
+            bw.write(data);
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) {

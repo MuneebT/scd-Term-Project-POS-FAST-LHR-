@@ -36,12 +36,12 @@ public class AddVendorView extends JFrame {
         JLabel titleLabel = new JLabel("ADD Vendor");
         titleLabel.setBounds(0, 10, 800, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87);
-        titleLabel.setForeground(customColor);
+        Color customColor = Color.decode("#415a77");
+        titleLabel.setForeground(Color.decode("#fff0f3"));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Background image
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH); // Adjust size for added fields
         JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage));
         backgroundLabel.setBounds(0, 0, 800, 800);

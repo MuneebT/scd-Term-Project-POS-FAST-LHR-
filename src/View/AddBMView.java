@@ -41,32 +41,45 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         JLabel titleLabel = new JLabel("Add Branch Manager");
         titleLabel.setBounds(0, 30, 800, 40);
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87);
-        titleLabel.setForeground(customColor);
+        Color customColor = Color.decode("#415a77");
+        titleLabel.setForeground(Color.decode("#fff0f3"));//61a5c2
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Background image
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImage));
         backgroundLabel.setBounds(0, 0, 800, 800);
 
         // Rounded panel setup
+        // Rounded panel setup with background image
         JPanel formPanel = new JPanel() {
+            private ImageIcon backgroundImage = new ImageIcon("src/resources/bulb.jpg");
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Scale the image to fit the panel
+                Image scaledImage = backgroundImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+                g2.drawImage(scaledImage, 0, 0, getWidth(), getHeight(), null);
+
+
+                // Rounded rectangle overlay
                 RoundRectangle2D roundedRectangle = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 50, 50);
-                g2.setColor(getBackground());
+                g2.setColor(new Color(255, 255, 255, 150)); // Semi-transparent white overlay
                 g2.fill(roundedRectangle);
+
                 g2.dispose();
             }
         };
         formPanel.setLayout(null);
         formPanel.setBounds(100, 100, 600, 500);
         formPanel.setOpaque(false);
+
+
 
         // Labels and fields
         RoundedLabel nameLabel = new RoundedLabel("Name", Color.WHITE, 20, 20);

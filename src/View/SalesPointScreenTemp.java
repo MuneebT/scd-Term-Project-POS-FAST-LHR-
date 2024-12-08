@@ -1,10 +1,7 @@
 package View;
 
-import Model.SaleDAO;
-import Model.InvoiceDAO;
-import Model.Sale;
-import Model.Inventory;
-import Model.InventoryDAO;
+import Model.*;
+import com.mysql.cj.log.Log;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +10,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class SalesPointScreenTemp {
+
+    public SalesPointScreenTemp()
+    {
+        createAndShowGUI();
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SalesPointScreenTemp::createAndShowGUI);
     }
@@ -24,14 +26,51 @@ public class SalesPointScreenTemp {
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
+
+
+
+
         // Top Panel (Title)
-        JPanel titlePanel = new JPanel();
+        JPanel titlePanel = new JPanel(new BorderLayout());  // Use BorderLayout instead of FlowLayout
         titlePanel.setBackground(new Color(33, 150, 243)); // Blue color
         JLabel titleLabel = new JLabel("Billing System");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Roboto", Font.BOLD, 28));
-        titlePanel.add(titleLabel);
+        titlePanel.add(titleLabel, BorderLayout.WEST);  // Place title on the left
+
+// Create the Back button
+        JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(244, 67, 54)); // Red color
+        backButton.setForeground(Color.WHITE);
+        backButton.setFont(new Font("Arial", Font.BOLD, 14));
+        backButton.setFocusPainted(false);
+        backButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backButton.setBackground(new Color(229, 57, 53)); // Darker Red on Hover
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backButton.setBackground(new Color(244, 67, 54)); // Red color when not hovering
+            }
+        });
+
+// Back button action listener (Closes the current window)
+        backButton.addActionListener(e -> {
+            new CashierDashboard();
+             // Close the current window
+            // Alternatively, you can navigate to a different screen here, if you have one:
+            // new PreviousScreen(); // Replace with actual class for previous screen
+        });
+
+// Add Back button to the title panel
+        titlePanel.add(backButton, BorderLayout.EAST);  // Place back button on the right
+
         frame.add(titlePanel, BorderLayout.NORTH);
+
+
+
+
+
 
         // Center Panel (Table)
         String[] columnNames = {"Code", "Name", "Qty", "Price", "Total"};
@@ -43,6 +82,9 @@ public class SalesPointScreenTemp {
         table.setFont(new Font("Arial", Font.PLAIN, 14));
         JScrollPane tableScrollPane = new JScrollPane(table);
         frame.add(tableScrollPane, BorderLayout.CENTER);
+
+
+
 
 
 
@@ -308,8 +350,10 @@ public class SalesPointScreenTemp {
                 double balance = paid - totalBill;
 
                 balanceField.setText(String.format("%.2f", balance));
+                LoggedEmp loggedEmp= LoggedEmp.getInstance();
 
-                int BRANCH_CODE=1;
+
+                int BRANCH_CODE=Integer.parseInt(loggedEmp.getBranch());
 
                 // Database operations
                 try {

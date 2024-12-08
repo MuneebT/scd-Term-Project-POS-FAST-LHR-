@@ -18,7 +18,7 @@ public class Main {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //new splashView();
+        new splashView();
 
 
 
@@ -35,7 +35,7 @@ public class Main {
 //        InventoryDAO.insertDataIntoInventoryDb("shampoo",12,"Cosmetic"
 //                ,1200,1300,1);
 
-//new ManageInventoryView();
+
 
 
 //        VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
@@ -45,10 +45,17 @@ public class Main {
 
  //   new ManageOrderView();
 
+
 //    new ManageCategoryView();
 
       //new SearchInventoryView();
        // new SearchOrderView();
+
+    //new AddCategoryView();
+
+//        new ReportView();
+
+
 
     }
 }

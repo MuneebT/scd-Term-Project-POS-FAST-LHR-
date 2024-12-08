@@ -1,188 +1,253 @@
-//package View;
-//
-//import Connection.ConnectionConfigurator;
-//import org.jfree.chart.ChartFactory;
-//import org.jfree.chart.ChartPanel;
-//import org.jfree.chart.JFreeChart;
-//import org.jfree.data.category.DefaultCategoryDataset;
-//
-//import javax.swing.*;
-//import javax.swing.table.DefaultTableModel;
-//import java.awt.*;
-//import java.sql.*;
-//import java.text.SimpleDateFormat;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//public class ReportView {
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(ReportView::createAndShowGUI);
-//    }
-//
-//    // Chart Generator Class
-//    public static class ChartGenerator {
-//        public static JPanel createBarChart(String title, String xAxisLabel, String yAxisLabel, Map<String, Double> data) {
-//            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//
-//            for (Map.Entry<String, Double> entry : data.entrySet()) {
-//                dataset.addValue(entry.getValue(), title, entry.getKey());
-//            }
-//
-//            JFreeChart chart = ChartFactory.createBarChart(
-//                    title,        // Chart title
-//                    xAxisLabel,   // X-axis label
-//                    yAxisLabel,   // Y-axis label
-//                    dataset       // Data
-//            );
-//
-//            ChartPanel chartPanel = new ChartPanel(chart);
-//            chartPanel.setPreferredSize(new Dimension(600, 400));  // Set chart panel size
-//            return chartPanel;
-//        }
-//    }
-//
-//    // Main GUI Method
-//    private static void createAndShowGUI() {
-//        JFrame frame = new JFrame("Reports and Graphs");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(1000, 700);
-//
-//        JPanel reportPanel = new JPanel();
-//        reportPanel.setLayout(new BorderLayout(10, 10));
-//        reportPanel.setBackground(new Color(245, 245, 245));
-//
-//        // Panel for Dropdowns and Buttons
-//        JPanel controls = new JPanel();
-//        controls.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-//
-//        // Dropdowns for Report Selection
-//        JComboBox<String> reportTypeDropdown = new JComboBox<>(new String[]{"Sales", "Remaining Stock", "Profit"});
-//        JComboBox<String> timeRangeDropdown = new JComboBox<>(new String[]{"Today", "Weekly", "Monthly", "Yearly", "Custom Range"});
-//        JButton generateButton = new JButton("Generate Report");
-//
-//        controls.add(new JLabel("Report Type:"));
-//        controls.add(reportTypeDropdown);
-//        controls.add(new JLabel("Time Range:"));
-//        controls.add(timeRangeDropdown);
-//        controls.add(generateButton);
-//
-//        reportPanel.add(controls, BorderLayout.NORTH);
-//
-//        // Panel for displaying chart and data
-//        JPanel chartArea = new JPanel();
-//        chartArea.setLayout(new BorderLayout(10, 10));
-//        reportPanel.add(chartArea, BorderLayout.CENTER);
-//
-//        // Table for displaying data
-//        JTable dataTable = new JTable();
-//        JScrollPane scrollPane = new JScrollPane(dataTable);
-//        chartArea.add(scrollPane, BorderLayout.EAST);
-//        dataTable.setModel(new DefaultTableModel(new Object[]{"Date", "Value"}, 0));
-//        dataTable.setEnabled(false);
-//
-//        generateButton.addActionListener(e -> {
-//            String reportType = (String) reportTypeDropdown.getSelectedItem();
-//            String timeRange = (String) timeRangeDropdown.getSelectedItem();
-//
-//            // Fetch Data from Database
-//            HashMap<String, Double> data = fetchData(reportType, timeRange);
-//
-//            // Update Table with Data
-//            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
-//            model.setRowCount(0);  // Clear existing rows
-//            for (Map.Entry<String, Double> entry : data.entrySet()) {
-//                model.addRow(new Object[]{entry.getKey(), String.format("%.2f", entry.getValue())});
-//            }
-//
-//            // Generate Chart and add it to panel
-//            JPanel chartPanel = ChartGenerator.createBarChart(reportType, "Date", "Value", data);
-//            chartArea.removeAll();
-//            chartArea.add(chartPanel, BorderLayout.CENTER);
-//            chartArea.add(scrollPane, BorderLayout.EAST);
-//            chartArea.revalidate();
-//            chartArea.repaint();
-//        });
-//
-//        frame.add(reportPanel);
-//        frame.setVisible(true);
-//    }
-//
-//    // Fetch Data from Database
-//    private static HashMap<String, Double> fetchData(String reportType, String timeRange) {
-//        HashMap<String, Double> data = new HashMap<>();
-//        String query = "";
-//
-//        try (Connection conn = ConnectionConfigurator.getConnection()) {
-//            switch (reportType) {
-//                case "Sales":
-//                    query = generateSalesQuery(timeRange);
-//                    break;
-//                case "Remaining Stock":
-//                    query = generateRemainingStockQuery();
-//                    break;
-//                case "Profit":
-//                    query = generateProfitQuery(timeRange);
-//                    break;
-//            }
-//
-//            try (PreparedStatement ps = conn.prepareStatement(query);
-//                 ResultSet rs = ps.executeQuery()) {
-//
-//                // Date format as specified: dd/MM/yyyy
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//
-//                while (rs.next()) {
-//                    Date sqlDate = rs.getDate("Date");
-//                    String formattedDate = dateFormat.format(sqlDate);
-//                    double value = rs.getDouble("Value");
-//                    data.put(formattedDate, value);
-//                }
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        return data;
-//    }
-//
-//    // Generate Sales Query
-//    private static String generateSalesQuery(String timeRange) {
-//        String dateCondition = getDateCondition(timeRange);
-//        return "SELECT DATE(DateTime) AS Date, SUM(TotalPrice) AS Value " +
-//                "FROM Sale JOIN Invoice ON Sale.InvoiceNumber = Invoice.InvoiceID " +
-//                "WHERE " + dateCondition +
-//                " GROUP BY DATE(DateTime)";
-//    }
-//
-//    // Generate Remaining Stock Query
-//    private static String generateRemainingStockQuery() {
-//        return "SELECT ProductName AS Date, ProductQuantity AS Value FROM Inventory";
-//    }
-//
-//    // Generate Profit Query
-//    private static String generateProfitQuery(String timeRange) {
-//        String dateCondition = getDateCondition(timeRange);
-//        return "SELECT DATE(DateTime) AS Date, SUM(Sale.TotalPrice - Inventory.CostPrice * Sale.Quantity) AS Value " +
-//                "FROM Sale " +
-//                "JOIN Inventory ON Sale.ProdId = Inventory.ProductID " +
-//                "JOIN Invoice ON Sale.InvoiceNumber = Invoice.InvoiceID " +
-//                "WHERE " + dateCondition +
-//                " GROUP BY DATE(DateTime)";
-//    }
-//
-//    // Determine Date Condition Based on Time Range
-//    private static String getDateCondition(String timeRange) {
-//        switch (timeRange) {
-//            case "Today":
-//                return "DATE(DateTime) = CURRENT_DATE";
-//            case "Weekly":
-//                return "YEARWEEK(DateTime, 1) = YEARWEEK(CURRENT_DATE, 1)";
-//            case "Monthly":
-//                return "MONTH(DateTime) = MONTH(CURRENT_DATE) AND YEAR(DateTime) = YEAR(CURRENT_DATE)";
-//            case "Yearly":
-//                return "YEAR(DateTime) = YEAR(CURRENT_DATE)";
-//            default: // "Custom Range" or others
-//                return "1=1"; // No specific condition, for demonstration purposes
-//        }
-//    }
-//}
+package View;
+
+import Connection.ConnectionConfigurator;
+import Controller.ReportController;
+
+import Model.Branch;
+import Model.BranchDAO;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+public class ReportView {
+
+    public ReportView()
+    {
+        createAndShowGUI();
+    }
+
+
+
+    // Chart Generator Class
+    public static class ChartGenerator {
+        public static JPanel createBarChart(String title, String xAxisLabel, String yAxisLabel, Map<String, Double> data) {
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+            double maxValue = 0;
+            for (Map.Entry<String, Double> entry : data.entrySet()) {
+                dataset.addValue(entry.getValue(), title, entry.getKey());
+                if (entry.getValue() > maxValue) {
+                    maxValue = entry.getValue();
+                }
+            }
+
+            JFreeChart chart = ChartFactory.createBarChart(
+                    title,        // Chart title
+                    xAxisLabel,   // X-axis label
+                    yAxisLabel,   // Y-axis label
+                    dataset,      // Data
+                    PlotOrientation.VERTICAL,
+                    true,         // Include legend
+                    true,         // Tooltips
+                    false         // URLs
+            );
+
+            // Access CategoryPlot and set the Y-axis range
+            CategoryPlot plot = chart.getCategoryPlot();
+            ValueAxis yAxis = plot.getRangeAxis();
+            yAxis.setRange(0, maxValue * 2); // Set the range to double the max value
+
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(600, 400));  // Set chart panel size
+            return chartPanel;
+        }
+    }
+
+    // Main GUI Method
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame("View Reports");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1000, 700);
+
+        JPanel reportPanel = new JPanel();
+        reportPanel.setLayout(new BorderLayout(10, 10));
+        reportPanel.setBackground(new Color(245, 245, 245));
+
+        // Panel for Dropdowns and Buttons
+        JPanel controls = new JPanel();
+        controls.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+        // Dropdowns for Report Selection
+        JComboBox<String> reportTypeDropdown = new JComboBox<>(new String[]{"Sales", "Remaining Stock", "Profit"});
+        JComboBox<String> timeRangeDropdown = new JComboBox<>(new String[]{"Today", "Weekly", "Monthly", "Yearly", "Custom Range"});
+        JButton generateButton = new JButton("Generate Report");
+        JButton backButton = new JButton("Back");
+
+        controls.add(new JLabel("Report Type:"));
+        controls.add(reportTypeDropdown);
+        controls.add(new JLabel("Time Range:"));
+        controls.add(timeRangeDropdown);
+        controls.add(generateButton);
+
+
+        BranchDAO branchDAO = new BranchDAO();
+        LinkedList<Branch> branches = branchDAO.getAllBranches();
+
+// Create the branch combo box and populate it
+        JComboBox<String> branchDropdown = new JComboBox<>();
+        Branch branch;
+        for (int i=0;i<branches.size();i++) {
+            branch=branches.get(i);
+            branchDropdown.addItem(branch.getBranchID() + " - " + branch.getBranchName());
+        }
+
+// Add the branch dropdown to the controls panel
+        controls.add(new JLabel("Select Branch:"));
+        controls.add(branchDropdown);
+        controls.add(backButton);
+
+
+        reportPanel.add(controls, BorderLayout.NORTH);
+
+        // Panel for displaying chart and data
+        JPanel chartArea = new JPanel();
+        chartArea.setLayout(new BorderLayout(10, 10));
+        reportPanel.add(chartArea, BorderLayout.CENTER);
+
+        // Table for displaying data
+        JTable dataTable = new JTable();
+        JScrollPane scrollPane = new JScrollPane(dataTable);
+        chartArea.add(scrollPane, BorderLayout.EAST);
+        dataTable.setEnabled(false);
+
+
+
+        generateButton.addActionListener(e -> {
+            String reportType = (String) reportTypeDropdown.getSelectedItem();
+            String timeRange = (String) timeRangeDropdown.getSelectedItem();
+
+            String selectedBranch = (String) branchDropdown.getSelectedItem();
+
+            // Parse the branch ID from the selected item
+            String branchId = selectedBranch.split(" - ")[0];  // Get the "BRANCH_ID_HERE" part
+
+            System.out.println("Selected Branch ID: " + branchId);
+
+            // Fetch Data from Database
+            ReportController controller = new ReportController();
+            LinkedHashMap<String, Double> data = controller.fetchData(reportType, timeRange,branchId);
+
+            LinkedHashMap<String, Double> newData=new LinkedHashMap<>();
+
+            JPanel chartPanel = null;
+
+
+            String dayName = LocalDate.now().getDayOfWeek().name();
+            String year=String.valueOf(LocalDate.now().getYear());
+            String month=LocalDate.now().getMonth().name();
+
+            // Iterate through the original map
+            for (Map.Entry<String, Double> entry : data.entrySet()) {
+                String key = entry.getKey();
+                Double value = entry.getValue();
+
+                // If the key is "Today", replace it with "Today - DayName"
+                if (dayName.toLowerCase().equals(key.toLowerCase())) {
+                    key = "Today - " + dayName;
+                }
+
+                else if(year.equals(key))
+                {
+                    key="This Year - "+year;
+                }
+                else if (month.toLowerCase().equals(key.toLowerCase())) {
+                    key = "This Month - " + month;
+                }
+
+                // Put the updated key-value pair into the new map
+                newData.put(key, value);
+            }
+            data=newData;
+
+            if (data != null && !data.isEmpty()) {
+                if (reportType.equals("Remaining Stock")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Category", "Quantity"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Category", "Quantity", data);
+                } else if (reportType.equals("Sales") && timeRange.equals("Yearly"))
+                {
+
+
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Year", "Sale"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Year", "Sale", data);
+                }
+                else if (reportType.equals("Sales") && timeRange.equals("Monthly")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Month", "Sale"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Month", "Sale", data);
+                } else if (reportType.equals("Sales") && timeRange.equals("Weekly")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Day", "Sale"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Day", "Sale", data);
+                } else if (reportType.equals("Sales") && timeRange.equals("Today")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Time", "Sale"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Time", "Sale", data);
+                } else if (reportType.equals("Profit") && timeRange.equals("Yearly")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Year", "Profit"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Year", "Profit", data);
+                } else if (reportType.equals("Profit") && timeRange.equals("Monthly")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Month", "Profit"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Month", "Profit", data);
+                } else if (reportType.equals("Profit") && timeRange.equals("Weekly")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Day", "Profit"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Day", "Profit", data);
+                }
+
+                else if (reportType.equals("Profit") && timeRange.equals("Today")) {
+                    dataTable.setModel(new DefaultTableModel(new Object[]{"Day", "Profit"}, 0));
+                    chartPanel = ChartGenerator.createBarChart(reportType, "Day", "Profit", data);
+                }
+            } else {
+                // Handle case when no data is returned
+                JOptionPane.showMessageDialog(frame, "No data available for the selected report and time range.", "No Data", JOptionPane.WARNING_MESSAGE);
+            }
+
+            // Update Table with Data
+            DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+            model.setRowCount(0);  // Clear existing rows
+            if (data != null) {
+                for (Map.Entry<String, Double> entry : data.entrySet()) {
+                    model.addRow(new Object[]{entry.getKey(), String.format("%.2f", entry.getValue())});
+                }
+            }
+
+            // Generate Chart and add it to panel
+            chartArea.removeAll();
+            if (chartPanel != null) {
+                chartArea.add(chartPanel, BorderLayout.CENTER);
+            }
+            chartArea.add(scrollPane, BorderLayout.EAST);
+            chartArea.revalidate();
+            chartArea.repaint();
+        });
+
+
+
+        // Back Button Action
+        backButton.addActionListener(e -> {
+            frame.dispose();  // Close current frame
+            showPreviousScreen();  // Call method to display the previous screen
+        });
+
+        frame.add(reportPanel);
+        frame.setVisible(true);
+    }
+
+    // Method to Display the Previous Screen
+    private static void showPreviousScreen() {
+
+        new SADashboardView();
+
+    }
+
+}

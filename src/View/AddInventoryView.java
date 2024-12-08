@@ -39,7 +39,7 @@ private BranchManagementController bmc=new BranchManagementController();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Image icon
-        img = new ImageIcon("update.jpg");
+        img = new ImageIcon("src/resources/login.png");
 
         // Image label
         imagelabel = new JLabel(img);
@@ -109,7 +109,8 @@ private BranchManagementController bmc=new BranchManagementController();
 
         // Add Button
         btnAdd = new JButton("Add");
-        btnAdd.setBackground(Color.CYAN);
+        btnAdd.setBackground(Color.decode("#415a77"));
+        btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(new Font("Arial", Font.BOLD, 14));
         btnAdd.setBounds(580, 330, 100, 40);
 
@@ -195,6 +196,7 @@ private BranchManagementController bmc=new BranchManagementController();
         return true;
     }
 
+
     public String[] readCategoryDatafromfile() {
         ArrayList<String> data = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("AddCategory.txt"))) {
@@ -259,6 +261,10 @@ private BranchManagementController bmc=new BranchManagementController();
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new AddInventoryView();
     }
 
 }

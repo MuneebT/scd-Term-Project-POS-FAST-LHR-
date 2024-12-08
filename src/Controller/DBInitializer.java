@@ -53,19 +53,20 @@ public class DBInitializer {
     }
 
 
-    
+
 
     void makeSureEmployeeTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
-        String query = "CREATE TABLE IF NOT EXISTS Employee (\n" +
-                "    id INT PRIMARY KEY AUTO_INCREMENT,\n" +
-                "    emp_no varchar(50) UNIQUE ,\n" +
-                "    name VARCHAR(100) NOT NULL,\n" +
+        String query = "CREATE TABLE IF NOT EXISTS Employee (" +
+                "    id INT PRIMARY KEY AUTO_INCREMENT," +
+                "    emp_no varchar(50) UNIQUE ," +
+                "    name VARCHAR(100) NOT NULL," +
                 "password VARCHAR(100) NOT NULL, " +
-                "    email VARCHAR(100),\n" +
-                "    branch_code VARCHAR(50),\n" +
-                "    salary DECIMAL(10, 2),\n" +
-                "    designation VARCHAR(50)\n" +
+                "    email VARCHAR(100)," +
+                "    branch_code VARCHAR(50)," +
+                "    salary DECIMAL(10, 2)," +
+                "    designation VARCHAR(50)," +
+                " firstPasswordChangedStatus int DEFAULT 0 "+
                 ");";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -224,5 +225,4 @@ public class DBInitializer {
 
 
 }
-
 

@@ -31,7 +31,7 @@ private static InternetConnectionChecker icc=new InternetConnectionChecker();
         // Create the "Add Vendor" button
         JButton addVendorButton = new JButton("+ Add Vendor");
         addVendorButton.setFont(new Font("Arial", Font.BOLD, 14));
-        addVendorButton.setBackground(Color.GREEN);
+        addVendorButton.setBackground(Color.decode("#415a77"));
         addVendorButton.setForeground(Color.WHITE);
 
         // Add ActionListener to the button
@@ -292,5 +292,8 @@ private static InternetConnectionChecker icc=new InternetConnectionChecker();
         }
     }
 
+    public static void main(String[] args) throws SQLException {
+        new ManageVendorView();
+    }
 
 }
