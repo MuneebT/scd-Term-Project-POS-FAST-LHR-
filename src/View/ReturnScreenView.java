@@ -30,12 +30,19 @@ public class ReturnScreenView extends JFrame {
         JLabel titleLabel = new JLabel("Return Screen");
         titleLabel.setBounds(0, 30, 800, 40); // Centered title
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87); // RGB for #795757
-        titleLabel.setForeground(customColor); // Set font color
+        Color customColor = Color.decode("#415a77"); // RGB for #795757
+        titleLabel.setForeground((Color.decode("#fff0f3"))); // Set font color
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        titleLabel.setIcon(scaledIcon);
+        titleLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Set background
-        ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
+        ImageIcon bk = new ImageIcon("src/resources/background1.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(800, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
         JLabel backgroundLabel = new JLabel(scaledIcon2);
@@ -58,7 +65,7 @@ public class ReturnScreenView extends JFrame {
         pt1.setOpaque(false);
 
         // Background for pt1
-        ImageIcon bk1 = new ImageIcon("src/resources/Desktopbg.jpg");
+        ImageIcon bk1 = new ImageIcon("src/resources/Deskt opbg.jpg");
         Image scaledImage1 = bk1.getImage().getScaledInstance(600, 200, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
         JLabel backgroundLabel1 = new JLabel(scaledIcon1);

@@ -162,4 +162,8 @@ public    String get_branch_address(){
     Object employeecount=bmtable.getValueAt(bmtable.getSelectedRow(),6);
     return employeecount.hashCode();
     }
+
+    public static void main(String[] args) {
+        new BranchManagementView();
+    }
 }

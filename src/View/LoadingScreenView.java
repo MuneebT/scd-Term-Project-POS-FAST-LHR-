@@ -48,5 +48,9 @@ public class LoadingScreenView extends JFrame {
         dispose();
     }
 
+    public static void main(String[] args) {
+        new LoadingScreenView();
+    }
+
 
 }

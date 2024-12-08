@@ -28,8 +28,9 @@ public class CreateBranchView extends JFrame {
         setTitle("Create Branch");
         setLayout(null); // Still using null layout for absolute positioning
         setBounds(100, 100, 800, 600);
+        setBackground(Color.white);
         setResizable(false);
-        getContentPane().setBackground(Color.darkGray);
+        getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Image icon
@@ -41,7 +42,7 @@ public class CreateBranchView extends JFrame {
 
         // Phone number label
         b_phone_no = new JLabel("Enter Phone No");
-        b_phone_no.setForeground(Color.BLACK);
+        b_phone_no.setForeground(Color.decode("#415a77"));
         b_phone_no.setFont(new Font("", Font.BOLD, 15));
         b_phone_no.setBounds(420, 170, 150, 30);
 
@@ -51,7 +52,7 @@ public class CreateBranchView extends JFrame {
 
         // Branch name label
         b_name = new JLabel("Enter Branch Name");
-        b_name.setForeground(Color.BLACK);
+        b_name.setForeground(Color.decode("#415a77"));
         b_name.setFont(new Font("", Font.BOLD, 15));
         b_name.setBounds(420, 100, 150, 30);
 
@@ -61,7 +62,7 @@ public class CreateBranchView extends JFrame {
 
         // Address label
         b_address = new JLabel("Enter Address");
-        b_address.setForeground(Color.BLACK);
+        b_address.setForeground(Color.decode("#415a77"));
         b_address.setFont(new Font("", Font.BOLD, 15));
         b_address.setBounds(420, 240, 150, 30);
 
@@ -71,7 +72,7 @@ public class CreateBranchView extends JFrame {
 
         // branch status label
         b_status=new JLabel("Set status");
-        b_status.setForeground(Color.BLACK);
+        b_status.setForeground(Color.decode("#415a77"));
         b_status.setFont(new Font("",Font.BOLD,15));
         b_status.setBounds(420,310,150,30);
 
@@ -83,7 +84,7 @@ public class CreateBranchView extends JFrame {
 
         //city label
         b_city=new JLabel("Select city");
-        b_city.setForeground(Color.BLACK);
+        b_city.setForeground(Color.decode("#415a77"));
         b_city.setFont(new Font("",Font.BOLD,15));
         b_city.setBounds(420,380,150,30);
 
@@ -101,7 +102,8 @@ public class CreateBranchView extends JFrame {
 
         // Update button
         btnCreate = new JButton("Create Branch");
-        btnCreate.setBackground(Color.CYAN);
+        btnCreate.setForeground(Color.white);
+        btnCreate.setBackground(Color.decode("#415a77"));
         btnCreate.setFont(new Font("", Font.BOLD, 14));
         btnCreate.setBounds(580, 450, 150, 40);
 
@@ -220,6 +222,10 @@ public class CreateBranchView extends JFrame {
         }
         JOptionPane.showMessageDialog(null,"Dont leave empty field");
         return false;
+    }
+
+    public static void main(String[] args) {
+        new CreateBranchView();
     }
 
 }
