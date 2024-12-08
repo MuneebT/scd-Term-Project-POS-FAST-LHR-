@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.InventoryCntroller;
 import Controller.OrderController;
 import Controller.VendorManagementController;
@@ -9,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -28,6 +31,7 @@ public class AddOrderView extends JFrame {
     private VendorManagementController vmc = new VendorManagementController();
     private BranchManagementController bmc = new BranchManagementController();
 
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public AddOrderView() {
         setTitle("Add Order");
         setLayout(null); // Absolute positioning
@@ -48,27 +52,51 @@ public class AddOrderView extends JFrame {
         lblProductID.setFont(new Font("Arial", Font.BOLD, 15));
         lblProductID.setBounds(420, 50, 150, 30);
 
-        LinkedList<String> productdata = ic.redirectProductConcatenatedDataRequest();
-        comboProductID = new JComboBox<>(productdata.toArray(new String[0]));
-        comboProductID.setBounds(580, 50, 180, 30);
+        boolean flag1=icc.startChecking();
+
+        if(flag1) {
+            LinkedList<String> productdata = ic.redirectProductConcatenatedDataRequest();
+            comboProductID = new JComboBox<>(productdata.toArray(new String[0]));
+            comboProductID.setBounds(580, 50, 180, 30);
+        }
+        else{
+            comboProductID=loaddataintoproductcombobox();
+            comboProductID.setBounds(580, 50, 180, 30);
+        }
 
         // Vendor ID ComboBox
         lblVendorID = new JLabel("Select Vendor ID");
         lblVendorID.setFont(new Font("Arial", Font.BOLD, 15));
         lblVendorID.setBounds(420, 120, 150, 30);
 
-        LinkedList<String> vendordata = vmc.redirectConcatenatedVendordata();
-        comboVendorID = new JComboBox<>(vendordata.toArray(new String[0]));
-        comboVendorID.setBounds(580, 120, 180, 30);
+        boolean flag=icc.startChecking();
+        if(flag) {
+            LinkedList<String> vendordata = vmc.redirectConcatenatedVendordata();
+            comboVendorID = new JComboBox<>(vendordata.toArray(new String[0]));
+            comboVendorID.setBounds(580, 120, 180, 30);
+        }
+        else{
+            comboVendorID=loaddataintovendorcombobox();
+            comboVendorID.setBounds(580, 120, 180, 30);
+        }
 
         // Branch ID ComboBox
         lblBranchID = new JLabel("Select Branch ID");
         lblBranchID.setFont(new Font("Arial", Font.BOLD, 15));
         lblBranchID.setBounds(420, 190, 150, 30);
 
-        LinkedList<String> branchdata = bmc.redirectConcatenatedData();
-        comboBranchID = new JComboBox<>(branchdata.toArray(new String[0]));
-        comboBranchID.setBounds(580, 190, 180, 30);
+        boolean isconnected=icc.startChecking();
+
+        if(isconnected) {
+            LinkedList<String> branchdata = bmc.redirectConcatenatedData();
+            comboBranchID = new JComboBox<>(branchdata.toArray(new String[0]));
+            comboBranchID.setBounds(580, 190, 180, 30);
+        }
+        else{
+            comboBranchID=loaddataintocombobox();
+            comboBranchID.setBounds(580, 190, 180, 30);
+        }
+
 
         // Add Button
         btnAdd = new JButton("Add");
@@ -114,4 +142,96 @@ public class AddOrderView extends JFrame {
 
         setVisible(true);
     }
+
+    public LinkedList<String> returnconcatenatedBranchdata(){
+        BufferedReader br=null;
+       LinkedList<String> concatenateddata=new LinkedList<>();
+        try{
+            br=new BufferedReader(new FileReader("concatenatedbranchdata.txt"));
+            String line;
+            while((line=br.readLine())!=null){
+                concatenateddata.add(line);
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(br!=null){
+                    br.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return concatenateddata;
+    }
+    public JComboBox<String> loaddataintocombobox(){
+        String[] data= returnconcatenatedBranchdata().toArray(new String[0]);
+        return new JComboBox<>(data);
+    }
+    public LinkedList<String> readvendorconcatenateddatafromfile(){
+        LinkedList<String> concatenateddata=new LinkedList<>();
+        BufferedReader br=null;
+        try{
+            br=new BufferedReader(new FileReader("concatenatedvendordata.txt"));
+            String line;
+            while((line=br.readLine())!=null){
+                concatenateddata.add(line);
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(br!=null){
+                    br.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return concatenateddata;
+    }
+    public JComboBox<String> loaddataintovendorcombobox(){
+        String [] data=readvendorconcatenateddatafromfile().toArray(new String[0]);
+        return new JComboBox<>(data);
+    }
+
+    public LinkedList<String> returnconcatenatedproductdata(){
+        LinkedList<String> concatenateddata=new LinkedList<>();
+        BufferedReader br=null;
+        try{
+            br=new BufferedReader(new FileReader("concatenatedproductdata.txt"));
+            String line;
+            while((line=br.readLine())!=null){
+                concatenateddata.add(line);
+
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(br!=null){
+                    br.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return concatenateddata;
+    }
+
+    public JComboBox<String> loaddataintoproductcombobox(){
+        String []data=returnconcatenatedproductdata().toArray(new String[0]);
+        return new JComboBox<>(data);
+    }
+
 }

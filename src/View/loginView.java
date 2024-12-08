@@ -1,5 +1,7 @@
 package View;
 
+import Connection.ConnectionConfigurator;
+import Connection.InternetConnectionChecker;
 import Controller.LoginController;
 import View.CustomerElements.RoundedButton;
 
@@ -7,11 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 
 class loginView extends JFrame {
     LoginController loginController = new LoginController();
-
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public loginView() {
         // Setup frame
         setTitle("Login Page");
@@ -203,25 +209,37 @@ class loginView extends JFrame {
                 String designation = (String) designationTypeComboBox.getSelectedItem();
                 String branch = branchField.getText();
 
+
+              boolean flag=  icc.startChecking();
                 try {
-                    if (loginController.redirect_validateUser(userName, password, designation)) {
-                        loginController.redirect_set_credientials(userName, password, designation,branch);
-                        if (designation.equals("Super Admin")) {
-                            new SADashboardView();
-                        } else if (designation.equals("Branch Manager")) {
-                            new BMDashboardView();
-                        } else if (designation.equals("Data Entry Operator")) {
-                            new DEODashboardView();
-                        } else if (designation.equals("Cashier")) {
-                            new CashierDashboard();
+                    if(flag) {
+                        if (loginController.redirect_validateUser(userName, password, designation)) {
+                            loginController.redirect_set_credientials(userName, password, designation, branch);
+                            if (designation.equals("Super Admin")) {
+                                new SADashboardView();
+                            } else if (designation.equals("Branch Manager")) {
+                                new BMDashboardView();
+                            } else if (designation.equals("Data Entry Operator")) {
+                                new DEODashboardView();
+                            } else if (designation.equals("Cashier")) {
+                                new CashierDashboard();
+                            }
+                            dispose();
+                        } else {
+                            errorLabel.setVisible(true);
                         }
-                        dispose();
-                    } else {
-                        errorLabel.setVisible(true);
                     }
+                    else{
+                        storeLoginCredentials(userName,password,designation);
+                        dispose();
+                        //JOptionPane.showMessageDialog(null,"No in");
+
+                    }
+
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+
             }
         });
 
@@ -261,6 +279,29 @@ class loginView extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    void storeLoginCredentials(String username,String password,String designation){
+       BufferedWriter bw=null;
+       String data=username+","+password+","+designation;
+       try{
+           bw=new BufferedWriter(new FileWriter("Login.txt",true));
+           bw.write(data);
+           bw.newLine();
+       }
+       catch (IOException e){
+           e.printStackTrace();
+       }
+       finally {
+           try{
+               if(bw!=null){
+                   bw.close();
+               }
+           }
+           catch (IOException e){
+               e.printStackTrace();
+           }
+       }
     }
 
     public static void main(String[] args) {

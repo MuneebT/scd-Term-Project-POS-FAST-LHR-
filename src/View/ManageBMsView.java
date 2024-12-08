@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import Model.Employee;
 import Model.EmployeeTableModel;
@@ -11,13 +12,16 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ManageBMsView extends JFrame {
     private JTable employeeTable;
     private EmployeeManagementController employeeManagementController = new EmployeeManagementController();
-
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public ManageBMsView() throws SQLException {
         setTitle("Manage Branch Managers");
         setSize(800, 600);
@@ -125,21 +129,35 @@ public class ManageBMsView extends JFrame {
             return null;
         }
 
+        Employee employeeToDelete=null;
+        Employee employeeToUpdate=null;
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == deleteButton) {
+                boolean isconnected = icc.startChecking();
+               if(isconnected){
                 // Perform delete action
-                Employee employeeToDelete = employees.get(row);
+                 employeeToDelete = employees.get(row);
                 System.out.println("Deleting employee: " + employeeToDelete.getName());
                 employeeManagementController.redirect_employee_delete(employeeToDelete.getEmpNo());
                 employees.remove(row);
                 ((AbstractTableModel) table.getModel()).fireTableRowsDeleted(row, row);
+            }
+               else{
+                   storeManageBmsdataintempfile(employeeToDelete.getEmpNo());
+               }
             } else if (e.getSource() == updateButton) {
                 // Perform update action
-                Employee employeeToUpdate = employees.get(row);
-                System.out.println("Updating employee: " + employeeToUpdate.getName());
-                openUpdateDialog(employeeToUpdate);
-            }
+                boolean isconnected=icc.startChecking();
+                if(isconnected) {
+                     employeeToUpdate = employees.get(row);
+                    System.out.println("Updating employee: " + employeeToUpdate.getName());
+                    openUpdateDialog(employeeToUpdate);
+                }
+                else{
+                    storeManageBMSupdatedata(employeeToUpdate);
+                }
+                }
             fireEditingStopped();
         }
 
@@ -228,6 +246,51 @@ public class ManageBMsView extends JFrame {
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex < model.getColumnCount()) {
                 model.setValueAt(aValue, rowIndex, columnIndex);
+            }
+        }
+    }
+    public void storeManageBmsdataintempfile(String num){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("ManageDeleteBM.txt",true));
+            bw.write(num);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void storeManageBMSupdatedata(Employee employeedata){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("ManageUpdateBM.txt",true));
+           String data=employeedata.getName()+","+employeedata.getSalary()+","+employeedata.getEmpNo()+","+
+                   employeedata.getEmail()+","+employeedata.getBranchCode()+","+employeedata.getBranchCode()+","+
+                   employeedata.getDesignation();
+           bw.write(data);
+           bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
             }
         }
     }

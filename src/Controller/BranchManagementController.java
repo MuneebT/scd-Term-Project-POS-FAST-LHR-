@@ -38,4 +38,7 @@ public LinkedList<String> return_list_of_branch_names(){return BranchDAO.read_br
     public LinkedList<String> redirectConcatenatedData(){
     return branches.concatenateBranchIDandBranchName();
     }
+
+    public LinkedList<Branch> returnAllBranches(){return BranchDAO.getAllBranches();}
+
 }

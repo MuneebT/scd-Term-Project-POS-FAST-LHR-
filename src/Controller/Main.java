@@ -1,13 +1,17 @@
 package Controller;
+import Connection.ConnectionConfigurator;
 import Model.*;
 import View.*;
 
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws RuntimeException {
-      
+
+
+
         try {
             DBInitializer in=new DBInitializer();
 
@@ -16,7 +20,7 @@ public class Main {
         }
         //new splashView();
 
-        
+
 
         // new CreateBranchView();
 //new BranchManagementView();
@@ -41,6 +45,10 @@ public class Main {
 
  //   new ManageOrderView();
 
-    //new AddCategoryView();
+//    new ManageCategoryView();
+
+      //new SearchInventoryView();
+       // new SearchOrderView();
+
     }
 }

@@ -1,10 +1,14 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.CategoryController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class AddCategoryView extends JFrame {
     private JTextField categoryTypeField;
@@ -12,7 +16,7 @@ public class AddCategoryView extends JFrame {
     private ImageIcon img;
     private JLabel imagelabel;
     private CategoryController cc = new CategoryController();
-
+private InternetConnectionChecker icc=new InternetConnectionChecker();
     public AddCategoryView() {
         // Set up the frame
         setTitle("Add Category");
@@ -42,9 +46,15 @@ public class AddCategoryView extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String type = categoryTypeField.getText();
-                cc.redirectinsertRequest(type);
-
+                boolean isconnected=icc.startChecking();
+                if(isconnected) {
+                    String type = categoryTypeField.getText();
+                    cc.redirectinsertRequest(type);
+                    dispose();
+                }
+                else{
+                    storeCategoryDataintempfile(categoryTypeField.getText());
+                }
             }
         });
 
@@ -53,6 +63,28 @@ public class AddCategoryView extends JFrame {
         add(addButton);
 
         setVisible(true);
+    }
+    void storeCategoryDataintempfile(String category){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("AddCategory.txt",true));
+            String data=category;
+            bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
 

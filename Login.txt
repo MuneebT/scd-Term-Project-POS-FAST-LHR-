@@ -1,0 +1,2 @@
+Ali,1234,Super Admin
+Muneeb,8901,Branch Manager

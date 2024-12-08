@@ -14,7 +14,7 @@ public class UpdateInventoryView extends JFrame {
     private JTextField tfQuantity, tfPrice, tfSalePrice;
     private InventoryCntroller ic = new InventoryCntroller();
 
-    public UpdateInventoryView(int id, int quantity, int price, int sp, ManageInventoryView.ButtonEditor miv) {
+    public UpdateInventoryView(int id, int quantity, int price, int sp) {
         setTitle("Update Inventory");
         setLayout(null); // Using null layout for absolute positioning
         setBounds(100, 100, 800, 500); // Adjusted height after removing vendor fields

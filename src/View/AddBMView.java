@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedField;
@@ -10,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.UUID;
 
 public class AddBMView extends JFrame {
@@ -20,7 +24,7 @@ public class AddBMView extends JFrame {
     public String branchCode;
     public String salary;
     public String designation;
-
+private InternetConnectionChecker icc=new InternetConnectionChecker();
     EmployeeManagementController employeeManagementController = new EmployeeManagementController();
 
     public AddBMView() {
@@ -134,18 +138,25 @@ public class AddBMView extends JFrame {
         RoundedButton submitButton = new RoundedButton("Submit");
         submitButton.setBounds(470, 420, 110, 35);
         submitButton.addActionListener(e -> {
-            name = nameField.getText();
-            empNo = empNoField.getText();
-            password = new String(passwordField.getPassword());
-            email = emailField.getText();
-            branchCode = branchCodeField.getText();
-            salary = salaryField.getText();
+            boolean isconnected=icc.startChecking();
+            if(isconnected) {
+                name = nameField.getText();
+                empNo = empNoField.getText();
+                password = new String(passwordField.getPassword());
+                email = emailField.getText();
+                branchCode = branchCodeField.getText();
+                salary = salaryField.getText();
 
-            employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,"Branch Manager",password);
+                employeeManagementController.redirect_employee_insertion(name, empNo, email, branchCode, salary, "Branch Manager", password);
 
-            //employeeManagementController.redirect_employee_insertion(name, empNo, password, email, branchCode, salary,"Branch Manager");
+                dispose();
+            }
+            else{
+                storedataintempfile(name, empNo, email, branchCode, salary, "Branch Manager", password);
+            }
 
-            dispose();
+
+
         });
         submitButton.setBackground(customColor);
         submitButton.setForeground(Color.WHITE);
@@ -178,6 +189,29 @@ public class AddBMView extends JFrame {
     // Generate unique employee number
     public String generateUUIDEmployeeNumber() {
         return "EMP" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+    }
+
+    public void storedataintempfile(String name,String empNo,String email,String branchCode,String salary,String designation,String password){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("AddBM.txt",true));
+            String data=name+","+ empNo+","+ email+"," + branchCode+","+ salary+","+ "Branch Manager"+","+ password;
+            bw.write(data);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.DataEntryOperatorController;
 import Controller.OrderController;
 
@@ -15,7 +16,7 @@ public class ManageOrderView extends JFrame {
     private JScrollPane scrollPane;
     private JButton btnAdd;
     private OrderController oc = new OrderController();
-
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public ManageOrderView() {
         setTitle("Inventory Management");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
