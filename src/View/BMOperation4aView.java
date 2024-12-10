@@ -147,7 +147,8 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close current window
+                dispose();
+                new BMDashboardView();
             }
         });
         backButton.setBackground(customColor);

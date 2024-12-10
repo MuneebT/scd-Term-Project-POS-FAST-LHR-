@@ -1,8 +1,6 @@
 package View;
 
-import Controller.ReturnController;
-import Model.ReturnDao;
-import Model.Sale;
+import Controller.PayController;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedField;
 import View.CustomerElements.RoundedLabel;
@@ -11,15 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
-public class ReturnScreenView extends JFrame {
+public class SeePaymentView extends JFrame {
     public String invoiceNumber;
-
-    public ReturnScreenView() {
+    boolean status=false;
+    PayController payController=new PayController();
+    public SeePaymentView(String name, String password, String designation, String branch,BigDecimal pay) {
         // Setup the frame
-        setTitle("Return Screen");
+        setTitle("See Payment");
         setBounds(20, 20, 800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -27,7 +25,7 @@ public class ReturnScreenView extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
-        JLabel titleLabel = new JLabel("Return Screen");
+        JLabel titleLabel = new JLabel("See Payment");
         titleLabel.setBounds(0, 30, 800, 40); // Centered title
         titleLabel.setFont(new Font("Impact", Font.PLAIN, 24));
         Color customColor = Color.decode("#415a77"); // RGB for #795757
@@ -72,12 +70,14 @@ public class ReturnScreenView extends JFrame {
         backgroundLabel1.setBounds(0, 0, 600, 200);
 
         // Create rounded label and field for invoice number
-        RoundedLabel actionLabelInvoice = new RoundedLabel("Invoice Number", Color.WHITE, 20, 20);
+        RoundedLabel actionLabelInvoice = new RoundedLabel("Payment", Color.WHITE, 20, 20);
         actionLabelInvoice.setBounds(50, 50, 200, 40);
         actionLabelInvoice.setFont(new Font("Arial", Font.PLAIN, 24));
         actionLabelInvoice.setForeground(customColor);
 
         RoundedField fieldInvoice = new RoundedField(20); // Rounded text field for "Invoice Number"
+        fieldInvoice.setEditable(false);
+        fieldInvoice.setText(String.valueOf(pay));
         fieldInvoice.setBounds(295, 50, 300, 40);
 
         // Create back button
@@ -86,8 +86,8 @@ public class ReturnScreenView extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new CashierDashboard();
+                new BMDashboardView();
+                dispose(); // Close current window
             }
         });
         backButton.setBackground(customColor);
@@ -96,18 +96,26 @@ public class ReturnScreenView extends JFrame {
         backButton.setToolTipText("Click here to return!");
 
         // Create submit button
-        RoundedButton submitButton = new RoundedButton("Submit");
+        RoundedButton submitButton = new RoundedButton("Paid");
         submitButton.setBounds(405, 120, 110, 35);
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                invoiceNumber = fieldInvoice.getText();
-//                List<Sale> salesList = new ArrayList<>();
-//                ReturnController returnController=new ReturnController();
-//               // returnController.redirect_get_sales(invoiceNumber);
-                new SaleTableView(invoiceNumber);
+                //setting status
+
+                if(payController.redirect_updateStatus(name, password, designation, branch))
+                {
+                    JOptionPane.showMessageDialog(null,"Paid\n");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Not Paid\n");
+                }
+
+
                 // System.out.println("Submitted Invoice Number: " + invoiceNumber);
                 dispose(); // Close current window
+
             }
         });
         submitButton.setBackground(customColor);
@@ -134,6 +142,5 @@ public class ReturnScreenView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ReturnScreenView();
     }
 }

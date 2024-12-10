@@ -1,28 +1,19 @@
 package View;
 
-import Connection.InternetConnectionChecker;
 import Controller.BranchManagementController;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.LinkedList;
-
 
 public class BranchManagementView extends JFrame {
     public JTable bmtable;
     private DefaultTableModel dtm1;
     private BranchManagementController bmc = new BranchManagementController();
     private JScrollPane bmScroll;
-
-private InternetConnectionChecker icc=new InternetConnectionChecker();
-
-    private JButton createBranchButton; // Create Branch Button
-    private JButton backButton; // Back Button
+    private JButton createBranchButton;
+    private JButton backButton;
 
     public BranchManagementView() {
         setTitle("Branch Management");
@@ -35,7 +26,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         headerPanel.setBounds(0, 0, getWidth(), 50);
-        headerPanel.setBackground(new Color(0, 120, 215)); // Blue header background
+        headerPanel.setBackground(new Color(0, 120, 215));
 
         // Title label
         JLabel titleLabel = new JLabel("Manage Branches");
@@ -74,15 +65,15 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         headerPanel.add(backButton);
         add(headerPanel);
 
-        // Table column names
+
         String[] columnNames = { "ID", "Name", "City", "Status", "Address", "PhoneNo", "No of Employees", "Delete", "Update" };
 
         Object[][] data1 = bmc.return_object_Array();
 
-        // Create the table with data and column names
+
         bmtable = new JTable(new DefaultTableModel(data1, columnNames));
 
-        // Set custom renderer and editor for the last two columns (buttons)
+
         bmtable.getColumn("Delete").setCellRenderer(new ButtonRenderer());
         bmtable.getColumn("Delete").setCellEditor(new ButtonEditor(new JCheckBox(), "Delete"));
 
@@ -91,7 +82,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
 
         // Scroll pane
         bmScroll = new JScrollPane(bmtable);
-        bmScroll.setBounds(0, 50, getWidth(), getHeight() - 100); // Adjust height to leave space for header
+        bmScroll.setBounds(0, 50, getWidth(), getHeight() - 100);
         add(bmScroll);
 
         setVisible(true);
@@ -116,7 +107,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         private String label;
         private boolean isPushed;
         private String actionType;
-        private int currentRow; // Store the current row
+        private int currentRow;
 
         public ButtonEditor(JCheckBox checkBox, String actionType) {
             super(checkBox);
@@ -135,7 +126,7 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             isPushed = true;
-            currentRow = row; // Capture the current row here
+            currentRow = row;
             return button;
         }
 
@@ -143,25 +134,16 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
         public Object getCellEditorValue() {
             if (isPushed) {
 
-                int code=0;
-
-
                 if ("Delete".equals(actionType)) {
                     int response = JOptionPane.showConfirmDialog(null, "Do you want to delete this data?");
                     if (response == 0) {
-                        boolean isconnected = icc.startChecking();
-                     if(isconnected){
                         DefaultTableModel model = (DefaultTableModel) bmtable.getModel();
-                         code = (int) model.getValueAt(currentRow, 0);
+                        int code = (int) model.getValueAt(currentRow, 0);
                         System.out.println("Row to delete=" + currentRow);
                         System.out.println("code=" + code);
                         model.removeRow(currentRow);
                         bmc.redirect_delect_request(code);
                         JOptionPane.showMessageDialog(null, "Data Deleted from DB");
-                    }
-                     else{
-                         storeBranchdatatodelete(code);
-                     }
                     } else {
                         System.out.println("Data not deleted");
                     }
@@ -169,51 +151,49 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
                     int response = JOptionPane.showConfirmDialog(null, "Do you want to update the data?");
                     if (response == 0) {
                         dispose();
-                        // Open Update Screen (or dialog)
+
                         new UpdateScreenView(get_branch_id(), get_Branch_name(), get_branch_city(), get_branch_status(), get_branch_address(), get_branch_phoneno(), get_branch_employee_count());
                     } else {
                         System.out.println("Data not updated");
                     }
                 }
-
-
             }
             isPushed = false;
             return label;
         }
     }
 
-    // Getter to get selected row id
+
     public int get_branch_id() {
         Object num = bmtable.getValueAt(bmtable.getSelectedRow(), 0);
         return num.hashCode();
     }
 
-    // Getter to get branch name
+
     public String get_Branch_name() {
         Object name = bmtable.getValueAt(bmtable.getSelectedRow(), 1);
         return name.toString();
     }
 
-    // Getter to get branch city
+
     public String get_branch_city() {
         Object city = bmtable.getValueAt(bmtable.getSelectedRow(), 2);
         return city.toString();
     }
 
-    // Getter to get branch status
+
     public String get_branch_status() {
         Object status = bmtable.getValueAt(bmtable.getSelectedRow(), 3);
         return status.toString();
     }
 
-    // Getter for branch address
+
     public String get_branch_address() {
         Object address = bmtable.getValueAt(bmtable.getSelectedRow(), 4);
         return address.toString();
     }
 
-    // Getter for branch phone number
+
     public String get_branch_phoneno() {
         Object phoneno = bmtable.getValueAt(bmtable.getSelectedRow(), 5);
         return phoneno.toString();
@@ -226,26 +206,5 @@ private InternetConnectionChecker icc=new InternetConnectionChecker();
 
     public static void main(String[] args) {
         new BranchManagementView();
-    }
-    public void storeBranchdatatodelete(int code){
-        BufferedWriter bw=null;
-        try{
-            bw=new BufferedWriter(new FileWriter("deleteBranchdata.txt",true));
-            bw.write(code);
-            bw.newLine();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        finally {
-            try{
-                if(bw!=null){
-                    bw.close();
-                }
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
     }
 }

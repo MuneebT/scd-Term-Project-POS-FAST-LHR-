@@ -5,6 +5,7 @@ import Controller.ReportController;
 
 import Model.Branch;
 import Model.BranchDAO;
+import Model.LoggedEmp;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -236,7 +237,15 @@ public class ReportView {
         // Back Button Action
         backButton.addActionListener(e -> {
             frame.dispose();  // Close current frame
-            showPreviousScreen();  // Call method to display the previous screen
+            LoggedEmp loggedEmp=LoggedEmp.getInstance();
+            if(loggedEmp.getDesignation().equals("Branch Manager"))
+            {
+                new BMDashboardView();
+            }
+            else
+            {
+                new SADashboardView();
+            }
         });
 
         frame.add(reportPanel);

@@ -398,7 +398,7 @@ public class BranchDAO {
         return cityname;
     }
 
-///search specific branch code from db
+    ///search specific branch code from db
     public static LinkedList<Integer> read_branch_code_data_from_db(String BranchName,String BranchCity){
         LinkedList<Integer> BranchCodes=new LinkedList<>();
         temp=ConnectionConfigurator.getConnection();
@@ -517,7 +517,7 @@ public class BranchDAO {
         return BranchStatus;
     }
 
-//read specific branch address from db
+    //read specific branch address from db
     public static LinkedList<String> read_branch_Address_data_from_db(String BranchName,String BranchCity){
         LinkedList<String> BranchAddress=new LinkedList<>();
         temp=ConnectionConfigurator.getConnection();
@@ -547,7 +547,7 @@ public class BranchDAO {
         return BranchAddress;
     }
 
-//read specific branch phone no from db;
+    //read specific branch phone no from db;
     public static LinkedList<String> read_branch_Phoneno_data_from_db(String BranchName,String BranchCity){
         LinkedList<String> BranchPhoneno=new LinkedList<>();
         temp=ConnectionConfigurator.getConnection();
@@ -630,35 +630,33 @@ public class BranchDAO {
         }
         return data;
     }
-public static LinkedList<Branch> getAllBranches(){
-    LinkedList<Branch> branches=new LinkedList<>();
+    public static LinkedList<Branch> getAllBranches(){
+        LinkedList<Branch> branches=new LinkedList<>();
         temp=ConnectionConfigurator.getConnection();
-    try {
-    String sql="SELECT * FROM branch";
-    Statement s=temp.createStatement();
-    ResultSet rs=s.executeQuery(sql);
-    while  (rs.next()){
-        int id=rs.getInt(1);
-        String name=rs.getString(2);
-        String city=rs.getString(3);
-        String status=rs.getString(4);
-        String address=rs.getString(5);
-        String phoneno=rs.getString(6);
-        int noofemployees=rs.getInt(7);
-        branches.add(new Branch(id,name,city,status,address,phoneno,noofemployees));
+        try {
+            String sql="SELECT * FROM branch";
+            Statement s=temp.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            while  (rs.next()){
+                int id=rs.getInt(1);
+                String name=rs.getString(2);
+                String city=rs.getString(3);
+                String status=rs.getString(4);
+                String address=rs.getString(5);
+                String phoneno=rs.getString(6);
+                int noofemployees=rs.getInt(7);
+                branches.add(new Branch(id,name,city,status,address,phoneno,noofemployees));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return branches;
     }
-    }
-    catch (Exception e){
-        e.printStackTrace();
-    }
-    return branches;
+
+
+
+
+
+
 }
-
-
-
-
-
-
-}
-
-

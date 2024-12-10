@@ -4,6 +4,7 @@ import Controller.OrderController;
 import Controller.BranchManagementController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ public class UpdateOrderView extends JFrame {
     private OrderController oc = new OrderController();
     private BranchManagementController bmc = new BranchManagementController();
 
-    public UpdateOrderView(int p_id, String p_name, int p_quantity, int v_id, String v_name) {
+    public UpdateOrderView(int p_id, String p_name, int p_quantity, int v_id, String v_name, DefaultTableModel model,int row) {
         // Set the frame title
         setTitle("Update Order");
 
@@ -128,6 +129,11 @@ public class UpdateOrderView extends JFrame {
                     // Call the controller to update the order
                     oc.redirectOrderUpdateRequest(p_id, newProductName, newProductQuantity, newVendorName, branchID);
 
+                    model.setValueAt(p_id,row,0);
+                    model.setValueAt(newProductName,row,1);
+                    model.setValueAt(newProductQuantity,row,2);
+                    model.setValueAt(newVendorName,row,4);
+                    model.setValueAt(branchID,row,5);
                     JOptionPane.showMessageDialog(null, "Data Updated In DB");
                     dispose();
                 }

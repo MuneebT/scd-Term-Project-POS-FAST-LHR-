@@ -38,11 +38,12 @@ public class Main {
 
 
 
-//        VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
-  //      ,"GUjranwala","Lahore","Punjab","Pakistan");
+  //      VendorDAO.insertVendor("Ali","03338189990","03338164142","ali@gmail.com"
+//        ,"GUjranwala","Lahore","Punjab","Pakistan");
         //Order Functionallity Call order
        // DataEntryOperatorDAO.insertdataintoOrderTable(2,"Oil",4,1,"Ali");
 
+   //    OrderDAO.insertdataintoOrderTable(1,"shampoo",12,1,"ali",1);
  //   new ManageOrderView();
 
 
@@ -53,7 +54,6 @@ public class Main {
 
     //new AddCategoryView();
 
-//        new ReportView();
 
 
 
