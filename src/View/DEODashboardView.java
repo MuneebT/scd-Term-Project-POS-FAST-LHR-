@@ -17,7 +17,6 @@ import java.sql.SQLException;
 public class DEODashboardView extends JFrame {
     LoggedEmp loggedEmp=LoggedEmp.getInstance();
     public DEODashboardView() {
-        // Setup second frame
 
         setTitle("Data Entry Operations");
         setBounds(20, 20, 1400, 900);
@@ -54,7 +53,6 @@ public class DEODashboardView extends JFrame {
 
 
 
-        // Load and scale the icon image
         ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
