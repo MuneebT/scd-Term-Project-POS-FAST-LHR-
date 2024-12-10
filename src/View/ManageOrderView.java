@@ -1,6 +1,5 @@
 package View;
 
-import Controller.DataEntryOperatorController;
 import Controller.OrderController;
 
 import javax.swing.*;
@@ -8,36 +7,28 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ManageOrderView extends JFrame {
     private JTable table;
     private JScrollPane scrollPane;
     private JButton btnAdd;
+    private JButton btnBack; // Back button
     private OrderController oc = new OrderController();
+    private DefaultTableModel model;
 
     public ManageOrderView() {
-        setTitle("Inventory Management");
+        setTitle("Order Management");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
-        setBounds(100, 100, 900, 600); // Adjusted width after removing vendor columns
+        setBounds(100, 100, 900, 600);
 
-        String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "VendorID", "VendorName","BranchID", "Delete", "Update"};
-
+        String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "VendorID", "VendorName", "BranchID", "Delete", "Update"};
         Object[][] data = oc.redirectGatherOrderDatarequest();
 
-        // Add Delete and Update as button text in the data
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = new Object[]{
-//                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4],data[i][5], "Delete", "Update"
-//            };
-//        }
-
-        DefaultTableModel model = new DefaultTableModel(data, columnname) {
+        model = new DefaultTableModel(data, columnname) {
             public boolean isCellEditable(int row, int column) {
-                // Allow editing only for Delete and Update columns
-                return column == 6 || column == 7;
+                return column == 6 || column == 7; // Allow editing for Delete and Update columns
             }
         };
 
@@ -51,49 +42,42 @@ public class ManageOrderView extends JFrame {
 
         // Creating scroll pane for the table
         scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(0, 40, getWidth(), getHeight() - 40);
+        scrollPane.setBounds(0, 40, getWidth(), getHeight() - 80);
 
         // Creating "Add" button at top-right corner
         btnAdd = new JButton("Add");
         btnAdd.setFont(new Font("Arial", Font.BOLD, 15));
         btnAdd.setBackground(Color.CYAN);
         btnAdd.setForeground(Color.BLACK);
-        btnAdd.setBounds(getWidth() - 100, 10, 80, 30);
+        btnAdd.setBounds(getWidth() - 200, 10, 80, 30);
 
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddOrderView addOrderView = new AddOrderView();
-                addOrderView.setVisible(true);  // Make AddOrderView visible
-            }
+        btnAdd.addActionListener(e -> {
+            AddOrderView addOrderView = new AddOrderView();
+            addOrderView.setVisible(true); // Make AddOrderView visible
+        });
+
+        // Creating "Back" button
+        btnBack = new JButton("Back");
+        btnBack.setFont(new Font("Arial", Font.BOLD, 15));
+        btnBack.setBackground(Color.LIGHT_GRAY);
+        btnBack.setForeground(Color.BLACK);
+        btnBack.setBounds(getWidth() - 100, 10, 80, 30);
+
+        btnBack.addActionListener(e -> {
+            new DEODashboardView();
+            dispose();
         });
 
         // Adding components to frame
         add(scrollPane);
         add(btnAdd);
+        add(btnBack);
 
         revalidate();
         repaint();
         setVisible(true);
     }
 
-
-
-    // ButtonRenderer to render buttons in the Delete and Update columns
-    class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText((value == null) ? "" : value.toString());
-            return this;
-        }
-    }
-
-    // ButtonEditor to handle Delete and Update actions
-    // ButtonEditor to handle Delete and Update actions
     class ButtonEditor extends DefaultCellEditor {
         protected JButton button;
         private String label;
@@ -131,7 +115,7 @@ public class ManageOrderView extends JFrame {
 
                                 // Ensure that no fields are null or invalid
                                 if (productId != -1 && productName != null && productQuantity >= 0 && vendorId != -1 && vendorName != null) {
-                                    new UpdateOrderView(productId, productName, productQuantity, vendorId, vendorName);
+                                    new UpdateOrderView(productId, productName, productQuantity, vendorId, vendorName,model,row);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Invalid data for update.");
                                 }
@@ -183,26 +167,43 @@ public class ManageOrderView extends JFrame {
     public int getproductID(){
         int id= (int) table.getValueAt(table.getSelectedRow(),0);
         return id;
-   }
-   public String getProductName(){
+    }
+    public String getProductName(){
         String name= (String) table.getValueAt(table.getSelectedRow(),1);
         return name;
-   }
-   public int getProductQuantity(){
+    }
+    public int getProductQuantity(){
         int quantity=(int) table.getValueAt(table.getSelectedRow(),2);
         return quantity;
-   }
-   public int getVendorID(){
+    }
+    public int getVendorID(){
         int id=(int)table.getValueAt(table.getSelectedRow(),3);
         return id;
-   }
+    }
 
     public String getVendorName(){
         String name= (String) table.getValueAt(table.getSelectedRow(),4);
         return name;
     }
-
     public static void main(String[] args) {
         new ManageOrderView();
     }
 }
+class ButtonRenderer extends JButton implements TableCellRenderer {
+    public ButtonRenderer() {
+        setOpaque(true);
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        setText((value == null) ? "" : value.toString());
+        return this;
+    }
+}
+
+
+
+
+
+
+

@@ -7,24 +7,63 @@ import java.util.List;
 
 public class SaleDAO {
 
-    public boolean createSale(int productId, String productName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+    public Sale createSale(int productId, String productName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID, String returnFlag) {
         String sql = "INSERT INTO Sale (ProdId, ProdName, Price, Quantity, TotalPrice, InvoiceNumber, BranchID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Add sale record
             pstmt.setInt(1, productId);
             pstmt.setString(2, productName);
             pstmt.setDouble(3, price);
             pstmt.setInt(4, quantity);
             pstmt.setDouble(5, totalPrice);
             pstmt.setInt(6, invoiceNumber);
-            pstmt.setInt(7, branchID); // Set branchID
+            pstmt.setInt(7, branchID);
 
             int rowsAffected = pstmt.executeUpdate();
 
-            // Reduce inventory if sale is successful
+            // Check if the insert was successful
+            if (rowsAffected > 0) {
+                // Retrieve the generated SaleID
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int saleId = rs.getInt(1); // The first column contains the generated SaleID
+
+                        // Create and return a Sale object with the generated SaleID
+                        Sale sale = new Sale(saleId, productId, productName, price, quantity, totalPrice, invoiceNumber, branchID);
+                        InventoryDAO inventoryDAO = new InventoryDAO();
+                        // Reduce the product quantity in the inventory
+                        if (inventoryDAO.reduceProductQuantity(productId, quantity)) {
+                            return sale;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if the sale creation failed
+    }
+
+
+    public boolean createSale(int productId, String productName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
+        String sql = "INSERT INTO Sale (ProdId, ProdName, Price, Quantity, TotalPrice, InvoiceNumber, BranchID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+
+            pstmt.setInt(1, productId);
+            pstmt.setString(2, productName);
+            pstmt.setDouble(3, price);
+            pstmt.setInt(4, quantity);
+            pstmt.setDouble(5, totalPrice);
+            pstmt.setInt(6, invoiceNumber);
+            pstmt.setInt(7, branchID);
+
+            int rowsAffected = pstmt.executeUpdate();
+
             InventoryDAO inventoryDAO = new InventoryDAO();
             if (rowsAffected > 0) {
                 return inventoryDAO.reduceProductQuantity(productId, quantity);
@@ -32,7 +71,7 @@ public class SaleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Return false if sale or inventory update fails
+        return false;
     }
 
     public Sale getSaleById(int saleId) {

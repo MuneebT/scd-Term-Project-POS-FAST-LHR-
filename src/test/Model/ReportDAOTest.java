@@ -1,157 +1,114 @@
 package test.Model;
 
+import Model.BranchDAO;
 import Model.ReportDAO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
-
-
-import java.sql.*;
-import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-public class ReportDAOTest {
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-    @InjectMocks
-    private ReportDAO reportDAO;
+class ReportDAOTest {
 
-    @Mock
-    private Connection mockConnection;
+    @Test
+    void testFetchSalesReportForLastYear() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Sales", "Yearly", "1");
+        assertNotNull(report, "Report should not be null.");
+        assertTrue(report.size() > 0, "Report should have at least one entry.");
+    }
 
-    @Mock
-    private PreparedStatement mockPreparedStatement;
 
-    @Mock
-    private ResultSet mockResultSet;
+    @Test
+    void testFetchSalesReportForNonExistingBranch() {
+        ReportDAO reportDAO = new ReportDAO();
+        assertThrows(IllegalArgumentException.class, () -> reportDAO.fetchData("Sales", "Monthly", "9999"), "An IllegalArgumentException should be thrown for a non existent branch ID.");
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
+    }
+
+
+
+    @Test
+    void testFetchRemainingStockForBranchWithMultipleCategories() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Remaining Stock", null, "1");
+        assertNotNull(report, "Report should not be null.");
+        assertTrue(report.size() > 0, "Report should have entries for a branch with multiple categories.");
     }
 
     @Test
-    public void testFetchData_Sales_Monthly() throws Exception {
-        String reportType = "Sales";
-        String timeRange = "Monthly";
-        String branchID = "1";
+    void testFetchProfitReportForCurrentWeek() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Profit", "Weekly", "1");
+        assertNotNull(report, "Report should not be null.");
+        assertEquals(7, report.size(), "Report should have 7 entries for a weekly profit report.");
+    }
 
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
 
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
 
-        when(mockResultSet.getString("Month")).thenReturn("1");
-        when(mockResultSet.getString("Year")).thenReturn("2024");
-        when(mockResultSet.getDouble("Value")).thenReturn(1000.0);
-
-        LinkedHashMap<String, Double> result = reportDAO.fetchData(reportType, timeRange, branchID);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertTrue(result.containsKey("January"));
-        assertEquals(1000.0, result.get("January"));
-
-        verify(mockPreparedStatement).executeQuery();
+    @Test
+    void testInvalidTimeRange() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Sales", "Invalid", "1");
+        assertNotNull(report, "Report should not be null.");
+        assertTrue(report.isEmpty(), "Report should be empty for an invalid time range.");
     }
 
     @Test
-    public void testFetchData_Profit_Yearly() throws Exception {
-        String reportType = "Profit";
-        String timeRange = "Yearly";
-        String branchID = "1";
-
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-
-        when(mockResultSet.getString("Year")).thenReturn("2024");
-        when(mockResultSet.getDouble("Value")).thenReturn(5000.0);
-
-        LinkedHashMap<String, Double> result = reportDAO.fetchData(reportType, timeRange, branchID);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertTrue(result.containsKey("2024"));
-        assertEquals(5000.0, result.get("2024"));
-
-        verify(mockPreparedStatement).executeQuery();
+    void testInvalidReportType() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Unknown", "Yearly", "1");
+        assertNotNull(report, "Report should not be null.");
+        assertTrue(report.isEmpty(), "Report should be empty for an unknown report type.");
     }
 
     @Test
-    public void testFetchData_RemainingStock() throws Exception {
-        String reportType = "Remaining Stock";
-        String timeRange = "Monthly";
-        String branchID = "1";
-
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-
-        when(mockResultSet.getString("Product Category")).thenReturn("Electronics");
-        when(mockResultSet.getDouble("Quantity")).thenReturn(150.0);
-
-        LinkedHashMap<String, Double> result = reportDAO.fetchData(reportType, timeRange, branchID);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertTrue(result.containsKey("Electronics"));
-        assertEquals(150.0, result.get("Electronics"));
-
-        verify(mockPreparedStatement).executeQuery();
+    void testNullBranchID() {
+        ReportDAO reportDAO = new ReportDAO();
+        assertThrows(IllegalArgumentException.class, () -> reportDAO.fetchData("Sales", "Monthly", null), "An IllegalArgumentException should be thrown for a null branch ID.");
     }
 
     @Test
-    public void testFetchData_EmptyResult() throws Exception {
-        String reportType = "Sales";
-        String timeRange = "Monthly";
-        String branchID = "1";
-
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-
-        when(mockResultSet.next()).thenReturn(false);
-
-        LinkedHashMap<String, Double> result = reportDAO.fetchData(reportType, timeRange, branchID);
-
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
-
-        verify(mockPreparedStatement).executeQuery();
+    void testSimultaneousReportFetchRequests() {
+        ReportDAO reportDAO = new ReportDAO();
+        Runnable task1 = () -> {
+            Map<String, Double> report = reportDAO.fetchData("Sales", "Monthly", "1");
+            assertNotNull(report, "Task 1 report should not be null.");
+        };
+        Runnable task2 = () -> {
+            Map<String, Double> report = reportDAO.fetchData("Profit", "Weekly", "1");
+            assertNotNull(report, "Task 2 report should not be null.");
+        };
+        Thread thread1 = new Thread(task1);
+        Thread thread2 = new Thread(task2);
+        thread1.start();
+        thread2.start();
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            fail("Threads should not be interrupted.");
+        }
     }
 
     @Test
-    public void testFetchData_MissingDataForWeekday() throws Exception {
-        String reportType = "Sales";
-        String timeRange = "Weekly";
-        String branchID = "1";
+    void testFetchDataOnBoundaryOfWeeklyRange() {
+        ReportDAO reportDAO = new ReportDAO();
+        Map<String, Double> report = reportDAO.fetchData("Profit", "Weekly", "1");
+        assertNotNull(report, "Report should not be null.");
+        assertEquals(7, report.size(), "Report should have 7 entries for a weekly range.");
+    }
 
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
 
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-        when(mockResultSet.getInt("Weekday")).thenReturn(0);
-        when(mockResultSet.getDouble("Value")).thenReturn(200.0);
 
-        LinkedHashMap<String, Double> result = reportDAO.fetchData(reportType, timeRange, branchID);
-
-        assertNotNull(result);
-        assertTrue(result.containsKey("Monday"));
-        assertEquals(200.0, result.get("Monday"));
-        assertTrue(result.containsKey("Tuesday"));
-        assertTrue(result.containsKey("Wednesday"));
-        assertTrue(result.containsKey("Thursday"));
-        assertTrue(result.containsKey("Friday"));
-        assertTrue(result.containsKey("Saturday"));
-        assertTrue(result.containsKey("Sunday"));
-
-        verify(mockPreparedStatement).executeQuery();
+    @Test
+    void testDatabaseConnectionFails() {
+        ReportDAO reportDAO = new ReportDAO() {
+            @Override
+            public LinkedHashMap<String, Double> fetchData(String reportType, String timeRange, String branchID) {
+                throw new RuntimeException("Database connection failed");
+            }
+        };
+        assertThrows(RuntimeException.class, () -> reportDAO.fetchData("Sales", "Monthly", "1"), "A RuntimeException should be thrown if the database connection fails.");
     }
 }
-

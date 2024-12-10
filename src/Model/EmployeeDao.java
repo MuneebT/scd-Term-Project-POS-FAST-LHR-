@@ -92,6 +92,8 @@ public class EmployeeDao {
         return employeeList;
     }
 
+
+
     // Method to fetch all employees with designation "Branch Manager"
 
 

@@ -59,14 +59,15 @@ public class DBInitializer {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Employee (" +
                 "    id INT PRIMARY KEY AUTO_INCREMENT," +
-                "    emp_no varchar(50) UNIQUE ," +
+                "    emp_no VARCHAR(50) UNIQUE," +
                 "    name VARCHAR(100) NOT NULL," +
-                "password VARCHAR(100) NOT NULL, " +
+                "    password VARCHAR(100) NOT NULL," +
                 "    email VARCHAR(100)," +
                 "    branch_code VARCHAR(50)," +
                 "    salary DECIMAL(10, 2)," +
                 "    designation VARCHAR(50)," +
-                " firstPasswordChangedStatus int DEFAULT 0 "+
+                "    firstPasswordChangedStatus INT DEFAULT 0," +
+                "    paid BOOLEAN DEFAULT FALSE "+ // Payment status
                 ");";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -76,8 +77,8 @@ public class DBInitializer {
         } finally {
             conn.close();
         }
-
     }
+
     void makeSureVendorTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Vendor (\n" +

@@ -143,7 +143,8 @@ public class BMOperation4aView extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close current window
+                dispose();
+                new BMDashboardView();
             }
         });
         backButton.setBackground(customColor);

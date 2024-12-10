@@ -56,7 +56,16 @@ public class SalesPointScreenTemp {
 
 // Back button action listener (Closes the current window)
         backButton.addActionListener(e -> {
-            new CashierDashboard();
+            LoggedEmp loggedEmp=LoggedEmp.getInstance();
+            if(loggedEmp.getDesignation().equals("Branch Manager"))
+            {
+                new BMDashboardView();
+            }
+            else
+            {
+                new CashierDashboard();
+            }
+
 
         });
 

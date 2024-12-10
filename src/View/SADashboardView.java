@@ -110,8 +110,8 @@ public class SADashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                //new EmployeeOperation3_1();
+                new BranchManagementView();
+
             }
         });
 
@@ -132,8 +132,7 @@ public class SADashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                // new EmployeeOperation3_2();
+                new BranchManagementView();
             }
         });
 

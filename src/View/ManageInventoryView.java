@@ -1,7 +1,7 @@
 package View;
 
-import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
+import Model.LoggedEmp;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,8 +13,9 @@ import java.awt.event.ActionListener;
 public class ManageInventoryView extends JFrame {
     private JTable table;
     private JScrollPane scrollPane;
-    private JButton btnAdd;
+    private JButton btnAdd, btnBack;
     private InventoryCntroller ic = new InventoryCntroller();
+    private DefaultTableModel model;
 
     public ManageInventoryView() {
         setTitle("Inventory Management");
@@ -24,19 +25,12 @@ public class ManageInventoryView extends JFrame {
         setBounds(100, 100, 900, 600); // Adjusted width after removing vendor columns
 
         String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "ProdctCategory", "CostPrice",
-                "SalePrice","BranchID", "Delete", "Update"};
+                "SalePrice", "BranchID", "Delete", "Update"};
 
         Object[][] data = ic.redirect_object_array();
 
-        // Add Delete and Update as button text in the data
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = new Object[]{
-//                    data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], "Delete", "Update"
-//            };
-//        }
-
         // Create DefaultTableModel
-        DefaultTableModel model = new DefaultTableModel(data, columnname) {
+        model = new DefaultTableModel(data, columnname) {
             public boolean isCellEditable(int row, int column) {
                 // Allow editing only for Delete and Update columns
                 return column == 7 || column == 8;
@@ -55,29 +49,58 @@ public class ManageInventoryView extends JFrame {
         scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, 40, getWidth(), getHeight() - 40);
 
-        // Creating "Add" button at top-right corner
+        // Creating "Add" button
         btnAdd = new JButton("Add");
         btnAdd.setFont(new Font("Arial", Font.BOLD, 15));
         btnAdd.setBackground(Color.decode("#415a77"));
         btnAdd.setForeground(Color.white);
-        btnAdd.setBounds(getWidth() - 100, 10, 80, 30);
+        btnAdd.setBounds(getWidth() - 190, 10, 80, 30);
 
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new AddInventoryView();
+                dispose();
+            }
+        });
+
+        // Creating "Back" button
+        btnBack = new JButton("Back");
+        btnBack.setFont(new Font("Arial", Font.BOLD, 15));
+        btnBack.setBackground(Color.decode("#415a77"));
+        btnBack.setForeground(Color.white);
+        btnBack.setBounds(getWidth() - 100, 10, 80, 30);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoggedEmp loggedEmp=LoggedEmp.getInstance();
+                if(loggedEmp.getDesignation().equals("Branch Manager"))
+                {
+                    new BMDashboardView();
+                }
+                else if(loggedEmp.getDesignation().equals("Data Entry Operator"))
+                {
+                    new DEODashboardView();
+
+                }
+                else if(loggedEmp.getDesignation().equals("Cashier"))
+                {
+                    new CashierDashboard();
+                }
             }
         });
 
         // Adding components to frame
         add(scrollPane);
         add(btnAdd);
+        add(btnBack);
 
         revalidate();
         repaint();
         setVisible(true);
     }
-
 
     // ButtonRenderer to render buttons in the Delete and Update columns
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -125,10 +148,25 @@ public class ManageInventoryView extends JFrame {
                         int salePrice = (Integer) table.getValueAt(row, 5);
 
                         // Updated to exclude vendor parameters
-                        new UpdateInventoryView(id, quantity, costPrice, salePrice, this);
+                        new UpdateInventoryView(id, quantity, costPrice, salePrice, this, model, row);
+                        refreshtable();
                     }
                 }
             });
+        }
+
+        public void refreshtable() {
+            String[] columnname = {"ProductID", "ProductName", "ProdctQuantity", "ProdctCategory", "CostPrice",
+                    "SalePrice", "BranchID", "Delete", "Update"};
+            Object[][] data = ic.redirect_object_array();
+            model = new DefaultTableModel(data, columnname) {
+                public boolean isCellEditable(int row, int column) {
+                    // Allow editing only for Delete and Update columns
+                    return column == 7 || column == 8;
+                }
+            };
+
+            table = new JTable(model);
         }
 
         @Override
@@ -151,7 +189,6 @@ public class ManageInventoryView extends JFrame {
             isPushed = false;
             return super.stopCellEditing();
         }
-
     }
 
     public static void main(String[] args) {

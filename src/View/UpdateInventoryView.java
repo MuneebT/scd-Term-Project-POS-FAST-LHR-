@@ -4,6 +4,7 @@ import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UpdateInventoryView extends JFrame {
@@ -14,7 +15,7 @@ public class UpdateInventoryView extends JFrame {
     private JTextField tfQuantity, tfPrice, tfSalePrice;
     private InventoryCntroller ic = new InventoryCntroller();
 
-    public UpdateInventoryView(int id, int quantity, int price, int sp, ManageInventoryView.ButtonEditor miv) {
+    public UpdateInventoryView(int id, int quantity, int price, int sp, ManageInventoryView.ButtonEditor miv, DefaultTableModel model, int r) {
         setTitle("Update Inventory");
         setLayout(null); // Using null layout for absolute positioning
         setBounds(100, 100, 800, 500); // Adjusted height after removing vendor fields
@@ -61,6 +62,10 @@ public class UpdateInventoryView extends JFrame {
                 int updatedQuantity = Integer.parseInt(tfQuantity.getText());
                 int updatedPrice = Integer.parseInt(tfPrice.getText());
                 int updatedSalePrice = Integer.parseInt(tfSalePrice.getText());
+
+                model.setValueAt(updatedQuantity, r, 2);
+                model.setValueAt(updatedPrice, r, 4);
+                model.setValueAt(updatedSalePrice, r, 5);
 
                 // Send updated values to controller
                 ic.redirect_Inventory_update_request(id, updatedQuantity, updatedPrice, updatedSalePrice);

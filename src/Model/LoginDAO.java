@@ -25,9 +25,25 @@ public class LoginDAO {
         }
 
 
+
     }
 
-    public int getFirstTimeLoginStatus(String name, String password, String designation) throws SQLException {
+    public boolean validateUserPay(String username, String password,String designation,String branch) throws SQLException {
+        String query = "SELECT * FROM employee WHERE name = ? AND emp_no = ? AND designation= ? AND branch_code=?";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setString(3, designation);
+            ps.setString(4, branch);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // Return true if the user exists
+        }
+    }
+
+
+
+        public int getFirstTimeLoginStatus(String name, String password, String designation) throws SQLException {
         String query = "SELECT * FROM employee WHERE name = ? AND password = ? AND designation = ?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {

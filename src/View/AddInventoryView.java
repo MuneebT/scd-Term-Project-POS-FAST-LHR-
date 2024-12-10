@@ -2,7 +2,6 @@ package View;
 
 import Controller.BranchManagementController;
 import Controller.CategoryController;
-import Controller.DataEntryOperatorController;
 import Controller.InventoryCntroller;
 import Model.Category;
 
@@ -10,24 +9,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class AddInventoryView extends JFrame {
     private JButton btnAdd;
+    private JButton btnBack;
     private ImageIcon img;
     private JLabel imagelabel;
     private JLabel p_quantity, costprice, saleprice, p_name, p_category, p_branch;
-    private JTextField tfquantity, tfprice, tfsaleprice, tfname, tfcategory;
+    private JTextField tfquantity, tfprice, tfsaleprice, tfname;
     private JComboBox<String> branchComboBox;
     private JComboBox<String> category;
-    private LinkedList<String> categorytype=new LinkedList<>();
-    private LinkedList<Category> categories=new LinkedList<>();
+    private LinkedList<String> categorytype = new LinkedList<>();
+    private LinkedList<Category> categories = new LinkedList<>();
     private InventoryCntroller ic = new InventoryCntroller();
-    private CategoryController cc=new CategoryController();
-private BranchManagementController bmc=new BranchManagementController();
+    private CategoryController cc = new CategoryController();
+    private BranchManagementController bmc = new BranchManagementController();
+
     public AddInventoryView() {
         setTitle("Add Inventory");
         setLayout(null); // Absolute positioning
@@ -64,13 +63,12 @@ private BranchManagementController bmc=new BranchManagementController();
         p_category.setFont(new Font("Arial", Font.BOLD, 15));
         p_category.setBounds(420, 130, 150, 30);
 
-
-        categories=cc.redirectgetAllCategoriesRequest();
-        for(int i=0;i<categories.size();i++){
+        categories = cc.redirectgetAllCategoriesRequest();
+        for (int i = 0; i < categories.size(); i++) {
             categorytype.add(categories.get(i).gettype());
         }
-        category= new JComboBox<>(categorytype.toArray(new String[0]));
-        JScrollPane scrollPane=new JScrollPane(category);
+        category = new JComboBox<>(categorytype.toArray(new String[0]));
+        JScrollPane scrollPane = new JScrollPane(category);
         scrollPane.setBounds(580, 130, 180, 30);
 
         // Cost Price
@@ -94,10 +92,9 @@ private BranchManagementController bmc=new BranchManagementController();
         p_branch.setFont(new Font("Arial", Font.BOLD, 15));
         p_branch.setBounds(420, 280, 150, 30);
 
-        LinkedList<String> branchdata=bmc.redirectConcatenatedData();
-        branchComboBox = new JComboBox<String>(branchdata.toArray(new String[0]));
+        LinkedList<String> branchdata = bmc.redirectConcatenatedData();
+        branchComboBox = new JComboBox<>(branchdata.toArray(new String[0]));
         branchComboBox.setBounds(580, 280, 180, 30);
-
 
         // Add Button
         btnAdd = new JButton("Add");
@@ -112,18 +109,34 @@ private BranchManagementController bmc=new BranchManagementController();
                 if (validateInputs()) {
                     String name = tfname.getText();
                     int quantity = Integer.parseInt(tfquantity.getText());
-                    String selectedcategory =(String) category.getSelectedItem();
+                    String selectedcategory = (String) category.getSelectedItem();
                     int costPrice = Integer.parseInt(tfprice.getText());
                     int salePrice = Integer.parseInt(tfsaleprice.getText());
                     String selectedBranch = (String) branchComboBox.getSelectedItem();
-                    StringTokenizer st=new StringTokenizer(selectedBranch,"_");
-                    int branchid=Integer.parseInt(st.nextToken());
-                    String branchname=st.nextToken();
+                    StringTokenizer st = new StringTokenizer(selectedBranch, "_");
+                    int branchid = Integer.parseInt(st.nextToken());
+                    String branchname = st.nextToken();
 
-                     ic.redirect_Inventory_Insert_request(name, quantity, selectedcategory, costPrice, salePrice, branchid);
+                    ic.redirect_Inventory_Insert_request(name, quantity, selectedcategory, costPrice, salePrice, branchid);
 
                     dispose();
                 }
+            }
+        });
+
+        // Back Button
+        btnBack = new JButton("Back");
+        btnBack.setBackground(Color.decode("#415a77"));
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setFont(new Font("Arial", Font.BOLD, 14));
+        btnBack.setBounds(690, 330, 100, 40);
+
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ManageInventoryView();
+
             }
         });
 
@@ -142,10 +155,10 @@ private BranchManagementController bmc=new BranchManagementController();
         add(p_branch);
         add(branchComboBox);
         add(btnAdd);
+        add(btnBack);
 
         setVisible(true);
     }
-
 
     // Validate Inputs
     private boolean validateInputs() {

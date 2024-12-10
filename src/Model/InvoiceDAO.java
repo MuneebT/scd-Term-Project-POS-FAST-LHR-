@@ -21,31 +21,31 @@ public class InvoiceDAO {
             pstmt.setDouble(2, gst);
             pstmt.setDouble(3, amountPaid);
             pstmt.setDouble(4, balance);
-            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now())); // Current DateTime
-            pstmt.setInt(6, branchID); // Set branchID
+            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(6, branchID);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1); // Return the generated InvoiceID
+                        return generatedKeys.getInt(1);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Return -1 if insertion fails
+        return -1;
     }
 
-    // Get Invoice by ID including branchID
+
     public Invoice getInvoiceById(int invoiceId, int branchID) {
         String sql = "SELECT * FROM Invoice WHERE InvoiceID = ? AND branchID = ?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, invoiceId);
-            pstmt.setInt(2, branchID); // Check for specific branchID
+            pstmt.setInt(2, branchID);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -63,14 +63,14 @@ public class InvoiceDAO {
         return null;
     }
 
-    // Get all invoices for a specific branch
+
     public List<Invoice> getAllInvoices(int branchID) {
         List<Invoice> invoices = new ArrayList<>();
         String sql = "SELECT * FROM Invoice WHERE branchID = ?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, branchID); // Ensure only invoices from the current branch are fetched
+            pstmt.setInt(1, branchID);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -89,7 +89,7 @@ public class InvoiceDAO {
         return invoices;
     }
 
-    // Get invoices by date range for a specific branch
+
     public List<Invoice> getInvoicesByDateRange(LocalDateTime startDate, LocalDateTime endDate, int branchID) {
         List<Invoice> invoices = new ArrayList<>();
         String sql = "SELECT * FROM Invoice WHERE DateTime BETWEEN ? AND ? AND branchID = ?";
@@ -98,7 +98,7 @@ public class InvoiceDAO {
 
             pstmt.setTimestamp(1, Timestamp.valueOf(startDate));
             pstmt.setTimestamp(2, Timestamp.valueOf(endDate));
-            pstmt.setInt(3, branchID); // Ensure invoices are fetched for the specified branch
+            pstmt.setInt(3, branchID);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {

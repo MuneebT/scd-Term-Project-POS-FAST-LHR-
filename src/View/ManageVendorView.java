@@ -19,7 +19,6 @@ public class ManageVendorView extends JFrame {
         setBounds(100, 100, 1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Existing code for fetching data, table setup, etc.
         // Create JPanel for the top section
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -31,7 +30,7 @@ public class ManageVendorView extends JFrame {
         addVendorButton.setBackground(Color.decode("#415a77"));
         addVendorButton.setForeground(Color.WHITE);
 
-        // Add ActionListener to the button
+        // Add ActionListener to the "Add Vendor" button
         addVendorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,8 +39,25 @@ public class ManageVendorView extends JFrame {
             }
         });
 
-        // Add the button to the top panel
+        // Create the "Back" button
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.BOLD, 14));
+        backButton.setBackground(Color.decode("#2a2a72"));
+        backButton.setForeground(Color.WHITE);
+
+        // Add ActionListener to the "Back" button
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close the current window and navigate back
+                dispose();
+                new DEODashboardView();
+            }
+        });
+
+        // Add buttons to the top panel
         topPanel.add(addVendorButton);
+        topPanel.add(backButton);
 
         // Column names for the table
         String[] columnNames = {"VendorID", "Name", "ContactPerson", "Phone", "Email", "Address", "City", "State_Province", "Country", "Update", "Delete"};
@@ -177,12 +193,6 @@ public class ManageVendorView extends JFrame {
             );
 
             if (confirmation == JOptionPane.YES_OPTION) {
-                // Code to delete the vendor from the database
-                System.out.println("Deleting VendorID: " + vendorID);
-                System.out.println("Name: " + name + ", Contact Person: " + contactPerson + ", Phone: " + phone);
-                System.out.println("Email: " + email + ", Address: " + address + ", City: " + city);
-                System.out.println("State/Province: " + stateProvince + ", Country: " + country);
-
                 try {
                     boolean isDeleted = vendorManagementController.redirect_Delete_Vendors(vendorID);
                     if (isDeleted) {

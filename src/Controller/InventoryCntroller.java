@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.DataEntryOperatorDAO;
+import Model.Inventory;
 import Model.InventoryDAO;
 
 import java.util.LinkedList;
@@ -24,4 +25,17 @@ public class InventoryCntroller {
     public LinkedList<String> redirectProductConcatenatedDataRequest(){
         return InventoryDAO.concatenateProductIDandProductName();
     }
+    public LinkedList<String> returnProductNames(){
+        return InventoryDAO.readProductNameFromDB();
+    }
+    public LinkedList<String> returnListofProductCategory(){
+        return InventoryDAO.readProductCategoryFromDB();
+    }
+
+    public Object[][] returnobjectArray(String productname, String productCategory) {
+        return InventoryDAO.readSpecificDatafromInventory(productname,productCategory);
+    }
+    public LinkedList<Integer> returnlistofproductIDs(){return InventoryDAO.readProductIDFromDB();}
+
+    public LinkedList<Inventory> returnAllInventory(){return InventoryDAO.getAllInventory();}
 }

@@ -135,8 +135,7 @@ public class DEODashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                // new EmployeeOperation3_2();
+                new ManageInventoryView();
             }
         });
 
@@ -156,8 +155,7 @@ public class DEODashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-                //  new ViewIndividualBill();
+                new ManageOrderView();
             }
         });
 
