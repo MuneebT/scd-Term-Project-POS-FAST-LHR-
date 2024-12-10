@@ -90,4 +90,17 @@ public class LoginDAO {
             conn.close(); // Ensure the connection is closed
         }
     }
+
+    public boolean validateUserPay(String name, String emp_no, String designation, String branch) throws SQLException {
+        String query = "SELECT * FROM employee WHERE name = ? AND emp_no = ? AND designation= ? AND branch_code=?";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, name);
+            ps.setString(2, emp_no);
+            ps.setString(3,designation);
+            ps.setString(4,branch);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // Return true if the user exists
+        }
+    }
 }

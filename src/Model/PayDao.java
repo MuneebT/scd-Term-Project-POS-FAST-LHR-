@@ -35,7 +35,7 @@ public class PayDao {
 
             // Query to fetch employee details, including the `paid` attribute
             String query = "SELECT paid FROM Employee " +
-                    "WHERE name = ? AND password = ? AND designation = ? AND branch_code = ?";
+                    "WHERE name = ? AND emp_no = ? AND designation = ? AND branch_code = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, password);

@@ -87,7 +87,7 @@ import java.sql.SQLException;
             customerIdField.setText("Enter User Name:");
 
             // Password Field
-            JLabel passwordLabel = new JLabel("Password");
+            JLabel passwordLabel = new JLabel("Employee ID");
             passwordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
             passwordLabel.setForeground(Color.BLACK);
             passwordLabel.setBounds(439, 210, 150, 30);
@@ -95,7 +95,7 @@ import java.sql.SQLException;
             final JTextField passwordField = new JTextField();
             passwordField.setBounds(439, 240, 150, 32);
             passwordField.setForeground(Color.GRAY);
-            passwordField.setText("Enter Password");
+            passwordField.setText("Enter Employee ID");
 
             // Designation Dropdown
             JLabel designationlb = new JLabel("Designation:");
@@ -151,7 +151,7 @@ import java.sql.SQLException;
             passwordField.addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    if (passwordField.getText().equals("Enter Password")) {
+                    if (passwordField.getText().equals("Enter Employee ID")) {
                         passwordField.setText("");
                         passwordField.setForeground(Color.BLACK);
                     }
@@ -160,7 +160,7 @@ import java.sql.SQLException;
                 @Override
                 public void focusLost(FocusEvent e) {
                     if (passwordField.getText().isEmpty()) {
-                        passwordField.setText("Enter Password");
+                        passwordField.setText("Enter Employee ID");
                         passwordField.setForeground(Color.GRAY);
                     }
                 }

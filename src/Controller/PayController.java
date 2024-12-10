@@ -12,7 +12,7 @@ public class PayController {
 
 
     public boolean redirect_validateUser(String name,String password,String designation,String branch) throws SQLException {
-        return loginDAO.validateUser(name,password,designation,branch);
+        return loginDAO.validateUserPay(name,password,designation,branch);
 
     }
     public BigDecimal redirect_getPay(String name, String password, String designation, String branch) throws SQLException {
