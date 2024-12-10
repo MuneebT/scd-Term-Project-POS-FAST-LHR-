@@ -30,5 +30,8 @@ public class VendorManagementController {
       return  VendorDAO.concatenateVendorIDandVendorname();
     }
 
+    public LinkedList<Integer> returnlistofvendorids(){return VendorDAO.readVendorIDFromVendorTable();}
+
+    public LinkedList<String> returnlistofvendornames(){return VendorDAO.readVendorNameFromVendorTable();}
 
 }

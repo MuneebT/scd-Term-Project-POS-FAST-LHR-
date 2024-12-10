@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import Model.Employee;
 import Model.EmployeeTableModel;
@@ -11,26 +12,35 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ManageBMsView extends JFrame {
     private JTable employeeTable;
     private EmployeeManagementController employeeManagementController = new EmployeeManagementController();
-
+    private InternetConnectionChecker icc=new InternetConnectionChecker();
     public ManageBMsView() throws SQLException {
         setTitle("Manage Branch Managers");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Fetch all employees
-        List<Employee> employees = employeeManagementController.redirect_get_All_BMs();
-        System.out.println("BMs fetched: " + employees.size());
+        EmployeeTableModel model=null;
+        boolean isconnected=icc.startChecking();
+        List<Employee> employees=null;
+        if(isconnected) {
+             employees = employeeManagementController.redirect_get_All_BMs();
+            System.out.println("BMs fetched: " + employees.size());
 
-        // Create a custom table model
-        EmployeeTableModel model = new EmployeeTableModel(employees);
-
+            // Create a custom table model
+             model = new EmployeeTableModel(employees);
+        }
+        else{
+            employees=getallemployess();
+            model=new EmployeeTableModel(employees);
+        }
         // Wrap the model to add action buttons
         JTable table = new JTable(new EmployeeButtonTableModel(model));
         table.setRowHeight(70);
@@ -125,21 +135,35 @@ public class ManageBMsView extends JFrame {
             return null;
         }
 
+        Employee employeeToDelete=null;
+        Employee employeeToUpdate=null;
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == deleteButton) {
+                boolean isconnected = icc.startChecking();
+               if(isconnected){
                 // Perform delete action
-                Employee employeeToDelete = employees.get(row);
+                 employeeToDelete = employees.get(row);
                 System.out.println("Deleting employee: " + employeeToDelete.getName());
                 employeeManagementController.redirect_employee_delete(employeeToDelete.getEmpNo());
                 employees.remove(row);
                 ((AbstractTableModel) table.getModel()).fireTableRowsDeleted(row, row);
+            }
+               else{
+                   storeManageBmsdataintempfile(employeeToDelete.getEmpNo());
+               }
             } else if (e.getSource() == updateButton) {
                 // Perform update action
-                Employee employeeToUpdate = employees.get(row);
-                System.out.println("Updating employee: " + employeeToUpdate.getName());
-                openUpdateDialog(employeeToUpdate);
-            }
+                boolean isconnected=icc.startChecking();
+                if(isconnected) {
+                     employeeToUpdate = employees.get(row);
+                    System.out.println("Updating employee: " + employeeToUpdate.getName());
+                    openUpdateDialog(employeeToUpdate);
+                }
+                else{
+                    storeManageBMSupdatedata(employeeToUpdate);
+                }
+                }
             fireEditingStopped();
         }
 
@@ -231,4 +255,90 @@ public class ManageBMsView extends JFrame {
             }
         }
     }
+    public void storeManageBmsdataintempfile(String num){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("ManageDeleteBM.txt",true));
+            bw.write(num);
+            bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void storeManageBMSupdatedata(Employee employeedata){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("ManageUpdateBM.txt",true));
+           String data=employeedata.getName()+","+employeedata.getSalary()+","+employeedata.getEmpNo()+","+
+                   employeedata.getEmail()+","+employeedata.getBranchCode()+","+employeedata.getBranchCode()+","+
+                   employeedata.getDesignation();
+           bw.write(data);
+           bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public LinkedList<Employee> getallemployess() {
+        LinkedList<Employee> employees = new LinkedList<>();
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader("employee.txt"));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                // Split the line into parts
+                String[] parts = line.split(",");
+
+                // Ensure the line contains all the required fields
+                if (parts.length == 6) {
+                    String name = parts[0].trim();
+                    String salary = parts[1].trim();
+                    String empNo = parts[2].trim();
+                    String email = parts[3].trim();
+                    String branchCode = parts[4].trim();
+                    String designation = parts[5].trim();
+
+                    // Create an Employee object and add it to the list
+                    Employee employee = new Employee(name, salary, empNo, email, branchCode, designation);
+                    employees.add(employee);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return employees;
+    }
+
 }

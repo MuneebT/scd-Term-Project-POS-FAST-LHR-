@@ -225,7 +225,7 @@ public class InventoryDAO {
     public static boolean reduceProductQuantity ( int productId, int quantitySold){
         LoggedEmp loggedEmp = LoggedEmp.getInstance();
         int branchID = Integer.parseInt(loggedEmp.getBranch());
-        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ? AND AND BranchID=?";
+        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ? AND BranchID=?";
 
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

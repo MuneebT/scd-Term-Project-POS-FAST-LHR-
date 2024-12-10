@@ -66,7 +66,7 @@ public class SaleDAO {
 
             InventoryDAO inventoryDAO = new InventoryDAO();
             if (rowsAffected > 0) {
-                return inventoryDAO.reduceProductQuantity(productId, quantity);
+                return InventoryDAO.reduceProductQuantity(productId, quantity);
             }
         } catch (SQLException e) {
             e.printStackTrace();

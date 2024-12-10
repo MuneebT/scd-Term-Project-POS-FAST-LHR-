@@ -1,5 +1,6 @@
 package View;
 
+import Connection.InternetConnectionChecker;
 import Controller.EmployeeManagementController;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedField;
@@ -10,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.UUID;
 
 public class BMOperation4aView extends JFrame {
@@ -21,7 +25,7 @@ public class BMOperation4aView extends JFrame {
     public String designation;
     public String password;
     EmployeeManagementController employeeManagementController = new EmployeeManagementController();
-
+private InternetConnectionChecker icc=new InternetConnectionChecker();
     public BMOperation4aView() {
         // Setup second frame
         setTitle("Employee Desktop");
@@ -166,14 +170,16 @@ public class BMOperation4aView extends JFrame {
 
                 password = passwordField.getText();
                 System.out.println(salary);
-                //name,empNo,email,password,branchCode,salary,designation
-                employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation,password);
+                boolean isconnected=icc.startChecking();
+                if(isconnected) {
+                    employeeManagementController.redirect_employee_insertion(name, empNo, email, branchCode, salary, designation, password);
+                    dispose();
+                }
+                else{
+                    storebmoperationsintempfile(name, empNo, email, branchCode, salary, designation, password);
+                }
 
-                //---------------commented by abdullah so that i can run my program error free for now, you may add password field here
-                //employeeManagementController.redirect_employee_insertion(name,empNo,email,branchCode,salary,designation);
-                //---comment ends here-------------
 
-                dispose(); // Close current window
             }
         });
         submit.setBackground(customColor);
@@ -214,7 +220,31 @@ public class BMOperation4aView extends JFrame {
         return "EMP" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 
+    public void storebmoperationsintempfile(String name,String empNo,String email,String branchCode,String salary,String designation,String password){
+        BufferedWriter bw=null;
+        try{
+            bw=new BufferedWriter(new FileWriter("bmoperations4a.txt",true));
+            String data=name+","+ empNo+","+ email+","+ branchCode+","+ salary+","+ designation+","+ password;
+        bw.write(data);
+        bw.newLine();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(bw!=null){
+                    bw.close();
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         new BMOperation4aView();
     }
+
 }

@@ -1,22 +1,26 @@
 package Controller;
+import Connection.ConnectionConfigurator;
 import Model.*;
 import View.*;
 
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws RuntimeException {
-      
+
+
+
         try {
             DBInitializer in=new DBInitializer();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //new splashView();
+        new splashView();
 
-        
+
 
         // new CreateBranchView();
 //new BranchManagementView();
@@ -42,9 +46,15 @@ public class Main {
    //    OrderDAO.insertdataintoOrderTable(1,"shampoo",12,1,"ali",1);
  //   new ManageOrderView();
 
+
+//    new ManageCategoryView();
+
+      //new SearchInventoryView();
+       // new SearchOrderView();
+
     //new AddCategoryView();
 
-      new splashView();
+
 
 
     }

@@ -4,6 +4,7 @@ import Controller.ReturnController;
 import Model.LoggedEmp;
 import Model.Sale;
 import Model.SaleTableModel;
+import View.CustomerElements.RoundedButton;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -18,16 +19,34 @@ public class SaleTableView extends JFrame {
     private JTable salesTable;
     private LoggedEmp loggedEmp = LoggedEmp.getInstance();
     private ReturnController returnController = new ReturnController();
+    Color customColor = Color.decode("#415a77");
 
     public SaleTableView(String invoice) {
         setTitle("Manage Sales");
-        setSize(800, 600);
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create a JPanel for the "Back" button
+        JPanel backButtonPanel = new JPanel();
+        RoundedButton backButton = new RoundedButton("Back");
+        backButton.setBackground(customColor);
+        backButton.setForeground(Color.white);
+
+        // Set action for the back button (you can modify this logic as needed)
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logic for going back, such as closing this window or navigating to another screen
+                new ReturnScreenView();
+                dispose(); // This will close the current window; you can also navigate to another frame
+            }
+        });
+
+        backButtonPanel.add(backButton);
+        add(backButtonPanel, BorderLayout.EAST); // Add back button panel at the top (NORTH)
 
         // Fetch all sales
         List<Sale> sales = returnController.redirect_get_sales(invoice);
-        // Pass a sample invoice number here
-
         System.out.println("Sales fetched: " + sales.size() + " " + sales.get(0).getProdName());
 
         // Create a custom table model for Sales
@@ -41,9 +60,10 @@ public class SaleTableView extends JFrame {
         table.getColumn("Actions").setCellRenderer(new ButtonRenderer());
         table.getColumn("Actions").setCellEditor(new ButtonEditor(new JCheckBox(), sales));
 
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        add(new JScrollPane(table), BorderLayout.CENTER); // Add the table at the center
         setVisible(true);
     }
+
 
     // Renderer for action buttons
     class ButtonRenderer extends JPanel implements TableCellRenderer {
@@ -192,6 +212,7 @@ public class SaleTableView extends JFrame {
                         System.out.println("Invoice not updated.\n");
 
                     }
+                    JOptionPane.showMessageDialog(null, "Every thing up to date\n" );
 
 
 

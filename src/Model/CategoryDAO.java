@@ -60,4 +60,18 @@ public class CategoryDAO {
             e.printStackTrace();
         }
     }
+    public static void deleteCategory(int id){
+        String sql="DELETE FROM Category WHERE CategoryID="+id;
+        try{
+            Connection temp=ConnectionConfigurator.getConnection();
+            PreparedStatement ps=temp.prepareStatement(sql);
+           boolean flag= ps.execute();
+           if(flag){
+               JOptionPane.showMessageDialog(null,"Data Deleted from DB");
+           }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

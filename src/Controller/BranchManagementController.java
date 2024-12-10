@@ -40,5 +40,6 @@ public class BranchManagementController {
     }
 
     public LinkedList<Branch> returnAllBranches(){return BranchDAO.getAllBranches();}
-
 }
+
+
