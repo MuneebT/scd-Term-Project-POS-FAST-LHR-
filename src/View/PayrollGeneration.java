@@ -1,6 +1,7 @@
 package View;
 
 import Controller.PayController;
+import Model.LoggedEmp;
 import View.CustomerElements.RoundedButton;
 
 import javax.swing.*;
@@ -10,8 +11,9 @@ import java.awt.event.FocusEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Objects;
 
-    class PayrollGeneration extends JFrame {
+class PayrollGeneration extends JFrame {
        // LoginController loginController = new LoginController();
         PayController payController=new PayController();
 
@@ -145,7 +147,7 @@ import java.sql.SQLException;
             passwordField.addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    if (passwordField.getText().equals("Enter Emplopyee ID")) {
+                    if (passwordField.getText().equals("Enter Employee ID")) {
                         passwordField.setText("");
                         passwordField.setForeground(Color.BLACK);
                     }
@@ -200,7 +202,25 @@ import java.sql.SQLException;
                             {
                                 JOptionPane.showMessageDialog(null, "Already Paid");
                             }
-                            dispose();
+                            dispose();//"Branch Manager", "Data Entry Operator", "Cashier"
+                            LoggedEmp loggedEmp=LoggedEmp.getInstance();
+                            String logged=loggedEmp.getDesignation();
+
+
+                            if(Objects.equals(logged, "Super Admin"))
+                            {
+                                new SADashboardView();
+                            } else if (Objects.equals(logged, "Branch Manager")) {
+                                new BMDashboardView();
+                            } else if (Objects.equals(logged, "Data Entry Operator")) {
+                                new DEODashboardView();
+                            } else if (Objects.equals(logged, "Cashier")) {
+                                new CashierDashboard();
+                            }
+                            else
+                            {
+                                System.out.println("Wrong Designation");
+                            }
                         } else {
                             errorLabel.setVisible(true);
                         }

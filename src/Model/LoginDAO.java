@@ -106,4 +106,19 @@ public class LoginDAO {
             conn.close(); // Ensure the connection is closed
         }
     }
+
+    public boolean validateUserSA(String userName, String password, String designation) {
+        System.out.println("IN validateUserSA\n");
+        String query = "SELECT * FROM employee WHERE name = ? AND password = ? AND designation= ? ";
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, userName);
+            ps.setString(2, password);
+            ps.setString(3, designation);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // Return true if the user exists
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

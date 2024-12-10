@@ -44,9 +44,10 @@ public class BMDashboardView extends JFrame {
         headerlabel2.setFont(new Font("Impact", Font.PLAIN, 24));
         headerlabel3.setFont(new Font("Impact", Font.PLAIN, 24));
 
+//Color.decode("#102542")   Color.decode("#cccccc");
         headerlabel0.setBounds(0, 30, 1400, 40); // Centered title
         headerlabel0.setFont(new Font("Impact", Font.PLAIN, 24));
-        Color customColor = new Color(121, 87, 87); // RGB for #795757
+        Color customColor = Color.decode("#cccccc"); // RGB for #795757
         headerlabel0.setForeground(customColor); // Set font color
         headerlabel1.setForeground(customColor);
         headerlabel2.setForeground(customColor);
@@ -54,8 +55,7 @@ public class BMDashboardView extends JFrame {
 
 
 
-
-        ImageIcon originalIcon = new ImageIcon("src/resources/logo1.png");
+        ImageIcon originalIcon = new ImageIcon("src/resources/logo2.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         headerlabel0.setIcon(scaledIcon);
@@ -255,7 +255,7 @@ public class BMDashboardView extends JFrame {
 
 
         openFirstPageButton.setBackground(customColor);
-        openFirstPageButton.setForeground(Color.WHITE);
+        openFirstPageButton.setForeground(Color.decode("#102542"));
         openFirstPageButton.setFont(new Font("Impact", Font.PLAIN, 16));
         openFirstPageButton.setToolTipText("Click here to return!");
 

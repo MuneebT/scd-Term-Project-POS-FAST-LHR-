@@ -50,7 +50,7 @@ public class UserSelectionView extends JFrame {
 
 
         // Create labels with background color
-        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"  Super Admin", Color.decode("#415a77"), 56, 56);
+        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"Super Admin", Color.decode("#415a77"), 56, 56);
         RoundedLabel ManagerLabel = new RoundedLabel(scaledOriginalIcon2,"Branch Manager", Color.decode("#415a77"), 56, 56);
         RoundedLabel DataEntryOperatorLabel = new RoundedLabel(scaledOriginalIcon2,"Data Entry Operator ", Color.decode("#415a77"), 56, 56);
         RoundedLabel CashierLabel = new RoundedLabel(scaledOriginalIcon2,"Cashier", Color.decode("#415a77"), 56, 56);

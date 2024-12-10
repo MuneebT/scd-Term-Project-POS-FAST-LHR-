@@ -8,11 +8,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class loginView extends JFrame {
     LoginController loginController = new LoginController();
 
-    public loginView() {
+    public loginView(String desig) {
         // Setup frame
         setTitle("Login Page");
         setBounds(20, 20, 800, 600);
@@ -94,11 +95,11 @@ public class loginView extends JFrame {
         designationlb.setFont(new Font("Arial", Font.PLAIN, 16));
         designationlb.setForeground(Color.BLACK);
 
-        String[] designationTypes = {"Super Admin", "Branch Manager", "Data Entry Operator", "Cashier"};
-        JComboBox<String> designationTypeComboBox = new JComboBox<>(designationTypes);
+        JTextField designationTypeComboBox = new JTextField();
         designationTypeComboBox.setBounds(439, 330, 150, 40);
         designationTypeComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
         designationTypeComboBox.setForeground(customColor);
+        designationTypeComboBox.setText(desig);
 
         // Branch Field
         JLabel branchLabel = new JLabel("Branch");
@@ -175,7 +176,7 @@ public class loginView extends JFrame {
         designationTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedDesignation = (String) designationTypeComboBox.getSelectedItem();
+                String selectedDesignation = (String) designationTypeComboBox.getText();
                 if ("Super Admin".equals(selectedDesignation)) {
                     branchField.setEnabled(false); // Disable Branch Field
                     branchField.setText("N/A");   // Set default text
@@ -185,7 +186,7 @@ public class loginView extends JFrame {
                 }
             }
         });
-        if ("Super Admin".equals(designationTypeComboBox.getSelectedItem())) {
+        if ("Super Admin".equals(designationTypeComboBox.getText())) {
             branchField.setEnabled(false); // Disable if Super Admin is selected by default
             branchField.setText("N/A");
         } else {
@@ -200,30 +201,54 @@ public class loginView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String userName = customerIdField.getText();
                 String password = passwordField.getText();
-                String designation = (String) designationTypeComboBox.getSelectedItem();
+                String designation = (String) designationTypeComboBox.getText();
                 String branch = branchField.getText();
-
-                try {
-                    if (loginController.redirect_validateUser(userName, password, designation,branch)) {
-                        loginController.redirect_set_credientials(userName, password, designation,branch);
-                        if (designation.equals("Super Admin")) {
-                            new SADashboardView();
-                        } else if (designation.equals("Branch Manager")) {
-                            new BMDashboardView();
-                        } else if (designation.equals("Data Entry Operator")) {
-                            new DEODashboardView();
-                        } else if (designation.equals("Cashier")) {
-                            new CashierDashboard();
+                if (Objects.equals(designation, "Super Admin")) {
+                    System.out.println("In super Admin\n");
+                    try {
+                        if (loginController.redirect_validateUserSA(userName, password, designation)) {
+                            branch="-1";
+                            loginController.redirect_set_credientials(userName, password, designation, branch);
+                            if (designation.equals("Super Admin")) {
+                                new SADashboardView();
+                            } else if (designation.equals("Branch Manager")) {
+                                new BMDashboardView();
+                            } else if (designation.equals("Data Entry Operator")) {
+                                new DEODashboardView();
+                            } else if (designation.equals("Cashier")) {
+                                new CashierDashboard();
+                            }
+                            dispose();
+                        } else {
+                            errorLabel.setVisible(true);
                         }
-                        dispose();
-                    } else {
-                        errorLabel.setVisible(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                } else {
+                    System.out.println("In Else super Admin\n");
+                    try {
+                        if (loginController.redirect_validateUser(userName, password, designation, branch)) {
+                            loginController.redirect_set_credientials(userName, password, designation, branch);
+                            if (designation.equals("Super Admin")) {
+                                new SADashboardView();
+                            } else if (designation.equals("Branch Manager")) {
+                                new BMDashboardView();
+                            } else if (designation.equals("Data Entry Operator")) {
+                                new DEODashboardView();
+                            } else if (designation.equals("Cashier")) {
+                                new CashierDashboard();
+                            }
+                            dispose();
+                        } else {
+                            errorLabel.setVisible(true);
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
-            }
-        });
+        }});
+
 
         submitBtn.setBackground(customColor);
         submitBtn.setForeground(Color.WHITE);
@@ -264,6 +289,7 @@ public class loginView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new loginView();
+
+        new loginView("Super Admin");
     }
 }

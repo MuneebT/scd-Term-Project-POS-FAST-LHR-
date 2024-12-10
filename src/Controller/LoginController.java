@@ -35,5 +35,7 @@ public class LoginController {
     }
 
 
-
+    public boolean redirect_validateUserSA(String userName, String password, String designation) {
+        return loginDAO.validateUserSA(userName,password,designation);
+    }
 }
