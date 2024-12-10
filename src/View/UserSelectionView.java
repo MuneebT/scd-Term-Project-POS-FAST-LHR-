@@ -50,10 +50,10 @@ public class UserSelectionView extends JFrame {
 
 
         // Create labels with background color
-        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"  SuperAdmin", Color.decode("#415a77"), 56, 56);
-        RoundedLabel ManagerLabel = new RoundedLabel(scaledOriginalIcon2,"  ManagerLabel", Color.decode("#415a77"), 56, 56);
-        RoundedLabel DataEntryOperatorLabel = new RoundedLabel(scaledOriginalIcon2,"  Data Entry Operator", Color.decode("#415a77"), 56, 56);
-        RoundedLabel CashierLabel = new RoundedLabel(scaledOriginalIcon2,"  Cashier", Color.decode("#415a77"), 56, 56);
+        RoundedLabel SuperAdminLabel = new RoundedLabel(scaledOriginalIcon1,"  Super Admin", Color.decode("#415a77"), 56, 56);
+        RoundedLabel ManagerLabel = new RoundedLabel(scaledOriginalIcon2,"Branch Manager", Color.decode("#415a77"), 56, 56);
+        RoundedLabel DataEntryOperatorLabel = new RoundedLabel(scaledOriginalIcon2,"Data Entry Operator ", Color.decode("#415a77"), 56, 56);
+        RoundedLabel CashierLabel = new RoundedLabel(scaledOriginalIcon2,"Cashier", Color.decode("#415a77"), 56, 56);
 
         // Set different icons, font, and alignment for labels
         setupLabel(SuperAdminLabel, SuperAdminIcon);
@@ -80,11 +80,10 @@ public class UserSelectionView extends JFrame {
         CashierLabel.setLocation(centerX,CashierLabelY);
 
 
-        // Add mouse click events to labels
         SuperAdminLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new loginView();
+                new loginView(SuperAdminLabel.getText()); // Pass the label's text
                 dispose();
             }
         });
@@ -92,24 +91,28 @@ public class UserSelectionView extends JFrame {
         ManagerLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new loginView();
+                System.out.println("Setting "+ManagerLabel.getText());
+                new loginView(ManagerLabel.getText()); // Pass the label's text
                 dispose();
             }
         });
+
         DataEntryOperatorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new loginView();
+                new loginView(DataEntryOperatorLabel.getText()); // Pass the label's text
                 dispose();
             }
         });
+
         CashierLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new loginView();
+                new loginView(CashierLabel.getText()); // Pass the label's text
                 dispose();
             }
         });
+
 
 
         // Add labels to the panel

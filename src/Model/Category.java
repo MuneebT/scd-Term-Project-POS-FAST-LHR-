@@ -3,6 +3,7 @@ package Model;
 import java.util.LinkedList;
 
 public class Category {
+
     int id;
     String type;
 

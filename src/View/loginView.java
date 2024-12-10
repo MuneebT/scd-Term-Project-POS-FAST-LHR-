@@ -18,7 +18,7 @@ class loginView extends JFrame {
     LoginController loginController = new LoginController();
     private InternetConnectionChecker icc = new InternetConnectionChecker();
 
-    public loginView() {
+    public loginView(String desig) {
         // Setup frame
         setTitle("Login Page");
         setBounds(20, 20, 800, 600);
@@ -100,11 +100,12 @@ class loginView extends JFrame {
         designationlb.setFont(new Font("Arial", Font.PLAIN, 16));
         designationlb.setForeground(Color.BLACK);
 
-        String[] designationTypes = {"Super Admin", "Branch Manager", "Data Entry Operator", "Cashier"};
-        JComboBox<String> designationTypeComboBox = new JComboBox<>(designationTypes);
-        designationTypeComboBox.setBounds(439, 330, 150, 40);
-        designationTypeComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
-        designationTypeComboBox.setForeground(customColor);
+        JTextField designationTypes =new JTextField();
+
+        designationTypes.setBounds(439, 330, 150, 32);
+        designationTypes.setFont(new Font("Arial", Font.PLAIN, 14));
+        designationTypes.setForeground(customColor);
+        designationTypes.setText(desig);
 
         // Branch Field
         JLabel branchLabel = new JLabel("Branch");
@@ -179,8 +180,8 @@ class loginView extends JFrame {
             }
         });
 
-        designationTypeComboBox.addActionListener(e -> {
-            String selectedDesignation = (String) designationTypeComboBox.getSelectedItem();
+        designationTypes.addActionListener(e -> {
+            String selectedDesignation = (String) designationTypes.getText();
             if ("Super Admin".equals(selectedDesignation)) {
                 branchField.setEnabled(false); // Disable Branch Field
                 branchField.setText("N/A");   // Set default text
@@ -190,7 +191,7 @@ class loginView extends JFrame {
             }
         });
 
-        if ("Super Admin".equals(designationTypeComboBox.getSelectedItem())) {
+        if ("Super Admin".equals(designationTypes.getText())) {
             branchField.setEnabled(false); // Disable if Super Admin is selected by default
             branchField.setText("N/A");
         } else {
@@ -203,7 +204,7 @@ class loginView extends JFrame {
         submitBtn.addActionListener(e -> {
             String userName = customerIdField.getText();
             String password = passwordField.getText();
-            String designation = (String) designationTypeComboBox.getSelectedItem();
+            String designation = (String) designationTypes.getText();
             String branch = branchField.getText();
 
             boolean flag = icc.startChecking();
@@ -253,7 +254,7 @@ class loginView extends JFrame {
         mainPanel.add(passwordLabel);
         mainPanel.add(passwordField);
         mainPanel.add(designationlb);
-        mainPanel.add(designationTypeComboBox);
+        mainPanel.add(designationTypes);
         mainPanel.add(branchLabel);
         mainPanel.add(branchField);
         mainPanel.add(errorLabel);
@@ -292,6 +293,6 @@ class loginView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new loginView();
+        new loginView("Branch Manager");
     }
 }

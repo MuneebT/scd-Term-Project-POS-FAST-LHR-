@@ -198,8 +198,8 @@ import java.sql.SQLException;
                 if (flag) {
                     try {
                         if (payController.redirect_validateUser(userName, password, designation, branch)) {
-                            //!payController.redirect_getStatus(userName,password,designation,branch)
-                            if(true) {
+                            if(!payController.redirect_getStatus(userName,password,designation,branch))
+                            {
                                 BigDecimal pay = payController.redirect_getPay(userName, password, designation, branch);
                                SeePaymentView seePaymentView= new SeePaymentView(userName, password, designation, branch,pay);
                             }

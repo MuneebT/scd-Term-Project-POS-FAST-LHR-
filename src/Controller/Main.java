@@ -10,10 +10,9 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws RuntimeException {
 
-
-
         try {
             DBInitializer in=new DBInitializer();
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

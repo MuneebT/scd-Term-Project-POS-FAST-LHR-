@@ -107,8 +107,8 @@ public class SeePaymentView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //setting status
-               // payController.redirect_updateStatus(name, password, designation, branch);
-                if(true)
+
+                if(payController.redirect_updateStatus(name, password, designation, branch))
                 {
                     JOptionPane.showMessageDialog(null,"Paid\n");
                 }

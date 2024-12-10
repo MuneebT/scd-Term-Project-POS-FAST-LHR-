@@ -69,7 +69,7 @@ public class PayDao {
         try {
             conn = ConnectionConfigurator.getConnection();
 
-            String query = "UPDATE Employee SET paid = TRUE, lastPaidDate = CURDATE() " +
+            String query = "UPDATE Employee SET paid = TRUE " +
                     "WHERE name = ? AND password = ? AND designation = ? AND branch_code = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, name);
