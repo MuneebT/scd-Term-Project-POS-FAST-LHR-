@@ -33,7 +33,9 @@ public class InventoryCntroller {
     }
 
     public Object[][] returnobjectArray(String productname, String productCategory) {
-    return InventoryDAO.readSpecificDatafromInventory(productname,productCategory);
+     
+        return InventoryDAO.readSpecificDatafromInventory(productname,productCategory);
+
     }
     public LinkedList<Integer> returnlistofproductIDs(){return InventoryDAO.readProductIDFromDB();}
 

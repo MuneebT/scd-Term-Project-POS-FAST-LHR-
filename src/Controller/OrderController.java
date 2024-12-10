@@ -22,7 +22,9 @@ public class OrderController {
     }
 
     public LinkedList<String> returnProductNames(){
-       return OrderDAO.readProductNameFromOrderDb();
+
+        return OrderDAO.readProductNameFromOrderDb();
+
     }
 
     public LinkedList<String> returnVendorNames(){
@@ -34,4 +36,6 @@ public class OrderController {
     }
 
     public LinkedList<Order> returnALlOrders(){return OrderDAO.getAllOrders();}
+
 }
+

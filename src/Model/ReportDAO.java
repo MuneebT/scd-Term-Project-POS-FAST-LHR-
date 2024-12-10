@@ -1,9 +1,11 @@
 package Model;
 
+import java.io.IOException;
 import java.sql.Connection;
 import Connection.ConnectionConfigurator;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
 public class ReportDAO {
@@ -12,7 +14,33 @@ public class ReportDAO {
     {
 
     }
+    public boolean branchExists(String branchID)
+    {
+        Connection conn=ConnectionConfigurator.getConnection();
+        String query="SELECT * from branch WHERE branchID="+branchID+";";
+        try
+        {
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                return false;
+            }
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public LinkedHashMap<String, Double> fetchData(String reportType, String timeRange, String branchID) {
+        if(branchID==null) {
+            throw new IllegalArgumentException("Exception Branch ID is null");
+        }
+        if(!branchExists(branchID))
+        {
+            throw new IllegalArgumentException("Exception: Branch Not Found");
+        }
+
+
         LinkedHashMap<String, Double> data = new LinkedHashMap<>();
         String query = "";
 

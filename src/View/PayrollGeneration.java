@@ -1,7 +1,5 @@
 package View;
 
-import Connection.InternetConnectionChecker;
-import Controller.LoginController;
 import Controller.PayController;
 import View.CustomerElements.RoundedButton;
 
@@ -10,16 +8,12 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
     class PayrollGeneration extends JFrame {
        // LoginController loginController = new LoginController();
         PayController payController=new PayController();
-        private InternetConnectionChecker icc = new InternetConnectionChecker();
 
         public PayrollGeneration(String BMbranch) {
             // Setup frame
@@ -151,7 +145,7 @@ import java.sql.SQLException;
             passwordField.addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    if (passwordField.getText().equals("Enter Employee ID")) {
+                    if (passwordField.getText().equals("Enter Emplopyee ID")) {
                         passwordField.setText("");
                         passwordField.setForeground(Color.BLACK);
                     }
@@ -194,8 +188,7 @@ import java.sql.SQLException;
                 String designation = (String) designationTypeComboBox.getSelectedItem();
                 String branch = branchField.getText();
 
-                boolean flag = icc.startChecking();
-                if (flag) {
+
                     try {
                         if (payController.redirect_validateUser(userName, password, designation, branch)) {
                             if(!payController.redirect_getStatus(userName,password,designation,branch))
@@ -214,9 +207,7 @@ import java.sql.SQLException;
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
-                } else {
-                  //  storeLoginCredentials(userName, password, designation);
-                }
+
             });
 
             submitBtn.setBackground(customColor);

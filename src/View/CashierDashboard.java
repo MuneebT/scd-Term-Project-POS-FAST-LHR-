@@ -20,7 +20,7 @@ import java.util.List;
 public class CashierDashboard extends JFrame {
     LoggedEmp loggedEmp=LoggedEmp.getInstance();
     public CashierDashboard() {
-        // Setup second frame
+
         setTitle("Cashier Operations");
         setBounds(20, 20, 1400, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,7 +29,7 @@ public class CashierDashboard extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
-        // Header Panel
+
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 10));
         headerPanel.setBounds(0, 0, 1400, 63); // Full width header
         headerPanel.setBackground(new Color(20, 33, 61)); // Customize background color
@@ -177,10 +177,10 @@ public class CashierDashboard extends JFrame {
             }
         });
 
-        // Adjusted position for the first card
-        titleLabel1.setBounds(50, 50, 300, 200); // Adjust position and size
 
-        // Adjusted position for the second card
+        titleLabel1.setBounds(50, 50, 300, 200);
+
+
         titleLabel2.setBounds(400, 50, 300, 200);
         titleLabel3.setBounds(750, 50, 300, 200);
 
@@ -194,10 +194,10 @@ public class CashierDashboard extends JFrame {
         openFirstPageButton.setFont(new Font("Impact", Font.PLAIN, 16));
         openFirstPageButton.setToolTipText("Click here to return!");
 
-        // Footer Panel
+
         JPanel footerPanel = new JPanel();
-        footerPanel.setBounds(0, 650, 1400, 50); // Full width footer at the bottom
-        footerPanel.setBackground(new Color(20, 33, 61)); // Customize footer background color
+        footerPanel.setBounds(0, 650, 1400, 50);
+        footerPanel.setBackground(new Color(20, 33, 61));
         JLabel footerLabel = new JLabel("Footer Section © 2024");
         footerLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         footerLabel.setForeground(Color.WHITE);
@@ -214,21 +214,21 @@ public class CashierDashboard extends JFrame {
         pt1.add(titleLabel3);
         footerPanel.add(openFirstPageButton);
 
-        // Add components to the main panel
+
         mainPanel.add(headerPanel); // Add header
         headerPanel.add(headerlabel0);
         headerPanel.add(headerlabel1);
         headerPanel.add(headerlabel2);
         headerPanel.add(headerlabel3);
-        mainPanel.add(pt1); // Add rounded panel
-        mainPanel.add(footerPanel); // Add footer
-        mainPanel.add(backgroundLabel); // Full background
+        mainPanel.add(pt1);
+        mainPanel.add(footerPanel);
+        mainPanel.add(backgroundLabel);
 
-        // Revalidate and repaint to ensure proper component visibility
+
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        // Add main panel to the frame
+
         add(mainPanel);
         setVisible(true);
 

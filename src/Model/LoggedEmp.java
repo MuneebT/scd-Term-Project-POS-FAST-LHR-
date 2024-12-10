@@ -19,8 +19,6 @@ public class LoggedEmp {
     }
 
 
-
-
     public String getUserName() {
         return userName;
     }

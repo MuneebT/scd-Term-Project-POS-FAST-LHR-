@@ -1,16 +1,16 @@
 package Model;
+
+import Connection.ConnectionConfigurator;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Connection.ConnectionConfigurator;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class PayDao {
     public BigDecimal return_pay(String name,String password,String designation,String branch) throws SQLException {
-        String query = "SELECT salary FROM employee WHERE name = ? AND password = ? AND designation = ? AND branch_code = ?";
+        String query = "SELECT salary FROM employee WHERE name = ? AND emp_no = ? AND designation = ? AND branch_code = ?";
         try (Connection conn = ConnectionConfigurator.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, name);
@@ -70,7 +70,7 @@ public class PayDao {
             conn = ConnectionConfigurator.getConnection();
 
             String query = "UPDATE Employee SET paid = TRUE " +
-                    "WHERE name = ? AND password = ? AND designation = ? AND branch_code = ?";
+                    "WHERE name = ? AND emp_no = ? AND designation = ? AND branch_code = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, password);

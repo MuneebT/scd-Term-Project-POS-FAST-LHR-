@@ -1,16 +1,12 @@
 package Controller;
 
 import Connection.ConnectionConfigurator;
-import View.SeePaymentView;
-
 
 import java.io.IOException;
 import java.sql.*;
 
 public class DBInitializer {
-
     DBInitializer() throws SQLException {
-
         makeSureBranchTableExists();
         makeSureLoginTableExists();
         makeSureEmployeeTableExists();
@@ -20,7 +16,6 @@ public class DBInitializer {
         makeSureOrderTableExists();
         makeSureInvoiceTableExists();
         makeSureSaleTableExists();
-
 
     }
 
@@ -57,6 +52,9 @@ public class DBInitializer {
         }
     }
 
+
+
+
     void makeSureEmployeeTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Employee (" +
@@ -81,31 +79,6 @@ public class DBInitializer {
         }
     }
 
-
-
-//    void makeSureEmployeeTableExists() throws SQLException {
-//        Connection conn = ConnectionConfigurator.getConnection();
-//        String query = "CREATE TABLE IF NOT EXISTS Employee (" +
-//                "    id INT PRIMARY KEY AUTO_INCREMENT," +
-//                "    emp_no varchar(50) UNIQUE ," +
-//                "    name VARCHAR(100) NOT NULL," +
-//                "password VARCHAR(100) NOT NULL, " +
-//                "    email VARCHAR(100)," +
-//                "    branch_code VARCHAR(50)," +
-//                "    salary DECIMAL(10, 2)," +
-//                "    designation VARCHAR(50)," +
-//                " firstPasswordChangedStatus int DEFAULT 0 "+
-//                ");";
-//        try {
-//            PreparedStatement ps = conn.prepareStatement(query);
-//            ps.execute();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } finally {
-//            conn.close();
-//        }
-//
-//    }
     void makeSureVendorTableExists() throws SQLException {
         Connection conn = ConnectionConfigurator.getConnection();
         String query = "CREATE TABLE IF NOT EXISTS Vendor (\n" +

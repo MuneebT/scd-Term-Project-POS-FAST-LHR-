@@ -64,7 +64,7 @@ public class VendorDAO {
             return false;
         }
     }
-    public boolean insertVendor( String name, String contactPerson, String phone, String email,
+    public static boolean insertVendor( String name, String contactPerson, String phone, String email,
                                 String address, String city, String stateProvince, String country) {
         // Connection and statement initialization
         String query = "INSERT INTO `vendor` ( `Name`, `ContactPerson`, `Phone`, `Email`, " +

@@ -8,9 +8,9 @@ public class Sale {
     private int quantity;
     private double totalPrice;
     private int invoiceNumber;
-    private int branchID; // Added branchID field
+    private int branchID;
 
-    // Constructor including branchID
+
     public Sale(int saleId, int prodId, String prodName, double price, int quantity, double totalPrice, int invoiceNumber, int branchID) {
         this.saleId = saleId;
         this.prodId = prodId;
@@ -84,10 +84,10 @@ public class Sale {
     }
 
     public int getBranchID() {
-        return branchID; // Getter for branchID
+        return branchID;
     }
 
     public void setBranchID(int branchID) {
-        this.branchID = branchID; // Setter for branchID
+        this.branchID = branchID;
     }
 }

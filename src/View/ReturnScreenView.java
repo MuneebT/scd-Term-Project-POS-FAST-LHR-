@@ -86,7 +86,8 @@ public class ReturnScreenView extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close current window
+                dispose();
+                new CashierDashboard();
             }
         });
         backButton.setBackground(customColor);

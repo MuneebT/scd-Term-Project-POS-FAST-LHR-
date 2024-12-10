@@ -222,25 +222,25 @@ public class InventoryDAO {
     }
 
 
-        public static boolean reduceProductQuantity ( int productId, int quantitySold){
-            LoggedEmp loggedEmp = LoggedEmp.getInstance();
-            int branchID = Integer.parseInt(loggedEmp.getBranch());
-            String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ? AND AND BranchID=?";
+    public static boolean reduceProductQuantity ( int productId, int quantitySold){
+        LoggedEmp loggedEmp = LoggedEmp.getInstance();
+        int branchID = Integer.parseInt(loggedEmp.getBranch());
+        String sql = "UPDATE Inventory SET ProductQuantity = ProductQuantity - ? WHERE ProductID = ? AND BranchID=?";
 
-            try (Connection conn = ConnectionConfigurator.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionConfigurator.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                pstmt.setInt(1, quantitySold);
-                pstmt.setInt(2, productId);
-                pstmt.setInt(3, branchID);
+            pstmt.setInt(1, quantitySold);
+            pstmt.setInt(2, productId);
+            pstmt.setInt(3, branchID);
 
-                int rowsAffected = pstmt.executeUpdate();
-                return rowsAffected > 0; // Return true if update is successful
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return false; // Return false if update fails
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0; // Return true if update is successful
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return false; // Return false if update fails
+    }
 
     public static Object[][] readSpecificDatafromInventory (String productname, String productcategory){
         // Initialize the required LinkedLists to store the fetched data

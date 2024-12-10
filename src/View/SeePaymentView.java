@@ -1,9 +1,6 @@
 package View;
 
 import Controller.PayController;
-import Controller.ReturnController;
-import Model.ReturnDao;
-import Model.Sale;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedField;
 import View.CustomerElements.RoundedLabel;
@@ -13,8 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SeePaymentView extends JFrame {
     public String invoiceNumber;

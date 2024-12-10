@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import Connection.ConnectionConfigurator;
 public class OrderDAO {
     public static void insertdataintoOrderTable(int p_id,String p_name,int p_quantity,int v_id,String v_name,int b_id){
-        String sql="INSERT INTO `Order`  (ProductID,PRoductName,ProductQuantity,VendorID,VendorName,BranchID) Values(?,?,?,?,?,?)";
+        String sql="INSERT INTO `Order`  (ProductID,ProductName,ProductQuantity,VendorID,VendorName,BranchID) Values(?,?,?,?,?,?)";
         try{
             Connection temp= ConnectionConfigurator.getConnection();
             PreparedStatement ps=temp.prepareStatement(sql);
@@ -308,5 +308,4 @@ public class OrderDAO {
 
         return orders;
     }
-
 }

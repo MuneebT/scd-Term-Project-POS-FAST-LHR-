@@ -1,6 +1,7 @@
 package View;
 
 import Controller.LoginController;
+import Model.EmployeeTableModel;
 import Model.LoggedEmp;
 import View.CustomerElements.RoundedButton;
 import View.CustomerElements.RoundedLabel;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 
 public class BMDashboardView extends JFrame {
     public BMDashboardView() {
-        // Setup second frame
+
         LoggedEmp loggedEmp=LoggedEmp.getInstance();
         setTitle("Branch Manager Operations");
         setBounds(20, 20, 1400, 900);
@@ -26,7 +27,7 @@ public class BMDashboardView extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
-        // Header Panel
+
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 10));
         headerPanel.setBounds(0, 0, 1400, 63); // Full width header
         headerPanel.setBackground(new Color(20, 33, 61)); // Customize background color
@@ -53,7 +54,7 @@ public class BMDashboardView extends JFrame {
 
 
 
-        // Load and scale the icon image
+
         ImageIcon originalIcon = new ImageIcon("src/resources/logo1.png");
         Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -62,7 +63,7 @@ public class BMDashboardView extends JFrame {
         headerlabel0.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        // Set background
+
         ImageIcon bk = new ImageIcon("src/resources/bulb.jpg");
         Image scaledImage2 = bk.getImage().getScaledInstance(1400, 700, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
@@ -70,7 +71,7 @@ public class BMDashboardView extends JFrame {
         backgroundLabel.setBounds(0, 0, 1400, 700);
 
 
-        // Create rounded panel
+
         JPanel pt1 = new JPanel(new GridLayout(3,3,20,20)) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -90,7 +91,7 @@ public class BMDashboardView extends JFrame {
         Image scaledImage1 = originalIcon1.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Larger size for better visibility
         ImageIcon scaledOriginalIcon1 = new ImageIcon(scaledImage1);
 
-        // Create rounded labels
+
         RoundedLabel titleLabel1 = new RoundedLabel(scaledOriginalIcon1,"Click here to Generate Payroll", new Color(34, 34, 59), 50, 50);
      //   titleLabel1.setBounds(70, 50, 250, 250);
         titleLabel1.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -107,11 +108,8 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                String br=loggedEmp.getBranch();
-                System.out.println("br   "+br);
-                new PayrollGeneration(br);
-               // JOptionPane.showMessageDialog(null, "Managing");
-                //new EmployeeOperation3_1();
+                new PayrollGeneration(loggedEmp.getBranch());
+
             }
         });
 
@@ -132,7 +130,7 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
+                new SalesPointScreenTemp();
                // new EmployeeOperation3_2();
             }
         });
@@ -153,8 +151,7 @@ public class BMDashboardView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                JOptionPane.showMessageDialog(null, "Managing");
-              //  new ViewIndividualBill();
+                new ManageInventoryView();
             }
         });
 
@@ -171,8 +168,9 @@ public class BMDashboardView extends JFrame {
 
         titleLabel4.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                //JOptionPane.showMessageDialog(null, "Managing");
+            public void mouseClicked(MouseEvent e)
+            {
+                new BMOperation4aView();
                 dispose();
             }
         });
@@ -198,22 +196,21 @@ public class BMDashboardView extends JFrame {
 
 
 
-        // Create rounded label for "Change Password" tile
+
         RoundedLabel titleLabel6 = new RoundedLabel(scaledOriginalIcon1, "Click here to Change Password", new Color(34, 34, 59), 50, 50);
         titleLabel6.setFont(new Font("Arial", Font.PLAIN, 18));
         titleLabel6.setForeground(customColor);
 
-// Create label for the text
+
         RoundedLabel titleLabel6_1 = new RoundedLabel("  Change Password", new Color(34, 34, 59), 50, 50);
         titleLabel6_1.setBounds(9, 0, 280, 40);
         titleLabel6_1.setFont(new Font("Impact", Font.PLAIN, 18));
         titleLabel6_1.setForeground(customColor);
         titleLabel6.add(titleLabel6_1);
 
-// Set bounds for the new tile (6th tile)
-        // Adjust position and size
 
-// Add action listener to open the password change dialog
+
+
         titleLabel6.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -232,20 +229,20 @@ public class BMDashboardView extends JFrame {
             }
         });
 
-        // Adjusted position for the first card
-        titleLabel1.setBounds(50, 50, 300, 200); // Adjust position and size
 
-        // Adjusted position for the second card
+        titleLabel1.setBounds(50, 50, 300, 200);
+
+
         titleLabel2.setBounds(400, 50, 300, 200);
 
-        // Adjusted position for the third card
+
         titleLabel3.setBounds(50, 300, 300, 200);
 
-        // Adjusted position for the fourth card
+
         titleLabel4.setBounds(400, 300, 300, 200);
 
-        // Adjusted position for the fifth card
-        titleLabel5.setBounds(750, 50, 300, 200); // Make this larger for emphasis on reports
+
+        titleLabel5.setBounds(750, 50, 300, 200);
         titleLabel6.setBounds(750, 300, 300, 200);
 
 
@@ -262,7 +259,7 @@ public class BMDashboardView extends JFrame {
         openFirstPageButton.setFont(new Font("Impact", Font.PLAIN, 16));
         openFirstPageButton.setToolTipText("Click here to return!");
 
-        // Footer Panel
+
         JPanel footerPanel = new JPanel();
         footerPanel.setBounds(0, 650, 1400, 50); // Full width footer at the bottom
         footerPanel.setBackground(new Color(20, 33, 61)); // Customize footer background color
@@ -286,21 +283,21 @@ public class BMDashboardView extends JFrame {
 
         footerPanel.add(openFirstPageButton);
 
-        // Add components to the main panel
-        mainPanel.add(headerPanel); // Add header
+
+        mainPanel.add(headerPanel);
         headerPanel.add(headerlabel0);
         headerPanel.add(headerlabel1);
         headerPanel.add(headerlabel2);
         headerPanel.add(headerlabel3);
-        mainPanel.add(pt1); // Add rounded panel
-        mainPanel.add(footerPanel); // Add footer
-        mainPanel.add(backgroundLabel); // Full background
+        mainPanel.add(pt1);
+        mainPanel.add(footerPanel);
+        mainPanel.add(backgroundLabel);
 
-        // Revalidate and repaint to ensure proper component visibility
+
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        // Add main panel to the frame
+
         add(mainPanel);
         setVisible(true);
 
@@ -316,7 +313,7 @@ public class BMDashboardView extends JFrame {
             showChangePasswordDialog();
         }
     }
-    // Helper method to create action labels
+
     private JLabel createActionLabel(String text, int y, Color color) {
         JLabel label = new JLabel(text);
         label.setBounds(50, y, 400, 40); // Position for alignment
